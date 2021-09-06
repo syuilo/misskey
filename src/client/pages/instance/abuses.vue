@@ -39,7 +39,7 @@
 						<MkAvatar class="avatar" :user="report.targetUser" :show-indicator="true"/>
 						<div class="info">
 							<MkUserName class="name" :user="report.targetUser"/>
-							<div class="acct">@{{ acct(report.targetUser) }}</div>
+							<div class="acct">@{{ getAcctUi(report.targetUser) }}</div>
 						</div>
 					</div>
 					<div class="_content">
@@ -63,12 +63,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { parseAcct } from '@/misc/acct';
+import { getAcctUi } from '@/misc/acct';
 import MkButton from '@client/components/ui/button.vue';
 import MkInput from '@client/components/ui/input.vue';
 import MkSelect from '@client/components/ui/select.vue';
 import MkPagination from '@client/components/ui/pagination.vue';
-import { acct } from '@client/filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
@@ -124,7 +123,7 @@ export default defineComponent({
 	},
 
 	methods: {
-		acct,
+		getAcctUi,
 
 		resolve(report) {
 			os.apiWithDialog('admin/resolve-abuse-user-report', {

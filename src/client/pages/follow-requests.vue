@@ -13,7 +13,7 @@
 				<div class="body">
 					<div class="name">
 						<MkA class="name" :to="userPage(req.follower)" v-user-preview="req.follower.id"><MkUserName :user="req.follower"/></MkA>
-						<p class="acct">@{{ acct(req.follower) }}</p>
+						<p class="acct">@{{ getAcctUi(req.follower) }}</p>
 					</div>
 					<div class="description" v-if="req.follower.description" :title="req.follower.description">
 						<Mfm :text="req.follower.description" :is-note="false" :author="req.follower" :i="$i" :custom-emojis="req.follower.emojis" :plain="true" :nowrap="true"/>
@@ -32,7 +32,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import MkPagination from '@client/components/ui/pagination.vue';
-import { userPage, acct } from '@client/filters/user';
+import { getAcctUi } from '@/misc/acct';
+import { userPage } from '@client/filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
@@ -66,7 +67,7 @@ export default defineComponent({
 			});
 		},
 		userPage,
-		acct
+		getAcctUi
 	}
 });
 </script>

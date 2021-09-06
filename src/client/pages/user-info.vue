@@ -10,7 +10,7 @@
 		<FormGroup>
 			<FormKeyValueView>
 				<template #key>Acct</template>
-				<template #value><span class="_monospace">{{ acct(user) }}</span></template>
+				<template #value><span class="_monospace">{{ getAcctUi(user) }}</span></template>
 			</FormKeyValueView>
 
 			<FormKeyValueView>
@@ -70,7 +70,8 @@ import number from '@client/filters/number';
 import bytes from '@client/filters/bytes';
 import * as symbols from '@client/symbols';
 import { url } from '@client/config';
-import { userPage, acct } from '@client/filters/user';
+import { getAcctUi } from '@/misc/acct';
+import { userPage } from '@client/filters/user';
 
 export default defineComponent({
 	components: {
@@ -95,7 +96,7 @@ export default defineComponent({
 	data() {
 		return {
 			[symbols.PAGE_INFO]: computed(() => ({
-				title: this.user ? acct(this.user) : this.$ts.userInfo,
+				title: this.user ? getAcctUi(this.user) : this.$ts.userInfo,
 				icon: 'fas fa-info-circle',
 				actions: this.user ? [this.user.url ? {
 					text: this.user.url,
@@ -133,7 +134,7 @@ export default defineComponent({
 		number,
 		bytes,
 		userPage,
-		acct,
+		getAcctUi,
 
 		createFetcher() {
 			if (this.iAmModerator) {

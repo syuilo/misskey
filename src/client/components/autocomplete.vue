@@ -6,7 +6,7 @@
 			<span class="name">
 				<MkUserName :user="user" :key="user.id"/>
 			</span>
-			<span class="username">@{{ acct(user) }}</span>
+			<span class="username">@{{ getAcctUi(user) }}</span>
 		</li>
 		<li @click="chooseUser()" @keydown="onKeydown" tabindex="-1" class="choose">{{ $ts.selectUser }}</li>
 	</ol>
@@ -33,7 +33,7 @@ import { emojilist } from '@/misc/emojilist';
 import contains from '@client/scripts/contains';
 import { twemojiSvgBase } from '@/misc/twemoji-base';
 import { getStaticImageUrl } from '@client/scripts/get-static-image-url';
-import { acct } from '@client/filters/user';
+import { getAcctUi } from '@/misc/acct';
 import * as os from '@client/os';
 import { instance } from '@client/instance';
 
@@ -394,7 +394,7 @@ export default defineComponent({
 			});
 		},
 
-		acct
+		getAcctUi
 	}
 });
 </script>

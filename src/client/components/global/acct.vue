@@ -1,7 +1,7 @@
 <template>
 <span class="mk-acct">
 	<span class="name">@{{ user.username }}</span>
-	<span class="host" v-if="user.host || detail || $store.state.showFullAcct">@{{ user.host || host }}</span>
+	<span class="host" v-if="user.host || detail || $store.state.showFullAcct">@{{ host }}</span>
 </span>
 </template>
 
@@ -23,7 +23,7 @@ export default defineComponent({
 	},
 	data() {
 		return {
-			host: toUnicode(host),
+			host: this.user.host ? toUnicode(host) : toUnicode(this.user.host),
 		};
 	}
 });

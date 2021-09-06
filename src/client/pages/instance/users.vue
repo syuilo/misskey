@@ -45,7 +45,7 @@
 				<div class="body">
 					<header>
 						<MkUserName class="name" :user="user"/>
-						<span class="acct">@{{ acct(user) }}</span>
+						<span class="acct">@{{ getAcctUi(user) }}</span>
 						<span class="staff" v-if="user.isAdmin"><i class="fas fa-bookmark"></i></span>
 						<span class="staff" v-if="user.isModerator"><i class="far fa-bookmark"></i></span>
 						<span class="punished" v-if="user.isSilenced"><i class="fas fa-microphone-slash"></i></span>
@@ -70,7 +70,7 @@ import MkButton from '@client/components/ui/button.vue';
 import MkInput from '@client/components/ui/input.vue';
 import MkSelect from '@client/components/ui/select.vue';
 import MkPagination from '@client/components/ui/pagination.vue';
-import { acct } from '@client/filters/user';
+import { getAcctUi } from '@/misc/acct';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 import { lookupUser } from '@client/scripts/lookup-user';
@@ -165,7 +165,7 @@ export default defineComponent({
 			os.pageWindow(`/user-info/${user.id}`);
 		},
 
-		acct
+		getAcctUi
 	}
 });
 </script>

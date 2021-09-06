@@ -6,7 +6,7 @@
 		<MkA v-for="(message, i) in messages"
 			class="message _block"
 			:class="{ isMe: isMe(message), isRead: message.groupId ? message.reads.includes($i.id) : message.isRead }"
-			:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
+			:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcctUi(isMe(message) ? message.recipient : message.user)}`"
 			:data-index="i"
 			:key="message.id"
 			v-anim="i"
@@ -19,7 +19,7 @@
 				</header>
 				<header v-else>
 					<span class="name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-					<span class="username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
+					<span class="username">@{{ getAcctUi(isMe(message) ? message.recipient : message.user) }}</span>
 					<MkTime :time="message.createdAt" class="time"/>
 				</header>
 				<div class="body">
@@ -38,9 +38,8 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent, markRaw } from 'vue';
-import { getAcct } from '@/misc/acct';
+import { getAcctUi } from '@/misc/acct';
 import MkButton from '@client/components/ui/button.vue';
-import { acct } from '@client/filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
@@ -83,7 +82,7 @@ export default defineComponent({
 	},
 
 	methods: {
-		getAcct,
+		getAcctUi,
 
 		isMe(message) {
 			return message.userId == this.$i.id;
@@ -129,7 +128,7 @@ export default defineComponent({
 
 		async startUser() {
 			os.selectUser().then(user => {
-				this.$router.push(`/my/messaging/${getAcct(user)}`);
+				this.$router.push(`/my/messaging/${getAcctUi(user)}`);
 			});
 		},
 
@@ -156,9 +155,7 @@ export default defineComponent({
 			});
 			if (canceled) return;
 			this.$router.push(`/my/messaging/group/${group.id}`);
-		},
-
-		acct
+		}
 	}
 });
 </script>

@@ -234,11 +234,11 @@ import MkRemoteCaution from '@client/components/remote-caution.vue';
 import MkTab from '@client/components/tab.vue';
 import MkInfo from '@client/components/ui/info.vue';
 import Progress from '@client/scripts/loading';
-import { parseAcct } from '@/misc/acct';
+import { parseAcct, getAcctUi } from '@/misc/acct';
 import { getScrollPosition } from '@client/scripts/scroll';
 import { getUserMenu } from '@client/scripts/get-user-menu';
 import number from '@client/filters/number';
-import { userPage, acct as getAcct } from '@client/filters/user';
+import { userPage } from '@client/filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
@@ -276,7 +276,7 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: computed(() => this.user ? {
 				title: this.user.name ? `${this.user.name} (@${this.user.username})` : `@${this.user.username}`,
-				subtitle: `@${getAcct(this.user)}`,
+				subtitle: `@${getAcctUi(this.user)}`,
 				userName: this.user,
 				avatar: this.user,
 				path: `/@${this.user.username}`,
@@ -322,7 +322,7 @@ export default defineComponent({
 	},
 
 	methods: {
-		getAcct,
+		getAcctUi,
 
 		fetch() {
 			if (this.acct == null) return;

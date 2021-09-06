@@ -1,3 +1,5 @@
+import { toUnicode } from 'punycode/';
+
 export type Acct = {
 	username: string;
 	host: string | null;
@@ -5,6 +7,10 @@ export type Acct = {
 
 export const getAcct = (user: Acct) => {
 	return user.host == null ? user.username : `${user.username}@${user.host}`;
+};
+
+export const getAcctUi = (user: Acct) => {
+	return user.host == null ? user.username: `${user.username}@${toUnicode(user.host)}`;
 };
 
 export const parseAcct = (acct: string): Acct => {
