@@ -17,6 +17,7 @@
 				<span v-if="visibility === 'followers'"><i class="fas fa-unlock"></i></span>
 				<span v-if="visibility === 'specified'"><i class="fas fa-envelope"></i></span>
 			</button>
+			<button class="_button preview" @click="showPreview = !showPreview" :class="{ active: showPreview }" v-tooltip="$ts.notePreview"><i class="fas fa-file-code"></i></button>
 			<button class="submit _buttonPrimary" :disabled="!canPost" @click="post" data-cy-open-post-form-submit>{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</div>
 	</header>
@@ -40,6 +41,7 @@
 		<input v-show="withHashtags" ref="hashtags" class="hashtags" v-model="hashtags" :placeholder="$ts.hashtags" list="hashtags">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
 		<XPollEditor v-if="poll" :poll="poll" @destroyed="poll = null" @updated="onPollUpdate"/>
+		<XNotePreview class="preview" v-if="showPreview" :note="draftedNote"/>
 		<footer>
 			<button class="_button" @click="chooseFileFrom" v-tooltip="$ts.attachFile"><i class="fas fa-photo-video"></i></button>
 			<button class="_button" @click="togglePoll" :class="{ active: poll }" v-tooltip="$ts.poll"><i class="fas fa-poll-h"></i></button>
@@ -143,6 +145,7 @@ export default defineComponent({
 			files: [],
 			poll: null,
 			useCw: false,
+			showPreview: false,
 			cw: null,
 			localOnly: this.$store.state.rememberNoteVisibility ? this.$store.state.localOnly : this.$store.state.defaultNoteLocalOnly,
 			visibility: this.$store.state.rememberNoteVisibility ? this.$store.state.visibility : this.$store.state.defaultNoteVisibility,
@@ -220,6 +223,18 @@ export default defineComponent({
 			return this.$instance ? this.$instance.maxNoteTextLength : 1000;
 		},
 
+		draftedNote(): object {
+			return {
+				user: this.$i,
+				createdAt: new Date(),
+				visibility: this.visibility,
+				localOnly: this.localOnly,
+				cw: this.useCw ? this.cw : null,
+				text: this.text,
+				files: this.files,
+				poll: this.poll,
+			};
+		}
 		withHashtags: defaultStore.makeGetterSetter('postFormWithHashtags'),
 		hashtags: defaultStore.makeGetterSetter('postFormHashtags'),
 	},
@@ -717,7 +732,7 @@ export default defineComponent({
 			> .visibility {
 				height: 34px;
 				width: 34px;
-				margin: 0 8px;
+				margin: 0 0 0 8px;
 
 				& + .localOnly {
 					margin-left: 0 !important;
@@ -727,6 +742,24 @@ export default defineComponent({
 			> .local-only {
 				margin: 0 0 0 12px;
 				opacity: 0.7;
+			}
+
+			> .preview {
+				display: inline-block;
+				padding: 0;
+				margin: 0 8px 0 0;
+				font-size: 16px;
+				width: 34px;
+				height: 34px;
+				border-radius: 6px;
+
+				&:hover {
+					background: var(--X5);
+				}
+
+				&.active {
+					color: var(--accent);
+				}
 			}
 
 			> .submit {
