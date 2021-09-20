@@ -1,12 +1,15 @@
 import $ from 'cafy';
 import { ID } from '@/misc/cafy-id';
-import { publishMainStream } from '@/services/stream';
 import define from '../../define';
-import { Notifications } from '@/models/index';
 import { readNotification } from '../../common/read-notification';
 import { ApiError } from '../../error';
 
 export const meta = {
+	desc: {
+		'ja-JP': '通知を既読にします。',
+		'en-US': 'Mark a notification as read.'
+	},
+
 	tags: ['notifications', 'account'],
 
 	requireCredential: true as const,
@@ -15,28 +18,40 @@ export const meta = {
 
 	params: {
 		notificationId: {
-			validator: $.type(ID),
+			validator: $.optional.type(ID),
+			desc: {
+				'ja-JP': '対象の通知のID',
+				'en-US': 'Target notification ID.'
+			}
 		},
+
+		notificationIds: {
+			validator: $.optional.arr($.type(ID)),
+			desc: {
+				'ja-JP': '対象の通知のIDの配列',
+				'en-US': 'Target notification IDs.'
+			}
+		}
 	},
 
 	errors: {
-		noSuchNotification: {
-			message: 'No such notification.',
-			code: 'NO_SUCH_NOTIFICATION',
-			id: 'efa929d5-05b5-47d1-beec-e6a4dbed011e'
+		noNotificationRequested: {
+			message: 'You requested no notification.',
+			code: 'NO_NOTIFICATION_REQUESTED',
+			id: '1dee2109-b88b-21cf-3935-607dad60f5b0'
 		},
 	},
 };
 
 export default define(meta, async (ps, user) => {
-	const notification = await Notifications.findOne({
-		notifieeId: user.id,
-		id: ps.notificationId,
-	});
+	let notificationIds = [] as string[];
 
-	if (notification == null) {
-		throw new ApiError(meta.errors.noSuchNotification);
+	if (ps.notificationId) notificationIds.push(ps.notificationId);
+	if (ps.notificationIds) notificationIds = notificationIds.concat(ps.notificationIds);
+
+	if (notificationIds.length === 0) {
+		throw new ApiError(meta.errors.noNotificationRequested);
 	}
 
-	readNotification(user.id, [notification.id]);
+	return readNotification(user.id, notificationIds);
 });
