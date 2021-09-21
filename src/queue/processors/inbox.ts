@@ -14,6 +14,7 @@ import { InboxJobData } from '../types';
 import DbResolver from '@/remote/activitypub/db-resolver';
 import { resolvePerson } from '@/remote/activitypub/models/person';
 import { LdSignature } from '@/remote/activitypub/misc/ld-signature';
+import { StatusError } from '@/misc/fetch';
 
 const logger = new Logger('inbox');
 
@@ -53,7 +54,7 @@ export default async (job: Bull.Job<InboxJobData>): Promise<string> => {
 			authUser = await dbResolver.getAuthUserFromApId(getApId(activity.actor));
 		} catch (e) {
 			// 対象が4xxならスキップ
-			if (e.statusCode >= 400 && e.statusCode < 500) {
+			if (e instanceof StatusError && e.isClientError) {
 				return `skip: Ignored deleted actors on both ends ${activity.actor} - ${e.statusCode}`;
 			}
 			throw `Error in actor ${activity.actor} - ${e.statusCode || e}`;

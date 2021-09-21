@@ -11,6 +11,7 @@ import { toPuny } from '@/misc/convert-host';
 import { Cache } from '@/misc/cache';
 import { Instance } from '@/models/entities/instance';
 import { DeliverJobData } from '../types';
+import { StatusError } from '@/misc/fetch';
 
 const logger = new Logger('deliver');
 
@@ -68,16 +69,16 @@ export default async (job: Bull.Job<DeliverJobData>) => {
 		registerOrFetchInstanceDoc(host).then(i => {
 			Instances.update(i.id, {
 				latestRequestSentAt: new Date(),
-				latestStatus: res != null && res.hasOwnProperty('statusCode') ? res.statusCode : null,
+				latestStatus: res instanceof StatusError ? res.statusCode : null,
 				isNotResponding: true
 			});
 
 			instanceChart.requestSent(i.host, false);
 		});
 
-		if (res != null && res.hasOwnProperty('statusCode')) {
+		if (res instanceof StatusError) {
 			// 4xx
-			if (res.statusCode >= 400 && res.statusCode < 500) {
+			if (res.isClientError) {
 				// HTTPステータスコード4xxはクライアントエラーであり、それはつまり
 				// 何回再送しても成功することはないということなのでエラーにはしないでおく
 				return `${res.statusCode} ${res.statusMessage}`;

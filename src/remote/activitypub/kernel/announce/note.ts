@@ -8,6 +8,7 @@ import { extractDbHost } from '@/misc/convert-host';
 import { fetchMeta } from '@/misc/fetch-meta';
 import { getApLock } from '@/misc/app-lock';
 import { parseAudience } from '../../audience';
+import { StatusError } from '@/misc/fetch';
 
 const logger = apLogger;
 
@@ -41,7 +42,7 @@ export default async function(resolver: Resolver, actor: IRemoteUser, activity: 
 			renote = await resolveNote(targetUri);
 		} catch (e) {
 			// 対象が4xxならスキップ
-			if (e.statusCode >= 400 && e.statusCode < 500) {
+			if (e instanceof StatusError && e.isClientError) {
 				logger.warn(`Ignored announce target ${targetUri} - ${e.statusCode}`);
 				return;
 			}

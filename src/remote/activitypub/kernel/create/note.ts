@@ -4,6 +4,7 @@ import { createNote, fetchNote } from '../../models/note';
 import { getApId, IObject, ICreate } from '../../type';
 import { getApLock } from '@/misc/app-lock';
 import { extractDbHost } from '@/misc/convert-host';
+import { StatusError } from '@/misc/fetch';
 
 /**
  * 投稿作成アクティビティを捌きます
@@ -32,7 +33,7 @@ export default async function(resolver: Resolver, actor: IRemoteUser, note: IObj
 		await createNote(note, resolver, silent);
 		return 'ok';
 	} catch (e) {
-		if (e.statusCode >= 400 && e.statusCode < 500) {
+		if (e instanceof StatusError && e.isClientError) {
 			return `skip ${e.statusCode}`;
 		} else {
 			throw e;
