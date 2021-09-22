@@ -5,6 +5,7 @@ import uploadFromUrl from '@/services/drive/upload-from-url';
 import define from '../../../define';
 import { DriveFiles } from '@/models/index';
 import { publishMainStream } from '@/services/stream';
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/misc/hard-limits';
 
 export const meta = {
 	tags: ['drive'],
@@ -35,7 +36,7 @@ export const meta = {
 		},
 
 		comment: {
-			validator: $.optional.nullable.str,
+			validator: $.optional.nullable.str.max(DB_MAX_IMAGE_COMMENT_LENGTH),
 			default: null,
 		},
 

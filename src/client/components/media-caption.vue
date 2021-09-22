@@ -3,10 +3,13 @@
 		<div class="container">
 			<div class="fullwidth top-caption">
 				<div class="mk-dialog">
-					<header v-if="title"><Mfm :text="title"/></header>
+					<header>
+						<Mfm v-if="title" class="title" :text="title"/>
+						<span class="text-count" :class="{ over: remainingLength < 0 }">{{ remainingLength }}</span>
+					</header>
 					<textarea autofocus v-model="inputValue" :placeholder="input.placeholder" @keydown="onInputKeydown"></textarea>
 					<div class="buttons" v-if="(showOkButton || showCancelButton)">
-						<MkButton inline @click="ok" primary>{{ $ts.ok }}</MkButton>
+						<MkButton inline @click="ok" primary :disabled="remainingLength < 0">{{ $ts.ok }}</MkButton>
 						<MkButton inline @click="cancel" >{{ $ts.cancel }}</MkButton>
 					</div>
 				</div>
@@ -26,10 +29,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { length } from 'stringz';
 import MkModal from '@client/components/ui/modal.vue';
 import MkButton from '@client/components/ui/button.vue';
 import bytes from '@client/filters/bytes';
 import number from '@client/filters/number';
+import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/misc/hard-limits';
 
 export default defineComponent({
 	components: {
@@ -77,6 +82,13 @@ export default defineComponent({
 
 	beforeUnmount() {
 		document.removeEventListener('keydown', this.onKeydown);
+	},
+
+	computed: {
+		remainingLength(): number {
+			if (typeof this.inputValue != "string") return DB_MAX_IMAGE_COMMENT_LENGTH;
+			return DB_MAX_IMAGE_COMMENT_LENGTH - length(this.inputValue);
+		}
 	},
 
 	methods: {
@@ -156,8 +168,18 @@ export default defineComponent({
 
 	> header {
 		margin: 0 0 8px 0;
-		font-weight: bold;
-		font-size: 20px;
+		position: relative;
+
+		> .title {
+			font-weight: bold;
+			font-size: 20px;
+		}
+
+		> .text-count {
+			opacity: 0.7;
+			position: absolute;
+			right: 0;
+		}
 	}
 
 	> .buttons {
