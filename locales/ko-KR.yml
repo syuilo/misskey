@@ -901,6 +901,8 @@ _mfm:
   fontDescription: "내용의 글꼴을 지정할 수 있습니다."
   rainbow: "무지개"
   rainbowDescription: "내용을 무지개로 표시합니다."
+  sparkle: "반짝반짝"
+  sparkleDescription: "반짝이는 파티클 효과를 추가합니다."
 _reversi:
   reversi: "리버시"
   gameSettings: "대국 설정"

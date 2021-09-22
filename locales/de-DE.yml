@@ -901,6 +901,8 @@ _mfm:
   fontDescription: "Setzt die Schriftart des Inhaltes fest."
   rainbow: "Regenbogen"
   rainbowDescription: "Lässt den Inhalt in Regenbogenfarben erscheinen."
+  sparkle: "Glitzer"
+  sparkleDescription: "Verleiht Inhalt einen glitzernden Partikeleffekt."
 _reversi:
   reversi: "Reversi"
   gameSettings: "Spieleinstellungen"
