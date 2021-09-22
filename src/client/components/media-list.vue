@@ -64,7 +64,7 @@ export default defineComponent({
 
 				if (this.$refs.gridOuter) {
 					let height = 287;
-					const parent = this.$parent.$el;
+					const parent = this.$parent?.$el.getElementsByClassName('main')[0];
 
 					if (this.$refs.gridOuter.clientHeight) {
 						height = this.$refs.gridOuter.clientHeight;
