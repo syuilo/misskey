@@ -38,7 +38,7 @@
 		"lodash": "^4.17.21"
 	},
 	"dependencies": {
-		"@elastic/elasticsearch": "7.11.0",
+		"@elastic/elasticsearch": "7.14.1",
 		"@koa/cors": "3.1.0",
 		"@koa/multer": "3.0.0",
 		"@koa/router": "9.0.1",
