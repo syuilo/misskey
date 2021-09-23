@@ -11,35 +11,33 @@ export default class extends Channel {
 	public async init(params: any) {
 		// Subscribe main stream channel
 		this.subscriber.on(`mainStream:${this.user!.id}`, async data => {
-			const { type } = data;
-			let { body } = data;
-
-			switch (type) {
+			switch (data.type) {
 				case 'notification': {
-					if (this.muting.has(body.userId)) return;
-					if (body.note && body.note.isHidden) {
-						const note = await Notes.pack(body.note.id, this.user, {
+					if (data.body.userId && this.muting.has(data.body.userId)) return;
+
+					if (data.body.note && data.body.note.isHidden) {
+						const note = await Notes.pack(data.body.note.id, this.user, {
 							detail: true
 						});
 						this.connection.cacheNote(note);
-						body.note = note;
+						data.body.note = note;
 					}
 					break;
 				}
 				case 'mention': {
-					if (this.muting.has(body.userId)) return;
-					if (body.isHidden) {
-						const note = await Notes.pack(body.id, this.user, {
+					if (this.muting.has(data.body.userId)) return;
+					if (data.body.isHidden) {
+						const note = await Notes.pack(data.body.id, this.user, {
 							detail: true
 						});
 						this.connection.cacheNote(note);
-						body = note;
+						data.body = note;
 					}
 					break;
 				}
 			}
 
-			this.send(type, body);
+			this.send(data.type, data.body);
 		});
 	}
 }

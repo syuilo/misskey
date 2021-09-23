@@ -3,6 +3,8 @@ import { readUserMessagingMessage, readGroupMessagingMessage, deliverReadActivit
 import Channel from '../channel';
 import { UserGroupJoinings, Users, MessagingMessages } from '@/models/index';
 import { User, ILocalUser, IRemoteUser } from '@/models/entities/user';
+import { UserGroup } from '@/models/entities/user-group';
+import { StreamMessages } from '../types';
 
 export default class extends Channel {
 	public readonly chName = 'messaging';
@@ -12,7 +14,7 @@ export default class extends Channel {
 	private otherpartyId: string | null;
 	private otherparty: User | null;
 	private groupId: string | null;
-	private subCh: string;
+	private subCh: `messagingStream:${User['id']}-${User['id']}` | `messagingStream:${UserGroup['id']}`;
 	private typers: Record<User['id'], Date> = {};
 	private emitTypersIntervalId: ReturnType<typeof setInterval>;
 
@@ -45,7 +47,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private onEvent(data: any) {
+	private onEvent(data: StreamMessages['messaging']['spec'] | StreamMessages['groupMessaging']['spec']) {
 		if (data.type === 'typing') {
 			const id = data.body;
 			const begin = this.typers[id] == null;

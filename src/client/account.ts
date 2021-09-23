@@ -60,7 +60,7 @@ export async function signout() {
 	document.cookie = `igi=; path=/`;
 
 	if (accounts.length > 0) login(accounts[0].token);
-	else unisonReload();
+	else unisonReload('/');
 }
 
 export async function getAccounts(): Promise<{ id: Account['id'], token: Account['token'] }[]> {

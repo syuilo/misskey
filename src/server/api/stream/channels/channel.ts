@@ -4,6 +4,7 @@ import { Notes, Users } from '@/models/index';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related';
 import { User } from '@/models/entities/user';
+import { StreamMessages } from '../types';
 import { Packed } from '@/misc/schema';
 
 export default class extends Channel {
@@ -52,7 +53,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private onEvent(data: any) {
+	private onEvent(data: StreamMessages['channel']['spec']) {
 		if (data.type === 'typing') {
 			const id = data.body;
 			const begin = this.typers[id] == null;

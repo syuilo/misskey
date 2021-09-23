@@ -92,9 +92,15 @@ export default defineComponent({
 			getNoteSummary: (text: string) => getNoteSummary(text, i18n.locale),
 			followRequestDone: false,
 			groupInviteDone: false,
-			connection: null,
-			readObserver: null,
+			readObserver: null as IntersectionObserver | null,
 		};
+	},
+
+	watch: {
+		'notification.isRead'() {
+			this.readObserver?.unobserve(this.$el);
+			this.readObserver = null;
+		},
 	},
 
 	mounted() {
@@ -104,20 +110,19 @@ export default defineComponent({
 				os.stream.send('readNotification', {
 					id: this.notification.id
 				});
-				entries.map(({ target }) => observer.unobserve(target));
+				for (const { target } of entries) {
+					observer.unobserve(target);
+				}
+				this.readObserver = null;
 			});
 
 			this.readObserver.observe(this.$el);
-
-			this.connection = markRaw(os.stream.useChannel('main'));
-			this.connection.on('readAllNotifications', () => this.readObserver.unobserve(this.$el));
 		}
 	},
 
 	beforeUnmount() {
 		if (!this.notification.isRead) {
-			this.readObserver.unobserve(this.$el);
-			this.connection.dispose();
+			this.readObserver?.unobserve(this.$el);
 		}
 	},
 

@@ -3,6 +3,7 @@ import Channel from '../channel';
 import { Notes } from '@/models/index';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related';
+import { StreamMessages } from '../types';
 
 export default class extends Channel {
 	public readonly chName = 'antenna';
@@ -19,11 +20,9 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onEvent(data: any) {
-		const { type, body } = data;
-
-		if (type === 'note') {
-			const note = await Notes.pack(body.id, this.user, { detail: true });
+	private async onEvent(data: StreamMessages['antenna']['spec']) {
+		if (data.type === 'note') {
+			const note = await Notes.pack(data.body.id, this.user, { detail: true });
 
 			// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 			if (isMutedUserRelated(note, this.muting)) return;
@@ -33,8 +32,6 @@ export default class extends Channel {
 			this.connection.cacheNote(note);
 
 			this.send('note', note);
-		} else {
-			this.send(type, body);
 		}
 	}
 

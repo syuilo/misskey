@@ -137,7 +137,7 @@ export default define(meta, async (ps, user) => {
 		notify: ps.notify,
 	});
 
-	publishInternalEvent('antennaUpdated', Antennas.findOneOrFail(antenna.id));
+	publishInternalEvent('antennaUpdated', await Antennas.findOneOrFail(antenna.id));
 
 	return await Antennas.pack(antenna.id);
 });

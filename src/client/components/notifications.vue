@@ -23,6 +23,7 @@
 <script lang="ts">
 import { defineComponent, PropType, markRaw } from 'vue';
 import paging from '@client/scripts/paging';
+import { markNotificationRead } from '@client/scripts/mark-notification-read';
 import XNotification from './notification.vue';
 import XList from './date-separated-list.vue';
 import XNote from './note.vue';
@@ -91,6 +92,27 @@ export default defineComponent({
 	mounted() {
 		this.connection = markRaw(os.stream.useChannel('main'));
 		this.connection.on('notification', this.onNotification);
+
+		this.connection.on('readAllNotifications', () => {
+			for (const item of this.queue) {
+				item.isRead = true;
+			}
+			for (const item of this.items) {
+				item.isRead = true;
+			}
+		});
+		this.connection.on('readNotifications', notificationIds => {
+			for (let i = 0; i < this.queue.length; i++) {
+				if (notificationIds.includes(this.queue[i].id)) {
+					this.queue[i].isRead = true;
+				}
+			}
+			for (let i = 0; i < this.items.length; i++) {
+				if (notificationIds.includes(this.items[i].id)) {
+					this.items[i].isRead = true;
+				}
+			}
+		});
 	},
 
 	beforeUnmount() {

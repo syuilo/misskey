@@ -179,8 +179,8 @@ export default defineComponent({
 
 		addAccount() {
 			os.popup(import('@client/components/signin-dialog.vue'), {}, {
-				done: res => {
-					addAccount(res.id, res.i);
+				done: async res => {
+					await addAccount(res.id, res.i);
 					os.success();
 				},
 			}, 'closed');
@@ -188,8 +188,8 @@ export default defineComponent({
 
 		createAccount() {
 			os.popup(import('@client/components/signup-dialog.vue'), {}, {
-				done: res => {
-					addAccount(res.id, res.i);
+				done: async res => {
+					await addAccount(res.id, res.i);
 					this.switchAccountWithToken(res.i);
 				},
 			}, 'closed');

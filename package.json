@@ -209,6 +209,7 @@
 		"seedrandom": "3.0.5",
 		"sharp": "0.29.1",
 		"speakeasy": "2.0.0",
+		"strict-event-emitter-types": "2.0.0",
 		"stringz": "2.1.0",
 		"style-loader": "3.3.0",
 		"summaly": "2.4.1",

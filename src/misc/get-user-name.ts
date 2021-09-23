@@ -1,5 +1,3 @@
-import { User } from '@/models/entities/user';
-
-export default function(user: User): string {
+export default function(user: { name?: string | null, username: string }): string {
 	return user.name || user.username;
 }

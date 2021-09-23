@@ -58,7 +58,6 @@ import { extractMentions } from '@/misc/extract-mentions';
 import { getAcct } from '@/misc/acct';
 import { formatTimeString } from '@/misc/format-time-string';
 import { Autocomplete } from '@client/scripts/autocomplete';
-import { noteVisibilities } from '../../../types';
 import * as os from '@client/os';
 import { selectFile } from '@client/scripts/select-file';
 import { notePostInterruptors, postFormActions } from '@client/store';
@@ -100,7 +99,7 @@ export default defineComponent({
 			type: Object,
 			required: false
 		},
-		instant: {
+		share: {
 			type: Boolean,
 			required: false,
 			default: false
@@ -277,7 +276,7 @@ export default defineComponent({
 
 		this.$nextTick(() => {
 			// 書きかけの投稿を復元
-			if (!this.instant && !this.mention && !this.specified) {
+			if (!this.share && !this.mention && !this.specified) {
 				const draft = JSON.parse(localStorage.getItem('drafts') || '{}')[this.draftKey];
 				if (draft) {
 					this.text = draft.data.text;
@@ -507,8 +506,6 @@ export default defineComponent({
 		},
 
 		saveDraft() {
-			if (this.instant) return;
-
 			const data = JSON.parse(localStorage.getItem('drafts') || '{}');
 
 			data[this.draftKey] = {

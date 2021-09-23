@@ -1693,7 +1693,8 @@ _notification:
   youWereFollowed: "フォローされました"
   youReceivedFollowRequest: "フォローリクエストが来ました"
   yourFollowRequestAccepted: "フォローリクエストが承認されました"
-  youWereInvitedToGroup: "グループに招待されました"
+  youWereInvitedToGroup: "{userName}があなたをグループに招待しました"
+  emptyPushNotificationMessage: "プッシュ通知の更新をしました"
 
   _types:
     all: "すべて"
@@ -1708,6 +1709,11 @@ _notification:
     followRequestAccepted: "フォローが受理された"
     groupInvited: "グループに招待された"
     app: "連携アプリからの通知"
+
+  _actions:
+    followBack: "フォローバック"
+    reply: "返信"
+    renote: "Renote"
 
 _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"

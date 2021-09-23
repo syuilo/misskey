@@ -15,6 +15,7 @@ export async function initializeSw() {
 				msg: 'initialize',
 				lang,
 			});
+
 			// SEE: https://developer.mozilla.org/en-US/docs/Web/API/PushManager/subscribe#Parameters
 			registration.pushManager.subscribe({
 				userVisibleOnly: true,

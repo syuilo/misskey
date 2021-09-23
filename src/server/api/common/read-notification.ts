@@ -1,4 +1,5 @@
 import { publishMainStream } from '@/services/stream';
+import { pushNotification } from '@/services/push-notification';
 import { User } from '@/models/entities/user';
 import { Notification } from '@/models/entities/notification';
 import { Notifications, Users } from '@/models/index';
@@ -16,28 +17,29 @@ export async function readNotification(
 		isRead: true
 	});
 
-	post(userId);
+	if (!await Users.getHasUnreadNotification(userId)) return postReadAllNotifications(userId);
+	else return postReadNotifications(userId, notificationIds);
 }
 
 export async function readNotificationByQuery(
 	userId: User['id'],
 	query: Record<string, any>
 ) {
-	// Update documents
-	await Notifications.update({
+	const notificationIds = await Notifications.find({
 		...query,
 		notifieeId: userId,
 		isRead: false
-	}, {
-		isRead: true
-	});
+	}).then(notifications => notifications.map(notification => notification.id));
 
-	post(userId);
+	return readNotification(userId, notificationIds);
 }
 
-async function post(userId: User['id']) {
-	if (!await Users.getHasUnreadNotification(userId)) {
-		// 全ての(いままで未読だった)通知を(これで)読みましたよというイベントを発行
-		publishMainStream(userId, 'readAllNotifications');
-	}
+function postReadAllNotifications(userId: User['id']) {
+	publishMainStream(userId, 'readAllNotifications');
+	return pushNotification(userId, 'readAllNotifications', undefined);
+}
+
+function postReadNotifications(userId: User['id'], notificationIds: Notification['id'][]) {
+	publishMainStream(userId, 'readNotifications', notificationIds);
+	return pushNotification(userId, 'readNotifications', { notificationIds });
 }
