@@ -83,6 +83,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			cacheRemoteSensitiveFiles: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			emailRequiredForSignup: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -272,7 +276,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 						.orWhere('ads.dayOfWeek = 0');
 				}))
 				.getMany();
-		
+
 			const response: any = {
 				maintainerName: instance.maintainerName,
 				maintainerEmail: instance.maintainerEmail,
@@ -329,6 +333,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 				...(ps.detail ? {
 					cacheRemoteFiles: instance.cacheRemoteFiles,
+					cacheRemoteSensitiveFiles: instance.cacheRemoteSensitiveFiles,
 					requireSetup: (await this.usersRepository.countBy({
 						host: IsNull(),
 					})) === 0,

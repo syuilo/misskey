@@ -4,6 +4,7 @@ import { userEvent, waitFor, within } from '@storybook/testing-library';
 import { StoryObj } from '@storybook/vue3';
 import MkAd from './MkAd.vue';
 import { i18n } from '@/i18n';
+import { tick } from '@/scripts/test-utils';
 const common = {
 	render(args) {
 		return {
@@ -37,6 +38,7 @@ const common = {
 		await expect(i).toBeInTheDocument();
 		await userEvent.click(i);
 		await waitFor(() => expect(canvasElement).toHaveTextContent(i18n.ts._ad.back));
+		await tick();
 		await expect(a).not.toBeInTheDocument();
 		await expect(i).not.toBeInTheDocument();
 		buttons = canvas.getAllByRole<HTMLButtonElement>('button');
@@ -51,6 +53,7 @@ const common = {
 		await expect(back).toHaveTextContent(i18n.ts._ad.back);
 		await userEvent.click(back);
 		await waitFor(() => expect(canvas.queryByRole('img')).toBeTruthy());
+		await tick();
 		if (reduce) {
 			await expect(reduce).not.toBeInTheDocument();
 		}

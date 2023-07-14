@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { DriveFilesRepository } from '@/models/index.js';
-import type { Config } from '@/config.js';
 import type { RemoteUser } from '@/models/entities/User.js';
 import type { DriveFile } from '@/models/entities/DriveFile.js';
 import { MetaService } from '@/core/MetaService.js';
@@ -20,9 +19,6 @@ export class ApImageService {
 	private logger: Logger;
 
 	constructor(
-		@Inject(DI.config)
-		private config: Config,
-
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
@@ -47,7 +43,7 @@ export class ApImageService {
 		const image = await this.apResolverService.createResolver().resolve(value);
 
 		if (image.url == null) {
-			throw new Error('invalid image: url not privided');
+			throw new Error('invalid image: url not provided');
 		}
 
 		if (typeof image.url !== 'string') {
@@ -62,12 +58,17 @@ export class ApImageService {
 
 		const instance = await this.metaService.fetch();
 
+		// Cache if remote file cache is on AND either
+		// 1. remote sensitive file is also on
+		// 2. or the image is not sensitive
+		const shouldBeCached = instance.cacheRemoteFiles && (instance.cacheRemoteSensitiveFiles || !image.sensitive);
+
 		const file = await this.driveService.uploadFromUrl({
 			url: image.url,
 			user: actor,
 			uri: image.url,
 			sensitive: image.sensitive,
-			isLink: !instance.cacheRemoteFiles,
+			isLink: !shouldBeCached,
 			comment: truncate(image.name ?? undefined, DB_MAX_IMAGE_COMMENT_LENGTH),
 		});
 		if (!file.isLink || file.url === image.url) return file;
