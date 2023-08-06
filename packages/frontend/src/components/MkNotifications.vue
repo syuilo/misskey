@@ -22,6 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onUnmounted, onMounted, computed, shallowRef } from 'vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import XNotification from '@/components/MkNotification.vue';

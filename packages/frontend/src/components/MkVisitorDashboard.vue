@@ -51,6 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import { Instance } from 'misskey-js/built/entities';
 import XTimeline from './welcome.timeline.vue';

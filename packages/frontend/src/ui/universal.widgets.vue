@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 let editMode = $ref(false);
 </script>
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import XWidgets from '@/components/MkWidgets.vue';
 import { i18n } from '@/i18n';

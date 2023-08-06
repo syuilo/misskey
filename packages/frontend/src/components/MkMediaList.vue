@@ -63,6 +63,7 @@ async function getClientWidthWithCache(targetEl: HTMLElement, containerEl: HTMLE
 </script>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted, onUnmounted, shallowRef } from 'vue';
 import * as misskey from 'misskey-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';

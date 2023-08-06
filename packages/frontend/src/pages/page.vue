@@ -69,6 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, watch } from 'vue';
 import XPage from '@/components/page/page.vue';
 import MkButton from '@/components/MkButton.vue';

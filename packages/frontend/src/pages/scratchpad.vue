@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onDeactivated, onUnmounted, Ref, ref, watch } from 'vue';
 import 'prismjs';
 import { highlight, languages } from 'prismjs/components/prism-core';

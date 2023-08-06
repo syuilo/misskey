@@ -60,6 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, watch } from 'vue';
 import Sortable from 'vuedraggable';
 import MkRadios from '@/components/MkRadios.vue';

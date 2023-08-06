@@ -4,6 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <script lang="ts">
+// @ts-nocheck
 import { defineComponent, h, PropType, TransitionGroup, useCssModule } from 'vue';
 import MkAd from '@/components/global/MkAd.vue';
 import { isDebuggerEnabled, stackTraceInstances } from '@/debug';

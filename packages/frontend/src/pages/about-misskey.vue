@@ -110,6 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { nextTick, onBeforeUnmount } from 'vue';
 import { version } from '@/config';
 import FormLink from '@/components/form/link.vue';

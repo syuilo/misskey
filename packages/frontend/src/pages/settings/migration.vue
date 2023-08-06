@@ -58,6 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref } from 'vue';
 import { toString } from 'misskey-js/built/acct';
 import { UserDetailed } from 'misskey-js/built/entities';

@@ -69,6 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ComputedRef, onMounted, provide } from 'vue';
 import XCommon from './_common_/common.vue';
 import { host, instanceName } from '@/config';

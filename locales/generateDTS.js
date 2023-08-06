@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import * as yaml from 'js-yaml';
-import * as ts from 'typescript';
+import ts from 'typescript';
 
 function createMembers(record) {
 	return Object.entries(record)

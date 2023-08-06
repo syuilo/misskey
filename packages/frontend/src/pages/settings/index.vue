@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { computed, onActivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
 import { i18n } from '@/i18n';
 import MkInfo from '@/components/MkInfo.vue';

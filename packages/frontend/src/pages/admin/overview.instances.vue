@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref } from 'vue';
 import * as os from '@/os';
 import { useInterval } from '@/scripts/use-interval';

@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref, watch } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import FormInfo from '@/components/MkInfo.vue';

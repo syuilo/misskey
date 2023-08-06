@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';

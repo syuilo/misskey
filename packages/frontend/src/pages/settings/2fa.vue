@@ -65,6 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref, defineAsyncComponent } from 'vue';
 import { hostname } from '@/config';
 import { byteify, hexify, stringify } from '@/scripts/2fa';

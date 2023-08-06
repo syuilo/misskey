@@ -34,6 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import * as misskey from 'misskey-js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import number from '@/filters/number';

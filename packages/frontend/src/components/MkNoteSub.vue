@@ -31,6 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import * as misskey from 'misskey-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';

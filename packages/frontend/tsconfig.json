@@ -11,7 +11,7 @@
 		"sourceMap": false,
 		"target": "ES2022",
 		"module": "esnext",
-		"moduleResolution": "node16",
+		"moduleResolution": "Bundler",
 		"removeComments": false,
 		"noLib": false,
 		"strict": true,
@@ -19,7 +19,6 @@
 		"experimentalDecorators": true,
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
-		"isolatedModules": true,
 		"useDefineForClassFields": true,
 		"baseUrl": ".",
 		"paths": {
@@ -31,14 +30,14 @@
 			"@types"
 		],
 		"types": [
-			"vite/client",
 			"reactivity-transform/macros-global"
 		],
 		"lib": [
 			"esnext",
 			"dom"
 		],
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"skipLibCheck": true
 	},
 	"compileOnSave": false,
 	"include": [
@@ -47,6 +46,8 @@
 		"./**/*.vue"
 	],
 	"exclude": [
-		".storybook/**/*"
+		".storybook/**/*",
+		"lib/**/*",
+		"test/**/*"
 	]
 }

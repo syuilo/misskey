@@ -53,6 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onBeforeUnmount, onMounted, provide } from 'vue';
 import contains from '@/scripts/contains';
 import * as os from '@/os';

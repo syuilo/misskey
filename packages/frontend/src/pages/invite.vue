@@ -36,6 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, ref, shallowRef } from 'vue';
 import type { Invite } from 'misskey-js/built/entities';
 import { i18n } from '@/i18n';

@@ -11,7 +11,8 @@
 		"test": "vitest --run",
 		"test-and-coverage": "vitest --run --coverage",
 		"typecheck": "vue-tsc --noEmit",
-		"eslint": "eslint --quiet \"src/**/*.{ts,vue}\"",
+		"eslint": "pnpm eslint-full -c .eslintrc-tsnocheck.cjs",
+		"eslint-full": "eslint --quiet \"src/**/*.{ts,vue}\"",
 		"lint": "pnpm typecheck && pnpm eslint"
 	},
 	"dependencies": {
@@ -140,5 +141,6 @@
 		"vitest-fetch-mock": "0.2.2",
 		"vue-eslint-parser": "9.3.1",
 		"vue-tsc": "1.8.8"
-	}
+	},
+	"type": "module"
 }

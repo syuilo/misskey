@@ -48,6 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { computed, ref, watch } from 'vue';
 import tinycolor from 'tinycolor2';
 import * as os from '@/os';

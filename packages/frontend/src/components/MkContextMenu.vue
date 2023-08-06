@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted, onBeforeUnmount } from 'vue';
 import MkMenu from './MkMenu.vue';
 import { MenuItem } from './types/menu.vue';

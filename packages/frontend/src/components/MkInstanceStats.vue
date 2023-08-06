@@ -84,6 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted } from 'vue';
 import { Chart } from 'chart.js';
 import MkSelect from '@/components/MkSelect.vue';

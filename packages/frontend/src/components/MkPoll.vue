@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, ref } from 'vue';
 import * as misskey from 'misskey-js';
 import { sum } from '@/scripts/array';

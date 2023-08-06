@@ -258,6 +258,7 @@ export function unwindCssModuleClassName(ast: estree.Node): void {
 								type: 'ArrayExpression',
 								elements: node.declarations[0].init.arguments[1].elements.slice(0, __cssModulesIndex).concat(node.declarations[0].init.arguments[1].elements.slice(__cssModulesIndex + 1)),
 							}],
+							optional: false,
 						},
 					}],
 					kind: 'const',

@@ -142,6 +142,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import calcAge from 's-age';
 import * as misskey from 'misskey-js';

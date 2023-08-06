@@ -41,6 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { $i, getAccounts } from '@/account';
 import MkButton from '@/components/MkButton.vue';
 import { instance } from '@/instance';

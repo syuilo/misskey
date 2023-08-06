@@ -4,6 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <script lang="ts">
+// @ts-nocheck
 import { VNode, defineComponent, h, ref, watch } from 'vue';
 import MkRadio from './MkRadio.vue';
 

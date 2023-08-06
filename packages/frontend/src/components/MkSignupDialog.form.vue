@@ -76,6 +76,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import getPasswordStrength from 'syuilo-password-strength';
 import { toUnicode } from 'punycode/';

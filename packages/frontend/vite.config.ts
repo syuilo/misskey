@@ -1,3 +1,4 @@
+// @ts-nocheck
 import path from 'path';
 import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';

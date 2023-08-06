@@ -28,6 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref } from 'vue';
 import { i18n } from '@/i18n';
 

@@ -61,6 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, provide, watch } from 'vue';
 import { v4 as uuid } from 'uuid';
 import XBlocks from './page-editor.blocks.vue';

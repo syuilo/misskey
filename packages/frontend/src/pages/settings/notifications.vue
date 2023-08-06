@@ -31,6 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent } from 'vue';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';

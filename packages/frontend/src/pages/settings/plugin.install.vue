@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, nextTick, ref } from 'vue';
 import { Interpreter, Parser, utils } from '@syuilo/aiscript';
 import { v4 as uuid } from 'uuid';

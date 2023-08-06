@@ -35,6 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { markRaw, onMounted, onUnmounted, ref } from 'vue';
 import XChart from './overview.queue.chart.vue';
 import number from '@/filters/number';

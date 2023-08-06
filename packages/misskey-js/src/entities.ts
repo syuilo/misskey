@@ -57,7 +57,7 @@ export type UserDetailed = UserLite & {
 	lang: string | null;
 	lastFetchedAt?: DateString;
 	location: string | null;
-	movedTo: string;
+	movedTo: string | null;
 	notesCount: number;
 	pinnedNoteIds: ID[];
 	pinnedNotes: Note[];
@@ -65,6 +65,7 @@ export type UserDetailed = UserLite & {
 	pinnedPageId: string | null;
 	publicReactions: boolean;
 	securityKeys: boolean;
+	roles: Role[],
 	twoFactorEnabled: boolean;
 	updatedAt: DateString | null;
 	uri: string | null;
@@ -546,3 +547,14 @@ export type UserSorting =
 	| '+updatedAt'
 	| '-updatedAt';
 export type OriginType = 'combined' | 'local' | 'remote';
+
+export type Role = {
+	id: string;
+	name: string;
+	color: string | null;
+	iconUrl: string | null;
+	description: string;
+	isModerator: boolean;
+	isAdministrator: boolean;
+	displayOrder: number;
+}

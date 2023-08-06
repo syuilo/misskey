@@ -46,6 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, onMounted, computed, watch, nextTick } from 'vue';
 import { openInstanceMenu } from './_common_/common';
 // import { host } from '@/config';

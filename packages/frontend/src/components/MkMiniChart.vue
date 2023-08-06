@@ -31,6 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { watch } from 'vue';
 import { v4 as uuid } from 'uuid';
 import tinycolor from 'tinycolor2';

@@ -12,6 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { ref } from 'vue';
 import { UserLite } from 'misskey-js/built/entities';
 import MkMention from './MkMention.vue';

@@ -2254,7 +2254,8 @@ declare namespace entities {
         Invite,
         InviteLimit,
         UserSorting,
-        OriginType
+        OriginType,
+        Role
     }
 }
 export { entities }
@@ -2652,6 +2653,18 @@ type PageEvent = {
 export const permissions: string[];
 
 // @public (undocumented)
+type Role = {
+    id: string;
+    name: string;
+    color: string | null;
+    iconUrl: string | null;
+    description: string;
+    isModerator: boolean;
+    isAdministrator: boolean;
+    displayOrder: number;
+};
+
+// @public (undocumented)
 type ServerInfo = {
     machine: string;
     cpu: {
@@ -2762,7 +2775,7 @@ type UserDetailed = UserLite & {
     lang: string | null;
     lastFetchedAt?: DateString;
     location: string | null;
-    movedTo: string;
+    movedTo: string | null;
     notesCount: number;
     pinnedNoteIds: ID[];
     pinnedNotes: Note[];
@@ -2770,6 +2783,7 @@ type UserDetailed = UserLite & {
     pinnedPageId: string | null;
     publicReactions: boolean;
     securityKeys: boolean;
+    roles: Role[];
     twoFactorEnabled: boolean;
     updatedAt: DateString | null;
     uri: string | null;

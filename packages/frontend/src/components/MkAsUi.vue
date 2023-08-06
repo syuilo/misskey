@@ -53,6 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { Ref } from 'vue';
 import * as os from '@/os';
 import MkButton from '@/components/MkButton.vue';

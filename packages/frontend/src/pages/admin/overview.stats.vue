@@ -61,6 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted } from 'vue';
 import * as os from '@/os';
 import MkNumberDiff from '@/components/MkNumberDiff.vue';

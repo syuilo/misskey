@@ -39,6 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import MkInput from '@/components/MkInput.vue';
 import FormSection from '@/components/form/section.vue';

@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 /* eslint-disable id-denylist --
   Chart.js has a `data` attribute in most chart definitions, which triggers the
   id-denylist violation when setting it. This is causing about 60+ lint issues.

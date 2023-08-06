@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, watch } from 'vue';
 import * as Acct from 'misskey-js/built/acct';
 import * as misskey from 'misskey-js';

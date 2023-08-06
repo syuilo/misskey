@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { } from 'vue';
 import { $ref } from 'vue/macros';
 import XSignup from '@/components/MkSignupDialog.form.vue';

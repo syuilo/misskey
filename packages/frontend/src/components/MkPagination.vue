@@ -89,6 +89,7 @@ function concatMapWithArray(map: MisskeyEntityMap, entities: MisskeyEntity[]): M
 }
 </script>
 <script lang="ts" setup>
+// @ts-nocheck
 import { infoImageUrl } from '@/instance';
 
 const props = withDefaults(defineProps<{

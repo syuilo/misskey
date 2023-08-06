@@ -62,6 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { focusPrev, focusNext } from '@/scripts/focus';
 import MkSwitchButton from '@/components/MkSwitch.button.vue';

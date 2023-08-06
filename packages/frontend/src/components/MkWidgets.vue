@@ -50,6 +50,7 @@ export type DefaultStoredWidget = {
 </script>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent, ref } from 'vue';
 import { v4 as uuid } from 'uuid';
 import MkSelect from '@/components/MkSelect.vue';

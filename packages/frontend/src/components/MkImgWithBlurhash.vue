@@ -58,6 +58,7 @@ const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resol
 </script>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, nextTick, onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import { v4 as uuid } from 'uuid';
 import { render } from 'buraha';

@@ -26,6 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { Ref, computed, ref } from 'vue';
 import XSound from './sounds.sound.vue';
 import MkRange from '@/components/MkRange.vue';

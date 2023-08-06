@@ -13,6 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onActivated, onDeactivated, onMounted, onUnmounted } from 'vue';
 import MkAchievements from '@/components/MkAchievements.vue';
 import { i18n } from '@/i18n';

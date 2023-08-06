@@ -53,6 +53,7 @@ export type Tab = {
 </script>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted, onUnmounted, watch, nextTick, shallowRef } from 'vue';
 import { defaultStore } from '@/store';
 

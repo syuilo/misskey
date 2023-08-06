@@ -57,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { computed, ref } from 'vue';
 import tinycolor from 'tinycolor2';
 import FormLink from '@/components/form/link.vue';

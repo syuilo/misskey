@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
 import { $$ } from 'vue/macros';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';

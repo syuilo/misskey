@@ -65,6 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { markRaw, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';

@@ -49,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
 import { defineAsyncComponent } from 'vue';
 import { toUnicode } from 'punycode/';
 import { showSuspendedDialog } from '../scripts/show-suspended-dialog';
