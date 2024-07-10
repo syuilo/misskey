@@ -63,10 +63,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</FormLink>
 						<div class="_gaps_s">
 							<MkFolder v-if="instance.serverRules.length > 0">
-								<template #label>
-									<i class="ti ti-checkup-list"></i>
-									{{ i18n.ts.serverRules }}
-								</template>
+								<template #icon><i class="ti ti-checkup-list"></i></template>
+								<template #label>{{ i18n.ts.serverRules }}</template>
 
 								<ol class="_gaps_s" :class="$style.rules">
 									<li v-for="(item, index) in instance.serverRules" :key="index" :class="$style.rule"><div :class="$style.ruleText" v-html="item"></div></li>

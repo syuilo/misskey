@@ -7,22 +7,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="$style.root" role="group" :aria-expanded="opened">
 	<MkStickyContainer>
 		<template #header>
-			<div :class="[$style.header, { [$style.opened]: opened }]" class="_button" role="button" data-cy-folder-header @click="toggle">
-				<div :class="$style.headerIcon"><slot name="icon"></slot></div>
-				<div :class="$style.headerText">
-					<div>
-						<MkCondensedLine :minScale="2 / 3"><slot name="label"></slot></MkCondensedLine>
-					</div>
-					<div :class="$style.headerTextSub">
-						<slot name="caption"></slot>
-					</div>
-				</div>
-				<div :class="$style.headerRight">
-					<span :class="$style.headerRightText"><slot name="suffix"></slot></span>
+			<MkHeaderButton
+				:class="[$style.header, { [$style.opened]: opened }]"
+				data-cy-folder-header
+				@click="toggle"
+			>
+				<template v-if="$slots.icon" #icon><slot name="icon"></slot></template>
+				<template #default><slot name="label"></slot></template>
+				<template v-if="$slots.caption" #caption><slot name="caption"></slot></template>
+				<template v-if="$slots.suffix" #suffix><slot name="suffix"></slot></template>
+				<template #suffixIcon>
 					<i v-if="opened" class="ti ti-chevron-up icon"></i>
 					<i v-else class="ti ti-chevron-down icon"></i>
-				</div>
-			</div>
+				</template>
+			</MkHeaderButton>
 		</template>
 
 		<div v-if="openedAtLeastOnce" :class="[$style.body, { [$style.bgSame]: bgSame }]" :style="{ maxHeight: maxHeight ? `${maxHeight}px` : undefined, overflow: maxHeight ? `auto` : undefined }" :aria-hidden="!opened">
@@ -52,6 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { nextTick, onMounted, shallowRef, ref } from 'vue';
 import { defaultStore } from '@/store.js';
+import MkHeaderButton from '@/components/MkHeaderButton.vue';
 
 const props = withDefaults(defineProps<{
 	defaultOpen?: boolean;
@@ -131,78 +130,13 @@ onMounted(() => {
 }
 
 .header {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	box-sizing: border-box;
-	padding: 9px 12px 9px 12px;
-	background: var(--buttonBg);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
-	border-radius: 6px;
 	transition: border-radius 0.3s;
-
-	&:hover {
-		text-decoration: none;
-		background: var(--buttonHoverBg);
-	}
-
-	&.active {
-		color: var(--accent);
-		background: var(--buttonHoverBg);
-	}
 
 	&.opened {
 		border-radius: 6px 6px 0 0;
 	}
-}
-
-.headerUpper {
-	display: flex;
-	align-items: center;
-}
-
-.headerLower {
-	color: var(--fgTransparentWeak);
-	font-size: .85em;
-	padding-left: 4px;
-}
-
-.headerIcon {
-	margin-right: 0.75em;
-	flex-shrink: 0;
-	text-align: center;
-	opacity: 0.8;
-
-	&:empty {
-		display: none;
-
-		& + .headerText {
-			padding-left: 4px;
-		}
-	}
-}
-
-.headerText {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	padding-right: 12px;
-}
-
-.headerTextSub {
-	color: var(--fgTransparentWeak);
-	font-size: .85em;
-}
-
-.headerRight {
-	margin-left: auto;
-	color: var(--fgTransparentWeak);
-	white-space: nowrap;
-}
-
-.headerRightText:not(:empty) {
-	margin-right: 0.75em;
 }
 
 .body {
