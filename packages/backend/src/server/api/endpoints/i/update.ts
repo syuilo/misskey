@@ -173,6 +173,9 @@ export const paramDef = {
 		preventAiLearning: { type: 'boolean' },
 		isBot: { type: 'boolean' },
 		isCat: { type: 'boolean' },
+		overrideCatEarColor: { type: 'boolean' },
+		outerCatEarColor: { type: 'string', maxLength: 16 },
+		innerCatEarColor: { type: 'string', maxLength: 16 },
 		injectFeaturedNote: { type: 'boolean' },
 		receiveAnnouncementEmail: { type: 'boolean' },
 		alwaysMarkNsfw: { type: 'boolean' },
@@ -322,6 +325,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (typeof ps.noCrawle === 'boolean') profileUpdates.noCrawle = ps.noCrawle;
 			if (typeof ps.preventAiLearning === 'boolean') profileUpdates.preventAiLearning = ps.preventAiLearning;
 			if (typeof ps.isCat === 'boolean') updates.isCat = ps.isCat;
+			if (typeof ps.overrideCatEarColor === 'boolean') updates.overrideCatEarColor = ps.overrideCatEarColor;
+			if (typeof ps.outerCatEarColor === 'string') updates.outerCatEarColor = ps.outerCatEarColor;
+			if (typeof ps.innerCatEarColor === 'string') updates.innerCatEarColor = ps.innerCatEarColor;
 			if (typeof ps.injectFeaturedNote === 'boolean') profileUpdates.injectFeaturedNote = ps.injectFeaturedNote;
 			if (typeof ps.receiveAnnouncementEmail === 'boolean') profileUpdates.receiveAnnouncementEmail = ps.receiveAnnouncementEmail;
 			if (typeof ps.alwaysMarkNsfw === 'boolean') {

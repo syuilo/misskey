@@ -709,6 +709,22 @@ export interface Locale extends ILocale {
      */
     "flagAsCatDescription": string;
     /**
+     * 猫耳の色を設定する
+     */
+    "overrideCatEarColor": string;
+    /**
+     * 設定できるオプションをONにする
+     */
+    "overrideCatEarColorDescription": string;
+    /**
+     * 猫耳の色(外)
+     */
+    "outerCatEarColor": string;
+    /**
+     * 猫耳の色(内)
+     */
+    "innerCatEarColor": string;
+    /**
      * タイムラインにノートへの返信を表示する
      */
     "flagShowTimelineReplies": string;

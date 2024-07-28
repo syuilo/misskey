@@ -3698,6 +3698,9 @@ export type components = {
         }[];
       isBot?: boolean;
       isCat?: boolean;
+      overrideCatEarColor?: boolean;
+      innerCatEarColor?: string;
+      outerCatEarColor?: string;
       instance?: {
         name: string | null;
         softwareName: string | null;
@@ -19573,6 +19576,9 @@ export type operations = {
           preventAiLearning?: boolean;
           isBot?: boolean;
           isCat?: boolean;
+          overrideCatEarColor?: boolean;
+          outerCatEarColor?: string;
+          innerCatEarColor?: string;
           injectFeaturedNote?: boolean;
           receiveAnnouncementEmail?: boolean;
           alwaysMarkNsfw?: boolean;

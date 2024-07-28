@@ -181,6 +181,24 @@ export class MiUser {
 
 	@Column('boolean', {
 		default: false,
+		comment: 'Whether or not the User manually set their cat ear color.',
+	})
+	public overrideCatEarColor: boolean;
+
+	@Column('varchar', {
+		length: 16,
+		default: "#5b6880",
+	})
+	public outerCatEarColor: string | null;
+
+	@Column('varchar', {
+		length: 16,
+		default: "#df548f",
+	})
+	public innerCatEarColor: string | null;
+
+	@Column('boolean', {
+		default: false,
 		comment: 'Whether the User is the root.',
 	})
 	public isRoot: boolean;

@@ -490,6 +490,9 @@ export class UserEntityService implements OnModuleInit {
 			}))) : [],
 			isBot: user.isBot,
 			isCat: user.isCat,
+			overrideCatEarColor: user.overrideCatEarColor,
+			outerCatEarColor: user.outerCatEarColor,
+			innerCatEarColor: user.innerCatEarColor,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,

@@ -115,6 +115,18 @@ export const packedUserLiteSchema = {
 			type: 'boolean',
 			nullable: false, optional: true,
 		},
+		overrideCatEarColor: {
+			type: 'boolean',
+			nullable: false, optional: true,
+		},
+		innerCatEarColor: {
+			type: 'string',
+			nullable: false, optional: true,
+		},
+		outerCatEarColor: {
+			type: 'string',
+			nullable: false, optional: true,
+		},
 		instance: {
 			type: 'object',
 			nullable: false, optional: true,

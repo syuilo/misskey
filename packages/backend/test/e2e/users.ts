@@ -40,6 +40,9 @@ describe('ユーザー', () => {
 			avatarDecorations: user.avatarDecorations,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			overrideCatEarColor: user.overrideCatEarColor,
+			outerCatEarColor: user.outerCatEarColor,
+			innerCatEarColor: user.innerCatEarColor,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -308,6 +311,9 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.avatarDecorations, []);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
+		assert.strictEqual(response.overrideCatEarColor, false);
+		response.outerCatEarColor && assert.match(response.outerCatEarColor, /^#[0-9a-f]{6}$/);
+		response.innerCatEarColor && assert.match(response.innerCatEarColor, /^#[0-9a-f]{6}$/);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, 'unknown');
@@ -442,6 +448,10 @@ describe('ユーザー', () => {
 		{ parameters: () => ({ isBot: false }) },
 		{ parameters: () => ({ isCat: true }) },
 		{ parameters: () => ({ isCat: false }) },
+		{ parameters: () => ({ overrideCatEarColor: true }) },
+		{ parameters: () => ({ overrideCatEarColor: false }) },
+		{ parameters: () => ({ outerCatEarColor: "#000000" }) },
+		{ parameters: () => ({ innerCatEarColor: "#000000" }) },
 		{ parameters: () => ({ injectFeaturedNote: true }) },
 		{ parameters: () => ({ injectFeaturedNote: false }) },
 		{ parameters: () => ({ receiveAnnouncementEmail: true }) },

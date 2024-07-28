@@ -93,6 +93,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<MkSwitch v-model="profile.isCat">{{ i18n.ts.flagAsCat }}<template #caption>{{ i18n.ts.flagAsCatDescription }}</template></MkSwitch>
+			<MkSwitch v-if="profile.isCat" v-model="profile.overrideCatEarColor">{{ i18n.ts.overrideCatEarColor }}<template #caption>{{ i18n.ts.overrideCatEarColorDescription }}</template></MkSwitch>
+			<MkColorInput v-if="profile.isCat && profile.overrideCatEarColor" v-model="profile.outerCatEarColor"><template #label>{{ i18n.ts.outerCatEarColor }}</template></MkColorInput>
+			<MkColorInput v-if="profile.isCat && profile.overrideCatEarColor" v-model="profile.innerCatEarColor"><template #label>{{ i18n.ts.innerCatEarColor }}</template></MkColorInput>
 			<MkSwitch v-model="profile.isBot">{{ i18n.ts.flagAsBot }}<template #caption>{{ i18n.ts.flagAsBotDescription }}</template></MkSwitch>
 		</div>
 	</MkFolder>
@@ -112,6 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, reactive, ref, watch, defineAsyncComponent } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
+import MkColorInput from '@/components/MkColorInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -143,6 +147,9 @@ const profile = reactive({
 	lang: $i.lang,
 	isBot: $i.isBot ?? false,
 	isCat: $i.isCat ?? false,
+	overrideCatEarColor: $i.overrideCatEarColor ?? false,
+	outerCatEarColor: $i.outerCatEarColor ?? "#5b6880",
+	innerCatEarColor: $i.innerCatEarColor ?? "#df548f",
 });
 
 watch(() => profile, () => {
@@ -192,6 +199,9 @@ function save() {
 		lang: profile.lang || null,
 		isBot: !!profile.isBot,
 		isCat: !!profile.isCat,
+		overrideCatEarColor: !!profile.overrideCatEarColor,
+		outerCatEarColor: profile.outerCatEarColor || "#ff6491",
+		innerCatEarColor: profile.innerCatEarColor || "#df548f",
 	});
 	globalEvents.emit('requestClearPageCache');
 	claimAchievement('profileFilled');
