@@ -1,0 +1,50 @@
+{
+	"type": "module",
+	"name": "misskey-mahjong",
+	"version": "0.0.1",
+	"types": "./built/dts/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./built/esm/index.js",
+			"types": "./built/dts/index.d.ts"
+		},
+		"./*": {
+			"import": "./built/esm/*",
+			"types": "./built/dts/*"
+		}
+	},
+	"scripts": {
+		"build": "node ./build.js",
+		"build:tsc": "npm run tsc",
+		"tsc": "npm run tsc-esm && npm run tsc-dts",
+		"tsc-esm": "tsc --outDir built/esm",
+		"tsc-dts": "tsc --outDir built/dts --declaration true --emitDeclarationOnly true --declarationMap true",
+		"watch": "nodemon -w src -e ts,js,cjs,mjs,json --exec \"pnpm run build:tsc\"",
+		"eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+		"typecheck": "tsc --noEmit",
+		"lint": "pnpm typecheck && pnpm eslint",
+		"jest": "jest --coverage --detectOpenHandles",
+		"test": "npm run jest"
+	},
+	"devDependencies": {
+		"@misskey-dev/eslint-plugin": "1.0.0",
+		"@types/node": "20.11.17",
+		"@types/jest": "29.5.12",
+		"@typescript-eslint/eslint-plugin": "6.18.1",
+		"@typescript-eslint/parser": "6.18.1",
+		"eslint": "8.56.0",
+		"nodemon": "3.0.2",
+		"typescript": "5.3.3",
+		"jest": "29.7.0",
+		"ts-jest": "29.1.2",
+		"ts-jest-resolver": "2.0.1"
+	},
+	"files": [
+		"built"
+	],
+	"dependencies": {
+		"crc-32": "1.2.2",
+		"esbuild": "0.19.11",
+		"glob": "10.3.10"
+	}
+}

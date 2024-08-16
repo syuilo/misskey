@@ -571,6 +571,11 @@ import type {
 	ReversiSurrenderRequest,
 	ReversiVerifyRequest,
 	ReversiVerifyResponse,
+	MahjongCreateRoomResponse,
+	MahjongJoinRoomRequest,
+	MahjongJoinRoomResponse,
+	MahjongShowRoomRequest,
+	MahjongShowRoomResponse,
 } from './entities.js';
 
 export type Endpoints = {
@@ -953,6 +958,9 @@ export type Endpoints = {
 	'reversi/show-game': { req: ReversiShowGameRequest; res: ReversiShowGameResponse };
 	'reversi/surrender': { req: ReversiSurrenderRequest; res: EmptyResponse };
 	'reversi/verify': { req: ReversiVerifyRequest; res: ReversiVerifyResponse };
+	'mahjong/create-room': { req: EmptyRequest; res: MahjongCreateRoomResponse };
+	'mahjong/join-room': { req: MahjongJoinRoomRequest; res: MahjongJoinRoomResponse };
+	'mahjong/show-room': { req: MahjongShowRoomRequest; res: MahjongShowRoomResponse };
 }
 
 export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'multipart/form-data'> = {
@@ -1335,4 +1343,7 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'reversi/show-game': 'application/json',
 	'reversi/surrender': 'application/json',
 	'reversi/verify': 'application/json',
+	'mahjong/create-room': 'application/json',
+	'mahjong/join-room': 'application/json',
+	'mahjong/show-room': 'application/json',
 };

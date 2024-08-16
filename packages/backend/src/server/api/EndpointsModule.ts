@@ -385,6 +385,9 @@ import * as ep___reversi_invitations from './endpoints/reversi/invitations.js';
 import * as ep___reversi_showGame from './endpoints/reversi/show-game.js';
 import * as ep___reversi_surrender from './endpoints/reversi/surrender.js';
 import * as ep___reversi_verify from './endpoints/reversi/verify.js';
+import * as ep___mahjong_createRoom from './endpoints/mahjong/create-room.js';
+import * as ep___mahjong_joinRoom from './endpoints/mahjong/join-room.js';
+import * as ep___mahjong_showRoom from './endpoints/mahjong/show-room.js';
 import { GetterService } from './GetterService.js';
 import { ApiLoggerService } from './ApiLoggerService.js';
 import type { Provider } from '@nestjs/common';
@@ -768,6 +771,9 @@ const $reversi_invitations: Provider = { provide: 'ep:reversi/invitations', useC
 const $reversi_showGame: Provider = { provide: 'ep:reversi/show-game', useClass: ep___reversi_showGame.default };
 const $reversi_surrender: Provider = { provide: 'ep:reversi/surrender', useClass: ep___reversi_surrender.default };
 const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep___reversi_verify.default };
+const $mahjong_createRoom: Provider = { provide: 'ep:mahjong/create-room', useClass: ep___mahjong_createRoom.default };
+const $mahjong_joinRoom: Provider = { provide: 'ep:mahjong/join-room', useClass: ep___mahjong_joinRoom.default };
+const $mahjong_showRoom: Provider = { provide: 'ep:mahjong/show-room', useClass: ep___mahjong_showRoom.default };
 
 @Module({
 	imports: [
@@ -1155,6 +1161,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$reversi_showGame,
 		$reversi_surrender,
 		$reversi_verify,
+		$mahjong_createRoom,
+		$mahjong_joinRoom,
+		$mahjong_showRoom,
 	],
 	exports: [
 		$admin_meta,
@@ -1534,6 +1543,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$reversi_showGame,
 		$reversi_surrender,
 		$reversi_verify,
+		$mahjong_createRoom,
+		$mahjong_joinRoom,
+		$mahjong_showRoom,
 	],
 })
 export class EndpointsModule {}

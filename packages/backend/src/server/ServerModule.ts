@@ -46,6 +46,7 @@ import { UserListChannelService } from './api/stream/channels/user-list.js';
 import { RoleTimelineChannelService } from './api/stream/channels/role-timeline.js';
 import { ReversiChannelService } from './api/stream/channels/reversi.js';
 import { ReversiGameChannelService } from './api/stream/channels/reversi-game.js';
+import { MahjongRoomChannelService } from './api/stream/channels/mahjong-room.js';
 
 @Module({
 	imports: [
@@ -84,6 +85,7 @@ import { ReversiGameChannelService } from './api/stream/channels/reversi-game.js
 		RoleTimelineChannelService,
 		ReversiChannelService,
 		ReversiGameChannelService,
+		MahjongRoomChannelService,
 		HomeTimelineChannelService,
 		HybridTimelineChannelService,
 		LocalTimelineChannelService,

@@ -25,6 +25,9 @@ const fs = require('fs');
 	fs.rmSync(__dirname + '/../packages/misskey-bubble-game/built', { recursive: true, force: true });
 	fs.rmSync(__dirname + '/../packages/misskey-bubble-game/node_modules', { recursive: true, force: true });
 
+	fs.rmSync(__dirname + '/../packages/misskey-mahjong/built', { recursive: true, force: true });
+	fs.rmSync(__dirname + '/../packages/misskey-mahjong/node_modules', { recursive: true, force: true });
+
 	fs.rmSync(__dirname + '/../built', { recursive: true, force: true });
 	fs.rmSync(__dirname + '/../node_modules', { recursive: true, force: true });
 

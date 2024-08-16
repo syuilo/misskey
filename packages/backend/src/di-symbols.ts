@@ -82,5 +82,6 @@ export const DI = {
 	userMemosRepository: Symbol('userMemosRepository'),
 	bubbleGameRecordsRepository: Symbol('bubbleGameRecordsRepository'),
 	reversiGamesRepository: Symbol('reversiGamesRepository'),
+	mahjongGamesRepository: Symbol('mahjongGamesRepository'),
 	//#endregion
 };

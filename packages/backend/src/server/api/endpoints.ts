@@ -391,6 +391,9 @@ import * as ep___reversi_invitations from './endpoints/reversi/invitations.js';
 import * as ep___reversi_showGame from './endpoints/reversi/show-game.js';
 import * as ep___reversi_surrender from './endpoints/reversi/surrender.js';
 import * as ep___reversi_verify from './endpoints/reversi/verify.js';
+import * as ep___mahjong_createRoom from './endpoints/mahjong/create-room.js';
+import * as ep___mahjong_joinRoom from './endpoints/mahjong/join-room.js';
+import * as ep___mahjong_showRoom from './endpoints/mahjong/show-room.js';
 
 const eps = [
 	['admin/meta', ep___admin_meta],
@@ -772,6 +775,9 @@ const eps = [
 	['reversi/show-game', ep___reversi_showGame],
 	['reversi/surrender', ep___reversi_surrender],
 	['reversi/verify', ep___reversi_verify],
+	['mahjong/create-room', ep___mahjong_createRoom],
+	['mahjong/join-room', ep___mahjong_joinRoom],
+	['mahjong/show-room', ep___mahjong_showRoom],
 ];
 
 interface IEndpointMetaBase {

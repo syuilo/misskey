@@ -21,6 +21,7 @@ import { HashtagChannelService } from './channels/hashtag.js';
 import { RoleTimelineChannelService } from './channels/role-timeline.js';
 import { ReversiChannelService } from './channels/reversi.js';
 import { ReversiGameChannelService } from './channels/reversi-game.js';
+import { MahjongRoomChannelService } from './channels/mahjong-room.js';
 import { type MiChannelService } from './channel.js';
 
 @Injectable()
@@ -42,6 +43,7 @@ export class ChannelsService {
 		private adminChannelService: AdminChannelService,
 		private reversiChannelService: ReversiChannelService,
 		private reversiGameChannelService: ReversiGameChannelService,
+		private mahjongRoomChannelService: MahjongRoomChannelService,
 	) {
 	}
 
@@ -64,6 +66,7 @@ export class ChannelsService {
 			case 'admin': return this.adminChannelService;
 			case 'reversi': return this.reversiChannelService;
 			case 'reversiGame': return this.reversiGameChannelService;
+			case 'mahjongRoom': return this.mahjongRoomChannelService;
 
 			default:
 				throw new Error(`no such channel: ${name}`);

@@ -18,6 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<img src="/client-assets/reversi/logo.png" style="display: block; max-width: 100%; max-height: 200px; margin: auto;"/>
 				</MkA>
 			</div>
+			<div class="_panel">
+				<MkA to="/mahjong">
+					<img src="/client-assets/mahjong/logo.png" style="display: block; max-width: 100%; max-height: 200px; margin: auto;"/>
+				</MkA>
+			</div>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>

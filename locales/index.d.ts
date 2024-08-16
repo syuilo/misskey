@@ -10080,6 +10080,288 @@ export interface Locale extends ILocale {
          */
         "useAvatarAsStone": string;
     };
+    "_mahjong": {
+        /**
+         * 麻雀
+         */
+        "mahjong": string;
+        /**
+         * ルームに参加
+         */
+        "joinRoom": string;
+        /**
+         * ルームを作成
+         */
+        "createRoom": string;
+        /**
+         * 準備完了
+         */
+        "ready": string;
+        /**
+         * 準備を再開
+         */
+        "cancelReady": string;
+        /**
+         * 退室
+         */
+        "leave": string;
+        /**
+         * CPUを追加
+         */
+        "addCpu": string;
+        /**
+         * 東
+         */
+        "east": string;
+        /**
+         * 南
+         */
+        "south": string;
+        /**
+         * 西
+         */
+        "west": string;
+        /**
+         * 北
+         */
+        "north": string;
+        /**
+         * ドラ
+         */
+        "dora": string;
+        /**
+         * 赤ドラ
+         */
+        "redDora": string;
+        /**
+         * 飜
+         */
+        "fan": string;
+        "_fanNames": {
+            /**
+             * 満貫
+             */
+            "mangan": string;
+            /**
+             * 跳満
+             */
+            "haneman": string;
+            /**
+             * 倍満
+             */
+            "baiman": string;
+            /**
+             * 三倍満
+             */
+            "sanbaiman": string;
+            /**
+             * 役満
+             */
+            "yakuman": string;
+            /**
+             * 数え役満
+             */
+            "kazoeyakuman": string;
+        };
+        "_yakus": {
+            /**
+             * 立直
+             */
+            "riichi": string;
+            /**
+             * 一発
+             */
+            "ippatsu": string;
+            /**
+             * 門前清自摸和
+             */
+            "tsumo": string;
+            /**
+             * 断么
+             */
+            "tanyao": string;
+            /**
+             * 平和
+             */
+            "pinfu": string;
+            /**
+             * 一盃口
+             */
+            "iipeko": string;
+            /**
+             * 東
+             */
+            "field-wind-e": string;
+            /**
+             * 南
+             */
+            "field-wind-s": string;
+            /**
+             * 東
+             */
+            "seat-wind-e": string;
+            /**
+             * 南
+             */
+            "seat-wind-s": string;
+            /**
+             * 西
+             */
+            "seat-wind-w": string;
+            /**
+             * 北
+             */
+            "seat-wind-n": string;
+            /**
+             * 白
+             */
+            "white": string;
+            /**
+             * 發
+             */
+            "green": string;
+            /**
+             * 中
+             */
+            "red": string;
+            /**
+             * 嶺上開花
+             */
+            "rinshan": string;
+            /**
+             * 搶槓
+             */
+            "chankan": string;
+            /**
+             * 海底摸月
+             */
+            "haitei": string;
+            /**
+             * 河底撈魚
+             */
+            "hotei": string;
+            /**
+             * 三色同順
+             */
+            "sanshoku-dojun": string;
+            /**
+             * 三色同刻
+             */
+            "sanshoku-doko": string;
+            /**
+             * 一気通貫
+             */
+            "ittsu": string;
+            /**
+             * 混全帯么九
+             */
+            "chanta": string;
+            /**
+             * 七対子
+             */
+            "chitoitsu": string;
+            /**
+             * 対々
+             */
+            "toitoi": string;
+            /**
+             * 三暗刻
+             */
+            "sananko": string;
+            /**
+             * 混老頭
+             */
+            "honroto": string;
+            /**
+             * 三槓子
+             */
+            "sankantsu": string;
+            /**
+             * 小三元
+             */
+            "shosangen": string;
+            /**
+             * ダブル立直
+             */
+            "double-riichi": string;
+            /**
+             * 混一色
+             */
+            "honitsu": string;
+            /**
+             * 清全帯么九
+             */
+            "junchan": string;
+            /**
+             * ニ盃口
+             */
+            "ryampeko": string;
+            /**
+             * 清一色
+             */
+            "chinitsu": string;
+            /**
+             * 国士無双
+             */
+            "kokushi": string;
+            /**
+             * 国士無双十三面待
+             */
+            "kokushi-13": string;
+            /**
+             * 四暗刻
+             */
+            "suanko": string;
+            /**
+             * 四暗刻単騎待
+             */
+            "suanko-tanki": string;
+            /**
+             * 大三元
+             */
+            "daisangen": string;
+            /**
+             * 字一色
+             */
+            "tsuiso": string;
+            /**
+             * 小四喜
+             */
+            "shosushi": string;
+            /**
+             * 大四喜
+             */
+            "daisushi": string;
+            /**
+             * 緑一色
+             */
+            "ryuiso": string;
+            /**
+             * 清老頭
+             */
+            "chinroto": string;
+            /**
+             * 四槓子
+             */
+            "sukantsu": string;
+            /**
+             * 九蓮宝燈
+             */
+            "churen": string;
+            /**
+             * 九連宝灯九面待
+             */
+            "churen-9": string;
+            /**
+             * 天和
+             */
+            "tenho": string;
+            /**
+             * 地和
+             */
+            "chiho": string;
+        };
+    };
     "_offlineScreen": {
         /**
          * オフライン - サーバーに接続できません
