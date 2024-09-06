@@ -18,27 +18,6 @@ async function main() {
 
 	//#region Detect language & fetch translations
 
-	// dev-modeの場合は常に取り直す
-	const supportedLangs = _LANGS_.map(it => it[0]);
-	let lang: string | null | undefined = localStorage.getItem('lang');
-	if (lang == null || !supportedLangs.includes(lang)) {
-		if (supportedLangs.includes(navigator.language)) {
-			lang = navigator.language;
-		} else {
-			lang = supportedLangs.find(x => x.split('-')[0] === navigator.language);
-
-			// Fallback
-			if (lang == null) lang = 'en-US';
-		}
-	}
-
-	// TODO:今のままだと言語ファイル変更後はpnpm devをリスタートする必要があるので、chokidarを使ったり等で対応できるようにする
-	const locale = _LANGS_FULL_.find(it => it[0] === lang);
-	localStorage.setItem('lang', lang);
-	localStorage.setItem('locale', JSON.stringify(locale[1]));
-	localStorage.setItem('localeVersion', _VERSION_);
-	//#endregion
-
 	//#region Theme
 	const theme = localStorage.getItem('theme');
 	if (theme) {
