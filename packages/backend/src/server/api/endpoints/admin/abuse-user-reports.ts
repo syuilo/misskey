@@ -74,6 +74,10 @@ export const meta = {
 					nullable: true, optional: true,
 					ref: 'UserDetailedNotMe',
 				},
+				forwarded: {
+					type: 'boolean',
+					nullable: false, optional: false,
+				},
 			},
 		},
 	},
@@ -122,7 +126,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			const reports = await query.limit(ps.limit).getMany();
 
-			return await this.abuseUserReportEntityService.packMany(reports);
+			return await this.abuseUserReportEntityService.packMany(reports, me);
 		});
 	}
 }

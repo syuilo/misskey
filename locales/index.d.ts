@@ -5084,6 +5084,14 @@ export interface Locale extends ILocale {
      * これ以上このクリップにノートを追加できません。
      */
     "clipNoteLimitExceeded": string;
+    /**
+     * {user}によって解決済み
+     */
+    "resolvedByX": ParameterizedString<"user">;
+    /**
+     * リモートサーバーに転送済み
+     */
+    "forwardedReport": string;
     "_delivery": {
         /**
          * 配信状態

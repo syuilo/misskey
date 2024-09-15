@@ -4,37 +4,92 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="bcekxzvu _margin _panel">
-	<div class="target">
-		<MkA v-user-preview="report.targetUserId" class="info" :to="`/admin/user/${report.targetUserId}`" :behavior="'window'">
-			<MkAvatar class="avatar" :user="report.targetUser" indicator/>
-			<div class="names">
-				<MkUserName class="name" :user="report.targetUser"/>
-				<MkAcct class="acct" :user="report.targetUser" style="display: block;"/>
-			</div>
+<div :class="[$style.root, '_panel', '_margin']">
+	<!-- 通報されたユーザー -->
+	<div :class="[$style.item, '_gaps_s']">
+		<MkA v-user-preview="props.report.targetUser.id" :to="`/admin/user/${props.report.targetUser.id}`" :behavior="'window'">
+			<MkUserCardMini :user="props.report.targetUser" :withChart="false" :class="$style.userCard"/>
 		</MkA>
-		<MkKeyValue>
-			<template #key>{{ i18n.ts.registeredDate }}</template>
-			<template #value>{{ dateString(report.targetUser.createdAt) }} (<MkTime :time="report.targetUser.createdAt"/>)</template>
-		</MkKeyValue>
+		<div :class="$style.userStatus">
+			<button
+				v-if="props.report.targetUser.isSuspended"
+				v-tooltip:dialog="i18n.ts.userSuspended"
+				:class="['_button', $style.badge, $style.isSuspended]"
+				v-text="'Suspended'"
+			></button>
+			<button
+				v-if="props.report.targetUser.isSilenced"
+				v-tooltip:dialog="i18n.ts.userSilenced"
+				:class="['_button', $style.badge, $style.isSilenced]"
+				v-text="'Silenced'"
+			></button>
+			<button
+				v-if="props.report.targetUser.moderationNote != null && props.report.targetUser.moderationNote.trim() !== ''"
+				v-tooltip:dialog="props.report.targetUser.moderationNote.trim()"
+				:class="['_button', $style.badge]"
+				v-text="i18n.ts.moderationNote"
+			></button>
+		</div>
 	</div>
-	<div class="detail">
-		<div>
-			<Mfm :text="report.comment" :linkNavigationBehavior="'window'"/>
+
+	<!-- 通報の本文 -->
+	<div :class="$style.item">
+		<Mfm v-if="props.report.comment.trim() !== ''" :text="props.report.comment.trim()" :linkNavigationBehavior="'window'"/>
+		<span v-else :class="$style.noComment">({{ i18n.ts.noDescription }})</span>
+	</div>
+
+	<!-- 通報の情報 -->
+	<div :class="$style.item">
+		<div :class="$style.information">
+			<div :class="$style.infoItem">
+				<div :class="$style.infoLabel">{{ i18n.ts.reporter }}</div>
+				<div :class="$style.infoContent">
+					<MkA :to="`/admin/user/${props.report.reporter.id}`" class="_link" :behavior="'window'">
+						<MkAcct :user="props.report.reporter"/>
+					</MkA>
+				</div>
+			</div>
+			<div :class="$style.infoItem">
+				<div :class="$style.infoLabel">{{ i18n.ts.createdAt }}</div>
+				<div :class="$style.infoContent">{{ dateString(props.report.createdAt) }} (<MkTime :time="props.report.createdAt"/>)</div>
+			</div>
 		</div>
-		<hr/>
-		<div>{{ i18n.ts.reporter }}: <MkA :to="`/admin/user/${report.reporter.id}`" class="_link" :behavior="'window'">@{{ report.reporter.username }}</MkA></div>
-		<div v-if="report.assignee">
-			{{ i18n.ts.moderator }}:
-			<MkAcct :user="report.assignee"/>
+	</div>
+
+	<!-- 通報の状態 -->
+	<div :class="$style.item">
+		<div v-if="resolvedRef">
+			<i class="ti ti-check" style="color: var(--success); margin-right: 0.5em;"></i>
+			<I18n v-if="props.report.assignee != null" :src="i18n.ts.resolvedByX" tag="span">
+				<template #user>
+					<MkA :to="`/admin/user/${props.report.assignee.id}`" class="_link" :behavior="'window'">
+						<MkAcct :user="props.report.assignee"/>
+					</MkA>
+				</template>
+			</I18n>
+			<span v-else>{{ i18n.ts.resolved }}</span>
 		</div>
-		<div><MkTime :time="report.createdAt"/></div>
-		<div class="action">
-			<MkSwitch v-model="forward" :disabled="report.targetUser.host == null || report.resolved">
-				{{ i18n.ts.forwardReport }}
+		<div v-if="forwardedRef">
+			<i class="ti ti-check" style="color: var(--success); margin-right: 0.5em;"></i>
+			<span>{{ i18n.ts.forwardedReport }}</span>
+		</div>
+	</div>
+
+	<!-- 通報の操作 -->
+	<div :class="$style.item">
+		<div v-if="!resolvedRef" :class="$style.operations">
+			<MkSwitch v-if="props.report.targetUser.host != null" v-model="editForwardRef">
+				<template #label>{{ i18n.ts.forwardReport }}</template>
 				<template #caption>{{ i18n.ts.forwardReportIsAnonymous }}</template>
 			</MkSwitch>
-			<MkButton v-if="!report.resolved" primary @click="resolve">{{ i18n.ts.abuseMarkAsResolved }}</MkButton>
+			<div :class="$style.resolveButton">
+				<MkButton primary @click="resolveReport">{{ i18n.ts.abuseMarkAsResolved }}</MkButton>
+			</div>
+		</div>
+		<div v-else-if="!forwardedRef && props.report.targetUser.host != null" :class="$style.operations">
+			<div :class="$style.resolveButton">
+				<MkButton @click="forwardReport">{{ i18n.ts.forwardReport }}</MkButton>
+			</div>
 		</div>
 	</div>
 </div>
@@ -42,74 +97,175 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import MkButton from '@/components/MkButton.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
-import MkKeyValue from '@/components/MkKeyValue.vue';
-import * as os from '@/os.js';
+import type * as Misskey from 'misskey-js';
+import { apiWithDialog } from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
+import MkButton from '@/components/MkButton.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
+import MkUserCardMini from '@/components/MkUserCardMini.vue';
+
+export type AbuseUserReport = Misskey.entities.AdminAbuseUserReportsResponse[number];
 
 const props = defineProps<{
-	report: any;
+	report: AbuseUserReport;
 }>();
 
 const emit = defineEmits<{
 	(ev: 'resolved', reportId: string): void;
 }>();
 
-const forward = ref(props.report.forwarded);
+const editForwardRef = ref(false);
 
-function resolve() {
-	os.apiWithDialog('admin/resolve-abuse-user-report', {
-		forward: forward.value,
-		reportId: props.report.id,
-	}).then(() => {
-		emit('resolved', props.report.id);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const resolvedRef = ref(props.report.resolved);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const forwardedRef = ref(props.report.forwarded);
+
+const resolveReport = () => {
+	// 解決済みは弾く
+	if (resolvedRef.value) return;
+
+	const reportId = props.report.id;
+	const forward = editForwardRef.value && props.report.targetUser.host != null;
+
+	apiWithDialog('admin/resolve-abuse-user-report', { reportId, forward }).then(() => {
+		emit('resolved', reportId);
+		resolvedRef.value = true;
+		forwardedRef.value = forward;
 	});
-}
+};
+
+const forwardReport = () => {
+	// 未解決は弾く
+	if (!resolvedRef.value) return;
+	// ローカルユーザーは弾く
+	if (props.report.targetUser.host == null) return;
+
+	const reportId = props.report.id;
+	const forward = true;
+
+	apiWithDialog('admin/resolve-abuse-user-report', { reportId, forward }).then(() => {
+		resolvedRef.value = true;
+		forwardedRef.value = forward;
+	});
+};
 </script>
 
-<style lang="scss" scoped>
-.bcekxzvu {
+<style lang="scss" module>
+.root {
 	display: flex;
+	flex-direction: column;
+}
 
-	> .target {
-		width: 35%;
-		box-sizing: border-box;
-		text-align: left;
-		padding: 24px;
-		border-right: solid 1px var(--divider);
+.item {
+	padding: 16px;
+	border-top: solid 0.5px var(--divider);
 
-		> .info {
-			display: flex;
-			box-sizing: border-box;
-			align-items: center;
-			padding: 14px;
-			border-radius: 8px;
-			--c: rgb(255 196 0 / 15%);
-			background-image: linear-gradient(45deg, var(--c) 16.67%, transparent 16.67%, transparent 50%, var(--c) 50%, var(--c) 66.67%, transparent 66.67%, transparent 100%);
-			background-size: 16px 16px;
+	&:first-child {
+		border-top: none;
+	}
 
-			> .avatar {
-				width: 42px;
-				height: 42px;
-			}
+	&:empty {
+		display: none;
+	}
+}
 
-			> .names {
-				margin-left: 0.3em;
-				padding: 0 8px;
-				flex: 1;
+.userCard {
+	background-image: linear-gradient(
+		45deg,
+		rgba(255, 196, 0, 0.15) 16.67%,
+		transparent 16.67%,
+		transparent 50%,
+		rgba(255, 196, 0, 0.15) 50%,
+		rgba(255, 196, 0, 0.15) 66.67%,
+		transparent 66.67%,
+		transparent 100%
+	);
+	background-size: 16px 16px;
+	background-color: transparent !important;
+}
 
-				> .name {
-					font-weight: bold;
-				}
-			}
+.userStatus {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+
+	&:empty {
+		display: none;
+	}
+
+	> .badge {
+		display: inline-block;
+		border: 1px solid var(--c, var(--fg));
+		border-radius: 6px;
+		padding: 2px 6px;
+		font-size: 85%;
+		color: var(--c, var(--fg));
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+
+		&.isSuspended {
+			--c: var(--error);
+		}
+
+		&.isSilenced {
+			--c: var(--warn);
 		}
 	}
+}
 
-	> .detail {
-		flex: 1;
-		padding: 24px;
+.noComment {
+	color: var(--fgTransparentWeak);
+}
+
+.information {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0;
+}
+
+.infoItem {
+	display: grid;
+	grid-template: auto / subgrid;
+	grid-row: auto;
+	grid-column: span 2;
+	gap: 8px;
+}
+
+@container (max-width: 300px) {
+	.information {
+		grid-template-columns: 1fr;
+		gap: 8px;
 	}
+
+	.infoItem {
+		grid-template: subgrid / auto;
+		grid-row: span 2;
+		grid-column: auto;
+		gap: 0;
+	}
+}
+
+.infoLabel {
+	color: var(--fgTransparentWeak);
+}
+
+.infoContent {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.operations {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.resolveButton {
+	margin-left: auto;
 }
 </style>

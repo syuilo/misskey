@@ -1267,6 +1267,8 @@ fromX: "{x}から"
 genEmbedCode: "埋め込みコードを生成"
 noteOfThisUser: "このユーザーのノート一覧"
 clipNoteLimitExceeded: "これ以上このクリップにノートを追加できません。"
+resolvedByX: "{user}によって解決済み"
+forwardedReport: "リモートサーバーに転送済み"
 
 _delivery:
   status: "配信状態"
