@@ -50,10 +50,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #caption>{{ i18n.ts.impressumDescription }}</template>
 					</MkInput>
 
-					<MkTextarea v-model="pinnedUsers">
-						<template #label>{{ i18n.ts.pinnedUsers }}</template>
-						<template #caption>{{ i18n.ts.pinnedUsersDescription }}</template>
-					</MkTextarea>
+					<FormSection>
+						<template #label>{{ i18n.ts.explore }}</template>
+
+						<div class="_gaps_m">
+							<MkTextarea v-model="pinnedUsers">
+								<template #label>{{ i18n.ts.pinnedUsers }}</template>
+								<template #caption>{{ i18n.ts.pinnedUsersDescription }}</template>
+							</MkTextarea>
+
+							<MkRadios v-model="preferPopularUserFactor">
+								<template #label>{{ i18n.ts.preferPopularUserFactor }}</template>
+								<template #caption>{{ i18n.ts.preferPopularUserFactorDescription }}</template>
+								<option value="follower">{{ i18n.ts.followersCount }}</option>
+								<option value="pv">{{ i18n.ts.pageViewCount }}</option>
+								<option value="none">{{ i18n.ts.disabled }}</option>
+							</MkRadios>
+						</div>
+					</FormSection>
 
 					<FormSection>
 						<template #label>{{ i18n.ts.files }}</template>
@@ -222,6 +236,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSelect from '@/components/MkSelect.vue';
+import MkRadios from '@/components/MkRadios.vue';
+import { entities as MisskeyEntities } from 'misskey-js';
 
 const name = ref<string | null>(null);
 const shortName = ref<string | null>(null);
@@ -249,6 +265,7 @@ const urlPreviewMaximumContentLength = ref<number>(1024 * 1024 * 10);
 const urlPreviewRequireContentLength = ref<boolean>(true);
 const urlPreviewUserAgent = ref<string | null>(null);
 const urlPreviewSummaryProxyUrl = ref<string | null>(null);
+const preferPopularUserFactor = ref<MisskeyEntities.MetaLite['preferPopularUserFactor']>('follower');
 
 async function init(): Promise<void> {
 	const meta = await misskeyApi('admin/meta');
@@ -278,6 +295,7 @@ async function init(): Promise<void> {
 	urlPreviewRequireContentLength.value = meta.urlPreviewRequireContentLength;
 	urlPreviewUserAgent.value = meta.urlPreviewUserAgent;
 	urlPreviewSummaryProxyUrl.value = meta.urlPreviewSummaryProxyUrl;
+	preferPopularUserFactor.value = meta.preferPopularUserFactor;
 }
 
 async function save() {
@@ -308,6 +326,7 @@ async function save() {
 		urlPreviewRequireContentLength: urlPreviewRequireContentLength.value,
 		urlPreviewUserAgent: urlPreviewUserAgent.value,
 		urlPreviewSummaryProxyUrl: urlPreviewSummaryProxyUrl.value,
+		preferPopularUserFactor: preferPopularUserFactor.value,
 	});
 
 	fetchInstance(true);

@@ -625,4 +625,10 @@ export class MiMeta {
 		nullable: true,
 	})
 	public urlPreviewUserAgent: string | null;
+
+	@Column('enum', {
+		enum: ['follower', 'pv', 'none'],
+		default: 'follower',
+	})
+	public preferPopularUserFactor: 'follower' | 'pv' | 'none';
 }

@@ -167,6 +167,10 @@ export const paramDef = {
 		urlPreviewRequireContentLength: { type: 'boolean' },
 		urlPreviewUserAgent: { type: 'string', nullable: true },
 		urlPreviewSummaryProxyUrl: { type: 'string', nullable: true },
+		preferPopularUserFactor: {
+			type: 'string',
+			enum: ['follower', 'pv', 'none'],
+		},
 	},
 	required: [],
 } as const;
@@ -630,6 +634,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.summalyProxy !== undefined || ps.urlPreviewSummaryProxyUrl !== undefined) {
 				const value = ((ps.urlPreviewSummaryProxyUrl ?? ps.summalyProxy) ?? '').trim();
 				set.urlPreviewSummaryProxyUrl = value === '' ? null : value;
+			}
+
+			if (ps.preferPopularUserFactor !== undefined) {
+				set.preferPopularUserFactor = ps.preferPopularUserFactor;
 			}
 
 			const before = await this.metaService.fetch(true);

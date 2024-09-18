@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #header><i class="ti ti-bookmark ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.pinnedUsers }}</template>
 				<MkUserList :pagination="pinnedUsers"/>
 			</MkFoldableSection>
-			<MkFoldableSection class="_margin" persistKey="explore-popular-users">
+			<MkFoldableSection v-if="instance.preferPopularUserFactor !== 'none'" class="_margin" persistKey="explore-popular-users">
 				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsers"/>
 			</MkFoldableSection>
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFoldableSection>
 
 		<template v-if="tag == null">
-			<MkFoldableSection class="_margin">
+			<MkFoldableSection v-if="instance.preferPopularUserFactor !== 'none'" class="_margin">
 				<template #header><i class="ti ti-chart-line ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularUsers }}</template>
 				<MkUserList :pagination="popularUsersF"/>
 			</MkFoldableSection>
@@ -69,7 +69,9 @@ import MkUserList from '@/components/MkUserList.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkTab from '@/components/MkTab.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
+import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
+import type { Paging } from '@/components/MkPagination.vue';
 
 const props = defineProps<{
 	tag?: string;
@@ -94,34 +96,47 @@ const tagUsers = computed(() => ({
 	},
 }));
 
-const pinnedUsers = { endpoint: 'pinned-users', noPaging: true };
-const popularUsers = { endpoint: 'users', limit: 10, noPaging: true, params: {
+function createUserQueryPaging(params: Misskey.Endpoints['users']['req']): Paging {
+	return {
+		endpoint: 'users',
+		limit: 10,
+		noPaging: true,
+		params,
+	};
+}
+
+const pinnedUsers = {
+	endpoint: 'pinned-users',
+	noPaging: true,
+	limit: 10,
+} satisfies Paging;
+const popularUsers = createUserQueryPaging({
 	state: 'alive',
 	origin: 'local',
-	sort: '+follower',
-} };
-const recentlyUpdatedUsers = { endpoint: 'users', limit: 10, noPaging: true, params: {
+	sort: instance.preferPopularUserFactor === 'pv' ? '+pv' : '+follower',
+});
+const recentlyUpdatedUsers = createUserQueryPaging({
 	origin: 'local',
 	sort: '+updatedAt',
-} };
-const recentlyRegisteredUsers = { endpoint: 'users', limit: 10, noPaging: true, params: {
+});
+const recentlyRegisteredUsers = createUserQueryPaging({
 	origin: 'local',
 	state: 'alive',
 	sort: '+createdAt',
-} };
-const popularUsersF = { endpoint: 'users', limit: 10, noPaging: true, params: {
+});
+const popularUsersF = createUserQueryPaging({
 	state: 'alive',
 	origin: 'remote',
-	sort: '+follower',
-} };
-const recentlyUpdatedUsersF = { endpoint: 'users', limit: 10, noPaging: true, params: {
+	sort: '+follower', // リモートのpvは信用ならない
+});
+const recentlyUpdatedUsersF = createUserQueryPaging({
 	origin: 'combined',
 	sort: '+updatedAt',
-} };
-const recentlyRegisteredUsersF = { endpoint: 'users', limit: 10, noPaging: true, params: {
+});
+const recentlyRegisteredUsersF = createUserQueryPaging({
 	origin: 'combined',
 	sort: '+createdAt',
-} };
+});
 
 misskeyApi('hashtags/list', {
 	sort: '+attachedLocalUsers',

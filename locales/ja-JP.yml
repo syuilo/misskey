@@ -1269,6 +1269,9 @@ fromX: "{x}から"
 genEmbedCode: "埋め込みコードを生成"
 noteOfThisUser: "このユーザーのノート一覧"
 clipNoteLimitExceeded: "これ以上このクリップにノートを追加できません。"
+pageViewCount: "ページ閲覧数"
+preferPopularUserFactor: "人気のユーザーの算出基準"
+preferPopularUserFactorDescription: "ページ閲覧数はローカルユーザーにのみ適用されます（リモートユーザーはフォロワー数で表示されます）。「無効」に設定すると、ローカル・リモートどちらの「人気のユーザー」セクションも表示されなくなります。"
 
 _delivery:
   status: "配信状態"

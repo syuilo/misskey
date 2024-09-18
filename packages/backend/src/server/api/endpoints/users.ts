@@ -6,6 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { UsersRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
+import PerUserPvChart from '@/core/chart/charts/per-user-pv.js';
 import { QueryService } from '@/core/QueryService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
@@ -31,7 +32,7 @@ export const paramDef = {
 	properties: {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
-		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt'] },
+		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt', '+pv', '-pv'] },
 		state: { type: 'string', enum: ['all', 'alive'], default: 'all' },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: 'local' },
 		hostname: {
@@ -49,6 +50,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
+		private perUserPvChart: PerUserPvChart,
 
 		private userEntityService: UserEntityService,
 		private queryService: QueryService,
@@ -71,6 +73,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				query.andWhere('user.host = :hostname', { hostname: ps.hostname.toLowerCase() });
 			}
 
+			let pvRankedUsers: { userId: string; count: number; }[] | undefined = undefined;
+			if (ps.sort?.endsWith('pv')) {
+				// 直近12時間のPVランキングを取得
+				pvRankedUsers = await this.perUserPvChart.getUsersRanking(
+					'hour', ps.sort.startsWith('+') ? 'DESC' : 'ASC',
+					12, null, ps.limit, ps.offset,
+				);
+			}
+
 			switch (ps.sort) {
 				case '+follower': query.orderBy('user.followersCount', 'DESC'); break;
 				case '-follower': query.orderBy('user.followersCount', 'ASC'); break;
@@ -78,6 +89,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				case '-createdAt': query.orderBy('user.id', 'ASC'); break;
 				case '+updatedAt': query.andWhere('user.updatedAt IS NOT NULL').orderBy('user.updatedAt', 'DESC'); break;
 				case '-updatedAt': query.andWhere('user.updatedAt IS NOT NULL').orderBy('user.updatedAt', 'ASC'); break;
+				case '+pv': query.andWhere((pvRankedUsers?.length ?? 0) > 0 ? 'user.id IN (:...userIds)' : '1 = 0', { userIds: pvRankedUsers?.map(user => user.userId) ?? [] }); break;
+				case '-pv': query.andWhere((pvRankedUsers?.length ?? 0) > 0 ? 'user.id IN (:...userIds)' : '1 = 0', { userIds: pvRankedUsers?.map(user => user.userId) ?? [] }); break;
 				default: query.orderBy('user.id', 'ASC'); break;
 			}
 
@@ -88,6 +101,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			query.offset(ps.offset);
 
 			const users = await query.getMany();
+			if (ps.sort === '+pv') {
+				users.sort((a, b) => {
+					const aPv = pvRankedUsers?.find(u => u.userId === a.id)?.count ?? 0;
+					const bPv = pvRankedUsers?.find(u => u.userId === b.id)?.count ?? 0;
+					return bPv - aPv;
+				});
+			} else if (ps.sort === '-pv') {
+				users.sort((a, b) => {
+					const aPv = pvRankedUsers?.find(u => u.userId === a.id)?.count ?? 0;
+					const bPv = pvRankedUsers?.find(u => u.userId === b.id)?.count ?? 0;
+					return aPv - bPv;
+				});
+			}
 
 			return await this.userEntityService.packMany(users, me, { schema: 'UserDetailed' });
 		});

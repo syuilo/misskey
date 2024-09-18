@@ -53,7 +53,7 @@ const popularUsers: Paging = {
 	params: {
 		state: 'alive',
 		origin: 'local',
-		sort: '+follower',
+		sort: '+pv',
 	},
 };
 </script>

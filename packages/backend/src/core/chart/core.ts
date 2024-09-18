@@ -15,7 +15,7 @@ import { dateUTC, isTimeSame, isTimeBefore, subtractTime, addTime } from '@/misc
 import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { MiRepository, miRepository } from '@/models/_.js';
-import type { DataSource, Repository } from 'typeorm';
+import type { DataSource, ObjectLiteral, Repository } from 'typeorm';
 
 const COLUMN_PREFIX = '___' as const;
 const UNIQUE_TEMP_COLUMN_PREFIX = 'unique_temp___' as const;
@@ -94,6 +94,8 @@ type ToJsonSchema<S> = {
 	required: (keyof S)[];
 };
 
+type MiAndOrmRepository<T extends ObjectLiteral> = Repository<T> & MiRepository<T>;
+
 export function getJsonSchema<S extends Schema>(schema: S): ToJsonSchema<Unflatten<ChartResult<S>>> {
 	const unflatten = (str: string, parent: Record<string, any>) => {
 		const keys = str.split('.');
@@ -146,11 +148,10 @@ export default abstract class Chart<T extends Schema> {
 		group: string | null;
 	}[] = [];
 	// ↓にしたいけどfindOneとかで型エラーになる
-	//private repositoryForHour: Repository<RawRecord<T>> & MiRepository<RawRecord<T>>;
-	//private repositoryForDay: Repository<RawRecord<T>> & MiRepository<RawRecord<T>>;
-	private repositoryForHour: Repository<{ id: number; group?: string | null; date: number; }> & MiRepository<{ id: number; group?: string | null; date: number; }>;
-	private repositoryForDay: Repository<{ id: number; group?: string | null; date: number; }> & MiRepository<{ id: number; group?: string | null; date: number; }>;
-
+	//private repositoryForHour: MiAndOrmRepository<RawRecord<T>>;
+	//private repositoryForDay: MiAndOrmRepository<RawRecord<T>>;
+	protected repositoryForHour: MiAndOrmRepository<{ id: number; group?: string | null; date: number; }>;
+	protected repositoryForDay: MiAndOrmRepository<{ id: number; group?: string | null; date: number; }>;
 	/**
 	 * 1日に一回程度実行されれば良いような計算処理を入れる(主にCASCADE削除などアプリケーション側で感知できない変動によるズレの修正用)
 	 */
@@ -186,11 +187,11 @@ export default abstract class Chart<T extends Schema> {
 		return columns;
 	}
 
-	private static dateToTimestamp(x: Date): number {
+	protected static dateToTimestamp(x: Date): number {
 		return Math.floor(x.getTime() / 1000);
 	}
 
-	private static parseDate(date: Date): [number, number, number, number, number, number, number] {
+	protected static parseDate(date: Date): [number, number, number, number, number, number, number] {
 		const y = date.getUTCFullYear();
 		const m = date.getUTCMonth();
 		const d = date.getUTCDate();
@@ -202,7 +203,7 @@ export default abstract class Chart<T extends Schema> {
 		return [y, m, d, h, _m, _s, _ms];
 	}
 
-	private static getCurrentDate() {
+	protected static getCurrentDate() {
 		return Chart.parseDate(new Date());
 	}
 
@@ -276,8 +277,8 @@ export default abstract class Chart<T extends Schema> {
 		this.logger = logger;
 
 		const { hour, day } = Chart.schemaToEntity(name, schema, grouped);
-		this.repositoryForHour = db.getRepository<{ id: number; group?: string | null; date: number; }>(hour).extend(miRepository as MiRepository<{ id: number; group?: string | null; date: number; }>);
-		this.repositoryForDay = db.getRepository<{ id: number; group?: string | null; date: number; }>(day).extend(miRepository as MiRepository<{ id: number; group?: string | null; date: number; }>);
+		this.repositoryForHour = db.getRepository<{ id: number; group?: string | null; date: number; }>(hour).extend(miRepository);
+		this.repositoryForDay = db.getRepository<{ id: number; group?: string | null; date: number; }>(day).extend(miRepository);
 	}
 
 	@bindThis

@@ -1,7 +1,8 @@
 ## Unreleased
 
 ### General
--
+- Enhance: 人気ユーザーの算出基準を変更できるように  
+  (Cherry-picked from https://github.com/MisskeyIO/misskey/pull/653, https://github.com/MisskeyIO/misskey/pull/664, https://github.com/MisskeyIO/misskey/pull/728, https://github.com/MisskeyIO/misskey/pull/734, https://github.com/MisskeyIO/misskey/pull/737)
 
 ### Client
 - Feat: ノート単体・ユーザーのノート・クリップのノートの埋め込み機能
