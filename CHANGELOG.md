@@ -20,6 +20,7 @@
 - Fix: 設定変更時のリロード確認ダイアログが複数個表示されることがある問題を修正
 - Fix: ファイルの詳細ページのファイルの説明で改行が正しく表示されない問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/commit/bde6bb0bd2e8b0d027e724d2acdb8ae0585a8110)
+- Fix: Unicode絵文字とカスタム絵文字の名前が重複したときにカスタム絵文字がオートコンプリートにサジェストされない問題を修正
 
 ### Server
 - Feat: Misskey® Reactions Buffering Technology™ (RBT)により、リアクションの作成負荷を低減することが可能に
