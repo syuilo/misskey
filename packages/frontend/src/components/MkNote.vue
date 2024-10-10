@@ -63,42 +63,44 @@ SPDX-License-Identifier: AGPL-3.0-only
 					/>
 					<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;"/>
 				</p>
-				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
-					<div :class="$style.text">
-						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-						<Mfm
-							v-if="appearNote.text"
-							:parsedNodes="parsed"
-							:text="appearNote.text"
-							:author="appearNote.user"
-							:nyaize="'respect'"
-							:emojiUrls="appearNote.emojis"
-							:enableEmojiMenu="true"
-							:enableEmojiMenuReaction="true"
-						/>
-						<div v-if="translating || translation" :class="$style.translation">
-							<MkLoading v-if="translating" mini/>
-							<div v-else-if="translation">
-								<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}: </b>
-								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'respect'" :emojiUrls="appearNote.emojis"/>
+				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]" :style="{ 'max-height': collapsed ? `${collapseSize}em` : undefined }">
+					<div ref="collapsibleArea">
+						<div :class="$style.text">
+							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+							<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+							<Mfm
+								v-if="appearNote.text"
+								:parsedNodes="parsed"
+								:text="appearNote.text"
+								:author="appearNote.user"
+								:nyaize="'respect'"
+								:emojiUrls="appearNote.emojis"
+								:enableEmojiMenu="true"
+								:enableEmojiMenuReaction="true"
+							/>
+							<div v-if="translating || translation" :class="$style.translation">
+								<MkLoading v-if="translating" mini/>
+								<div v-else-if="translation">
+									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}: </b>
+									<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'respect'" :emojiUrls="appearNote.emojis"/>
+								</div>
 							</div>
 						</div>
+						<div v-if="appearNote.files && appearNote.files.length > 0">
+							<MkMediaList ref="galleryEl" :mediaList="appearNote.files"/>
+						</div>
+						<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll"/>
+						<div v-if="isEnabledUrlPreview">
+							<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
+						</div>
+						<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
+						<button v-if="isLong && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+							<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
+						</button>
+						<button v-else-if="isLong && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+							<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
+						</button>
 					</div>
-					<div v-if="appearNote.files && appearNote.files.length > 0">
-						<MkMediaList ref="galleryEl" :mediaList="appearNote.files"/>
-					</div>
-					<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll"/>
-					<div v-if="isEnabledUrlPreview">
-						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-					</div>
-					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-					<button v-if="isLong && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
-						<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
-					</button>
-					<button v-else-if="isLong && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
-						<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
-					</button>
 				</div>
 				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
@@ -203,7 +205,7 @@ import { getNoteSummary } from '@/scripts/get-note-summary.js';
 import type { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
-import { shouldCollapsed } from '@@/js/collapsed.js';
+import { shouldCollapseLegacy, shouldCollapse } from '@@/js/collapsed.js';
 import { host } from '@@/js/config.js';
 import { isEnabledUrlPreview } from '@/instance.js';
 import { type Keymap } from '@/scripts/hotkey.js';
@@ -231,6 +233,17 @@ const inChannel = inject('inChannel', null);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 const note = ref(deepClone(props.note));
+
+// used later
+const collapsingNoteCondition = defaultStore.state.collapsingNoteCondition;
+if (collapsingNoteCondition === 'seeRenderedSize') {
+	onMounted(() => {
+		const current = collapsibleArea.value.clientHeight;
+		const limit = collapseSize * parseFloat(getComputedStyle(collapsibleArea.value).fontSize);
+		isLong.value = current > limit;
+		collapsed.value &&= isLong.value;
+	});
+}
 
 // plugin
 if (noteViewInterruptors.length > 0) {
@@ -265,8 +278,6 @@ const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const parsed = computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null);
-const isLong = shouldCollapsed(appearNote.value, urls.value ?? []);
-const collapsed = ref(appearNote.value.cw == null && isLong);
 const isDeleted = ref(false);
 const muted = ref(checkMute(appearNote.value, $i?.mutedWords));
 const hardMuted = ref(props.withHardMute && checkMute(appearNote.value, $i?.hardMutedWords, true));
@@ -280,6 +291,24 @@ const renoteCollapsed = ref(
 		(appearNote.value.myReaction != null)
 	),
 );
+
+// oversized note collapsing
+const collapsibleArea = ref(null);
+const collapseSize = defaultStore.state.collapsingNoteSize;
+const isLong = ref(true);
+switch (collapsingNoteCondition) {
+	case 'detailedCalculation':
+		isLong.value = shouldCollapse(appearNote.value, collapseSize, parsed.value, urls.value ?? []);
+		break;
+	case 'seeRenderedSize':
+		break;
+	// fail safe
+	case 'legacyCalculation':
+	default:
+		isLong.value = shouldCollapseLegacy(appearNote.value, urls.value ?? []);
+		break;
+}
+const collapsed = ref(appearNote.value.cw == null && isLong.value);
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
@@ -334,7 +363,7 @@ const keymap = {
 			renoteCollapsed.value = false;
 		} else if (appearNote.value.cw != null) {
 			showContent.value = !showContent.value;
-		} else if (isLong) {
+		} else if (isLong.value) {
 			collapsed.value = !collapsed.value;
 		}
 	},
@@ -845,7 +874,6 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .contentCollapsed {
 	position: relative;
-	max-height: 9em;
 	overflow: clip;
 }
 

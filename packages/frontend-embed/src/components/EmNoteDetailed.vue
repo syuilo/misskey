@@ -145,7 +145,7 @@ import { userPage } from '@/utils.js';
 import { notePage } from '@/utils.js';
 import { i18n } from '@/i18n.js';
 import { DI } from '@/di.js';
-import { shouldCollapsed } from '@@/js/collapsed.js';
+import { shouldCollapse } from '@@/js/collapsed.js';
 import { url } from '@@/js/config.js';
 import EmMfm from '@/components/EmMfm.js';
 
@@ -172,7 +172,7 @@ const appearNote = computed(() => isRenote ? note.value.renote as Misskey.entiti
 const showContent = ref(false);
 const isDeleted = ref(false);
 const parsed = appearNote.value.text ? mfm.parse(appearNote.value.text) : null;
-const isLong = shouldCollapsed(appearNote.value, []);
+const isLong = shouldCollapse(appearNote.value, 13.5, parsed.value);
 const collapsed = ref(appearNote.value.cw == null && isLong);
 </script>
 

@@ -36,7 +36,7 @@ import EmMediaList from '@/components/EmMediaList.vue';
 import EmPoll from '@/components/EmPoll.vue';
 import { i18n } from '@/i18n.js';
 import { url } from '@@/js/config.js';
-import { shouldCollapsed } from '@@/js/collapsed.js';
+import { shouldCollapse } from '@@/js/collapsed.js';
 import EmA from '@/components/EmA.vue';
 import EmMfm from '@/components/EmMfm.js';
 
@@ -44,7 +44,7 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
-const isLong = shouldCollapsed(props.note, []);
+const isLong = shouldCollapse(props.note, 13.5);
 
 const collapsed = ref(isLong);
 </script>
