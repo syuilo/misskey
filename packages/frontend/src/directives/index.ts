@@ -3,19 +3,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App } from 'vue';
+import type { App } from 'vue';
 
-import userPreview from './user-preview.js';
-import getSize from './get-size.js';
-import ripple from './ripple.js';
-import tooltip from './tooltip.js';
-import hotkey from './hotkey.js';
-import appear from './appear.js';
-import anim from './anim.js';
-import clickAnime from './click-anime.js';
-import panel from './panel.js';
-import adaptiveBorder from './adaptive-border.js';
-import adaptiveBg from './adaptive-bg.js';
+import { vAdaptiveBg } from '@/directives/adaptive-bg.js';
+import { vAdaptiveBorder } from '@/directives/adaptive-border.js';
+import { vAnim } from '@/directives/anim.js';
+import { vAppear } from '@/directives/appear.js';
+import { vClickAnime } from '@/directives/click-anime.js';
+import { vGetSize } from '@/directives/get-size.js';
+import { vHotkey } from '@/directives/hotkey.js';
+import { vPanel } from '@/directives/panel.js';
+import { vRipple } from '@/directives/ripple.js';
+import { vTooltip } from '@/directives/tooltip.js';
+import { vUserPreview } from '@/directives/user-preview.js';
 
 export default function(app: App) {
 	for (const [key, value] of Object.entries(directives)) {
@@ -24,16 +24,31 @@ export default function(app: App) {
 }
 
 export const directives = {
-	'userPreview': userPreview,
-	'user-preview': userPreview,
-	'get-size': getSize,
-	'ripple': ripple,
-	'tooltip': tooltip,
-	'hotkey': hotkey,
-	'appear': appear,
-	'anim': anim,
-	'click-anime': clickAnime,
-	'panel': panel,
-	'adaptive-border': adaptiveBorder,
-	'adaptive-bg': adaptiveBg,
-};
+	'adaptive-bg': vAdaptiveBg,
+	'adaptive-border': vAdaptiveBorder,
+	'anim': vAnim,
+	'appear': vAppear,
+	'click-anime': vClickAnime,
+	'get-size': vGetSize,
+	'hotkey': vHotkey,
+	'panel': vPanel,
+	'ripple': vRipple,
+	'tooltip': vTooltip,
+	'user-preview': vUserPreview,
+} as const;
+
+declare module '@vue/runtime-core' {
+	export interface GlobalDirectives {
+		vAdaptiveBg: typeof vAdaptiveBg;
+		vAdaptiveBorder: typeof vAdaptiveBorder;
+		vAnim: typeof vAnim;
+		vAppear: typeof vAppear;
+		vClickAnime: typeof vClickAnime;
+		vGetSize: typeof vGetSize;
+		vHotkey: typeof vHotkey;
+		vPanel: typeof vPanel;
+		vRipple: typeof vRipple;
+		vTooltip: typeof vTooltip;
+		vUserPreview: typeof vUserPreview;
+	}
+}

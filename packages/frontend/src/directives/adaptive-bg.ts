@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Directive } from 'vue';
+import type { ObjectDirective } from 'vue';
 import { getBgColor } from '@/scripts/get-bg-color.js';
 
-export default {
-	mounted(src, binding, vn) {
+export const vAdaptiveBg: ObjectDirective<HTMLElement, null | undefined> = {
+	mounted(src) {
 		const parentBg = getBgColor(src.parentElement) ?? 'transparent';
 
 		const myBg = window.getComputedStyle(src).backgroundColor;
@@ -18,4 +18,4 @@ export default {
 			src.style.backgroundColor = myBg;
 		}
 	},
-} as Directive;
+};
