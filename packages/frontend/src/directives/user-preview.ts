@@ -27,12 +27,12 @@ export const vUserPreview: ObjectDirective<HTMLElement, string | null | undefine
 };
 
 class UserPreview {
-	private el;
-	private user;
-	private showTimer;
-	private hideTimer;
-	private checkTimer;
-	private promise;
+	private el: HTMLElement;
+	private user: string;
+	private showTimer: number | null = null;
+	private hideTimer: number | null = null;
+	private checkTimer: number | null = null;
+	private promise: { cancel: () => void } | null = null;
 
 	constructor(el, user) {
 		this.el = el;
@@ -61,10 +61,10 @@ class UserPreview {
 			source: this.el,
 		}, {
 			mouseover: () => {
-				window.clearTimeout(this.hideTimer);
+				if (this.hideTimer != null) window.clearTimeout(this.hideTimer);
 			},
 			mouseleave: () => {
-				window.clearTimeout(this.showTimer);
+				if (this.showTimer != null) window.clearTimeout(this.showTimer);
 				this.hideTimer = window.setTimeout(this.close, 500);
 			},
 			closed: () => dispose(),
@@ -78,8 +78,8 @@ class UserPreview {
 
 		this.checkTimer = window.setInterval(() => {
 			if (!document.body.contains(this.el)) {
-				window.clearTimeout(this.showTimer);
-				window.clearTimeout(this.hideTimer);
+				if (this.showTimer != null) window.clearTimeout(this.showTimer);
+				if (this.hideTimer != null) window.clearTimeout(this.hideTimer);
 				this.close();
 			}
 		}, 1000);
@@ -87,26 +87,26 @@ class UserPreview {
 
 	private close() {
 		if (this.promise) {
-			window.clearInterval(this.checkTimer);
+			if (this.checkTimer != null) window.clearInterval(this.checkTimer);
 			this.promise.cancel();
 			this.promise = null;
 		}
 	}
 
 	private onMouseover() {
-		window.clearTimeout(this.showTimer);
-		window.clearTimeout(this.hideTimer);
+		if (this.showTimer != null) window.clearTimeout(this.showTimer);
+		if (this.hideTimer != null) window.clearTimeout(this.hideTimer);
 		this.showTimer = window.setTimeout(this.show, 500);
 	}
 
 	private onMouseleave() {
-		window.clearTimeout(this.showTimer);
-		window.clearTimeout(this.hideTimer);
+		if (this.showTimer != null) window.clearTimeout(this.showTimer);
+		if (this.hideTimer != null) window.clearTimeout(this.hideTimer);
 		this.hideTimer = window.setTimeout(this.close, 500);
 	}
 
 	private onClick() {
-		window.clearTimeout(this.showTimer);
+		if (this.showTimer != null) window.clearTimeout(this.showTimer);
 		this.close();
 	}
 
