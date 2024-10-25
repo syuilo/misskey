@@ -36,37 +36,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<div v-if="type === 'and' || type === 'or'" class="_gaps">
-		<Sortable v-model="v.values" tag="div" class="_gaps" itemKey="id" handle=".drag-handle" :group="{ name: 'roleFormula' }" :animation="150" :swapThreshold="0.5">
-			<template #item="{element}">
-				<div :class="$style.item">
-					<!-- divが無いとエラーになる https://github.com/SortableJS/vue.draggable.next/issues/189 -->
-					<RolesEditorFormula :modelValue="element" draggable @update:modelValue="updated => valuesItemUpdated(updated)" @remove="removeItem(element)"/>
-				</div>
-			</template>
-		</Sortable>
+		<div ref="dndParentEl" class="_gaps">
+			<div v-for="valueId in valueIds" :key="valueId" :class="$style.item">
+				<RolesEditorFormula :modelValue="valueKv[valueId]" draggable @update:modelValue="valuesItemUpdated" @remove="removeItem(valueId)"/>
+			</div>
+		</div>
 		<MkButton rounded style="margin: 0 auto;" @click="addValue"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
 	</div>
 
-	<div v-else-if="type === 'not'" :class="$style.item">
+	<div v-else-if="assertValueNot(v)" :class="$style.item">
 		<RolesEditorFormula v-model="v.value"/>
 	</div>
 
-	<MkInput v-else-if="type === 'createdLessThan' || type === 'createdMoreThan'" v-model="v.sec" type="number">
+	<MkInput v-else-if="['createdMoreThan', 'createdLessThan'].includes(type) && 'sec' in v" v-model="v.sec" type="number">
 		<template #suffix>sec</template>
 	</MkInput>
 
-	<MkInput v-else-if="['followersLessThanOrEq', 'followersMoreThanOrEq', 'followingLessThanOrEq', 'followingMoreThanOrEq', 'notesLessThanOrEq', 'notesMoreThanOrEq'].includes(type)" v-model="v.value" type="number">
+	<MkInput v-else-if="['followersLessThanOrEq', 'followersMoreThanOrEq', 'followingLessThanOrEq', 'followingMoreThanOrEq', 'notesLessThanOrEq', 'notesMoreThanOrEq'].includes(type) && 'value' in v" v-model="v.value" type="number">
 	</MkInput>
 
-	<MkSelect v-else-if="type === 'roleAssignedTo'" v-model="v.roleId">
+	<MkSelect v-else-if="type === 'roleAssignedTo' && 'roleId' in v" v-model="v.roleId">
 		<option v-for="role in roles.filter(r => r.target === 'manual')" :key="role.id" :value="role.id">{{ role.name }}</option>
 	</MkSelect>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import { v4 as uuid } from 'uuid';
+import * as Misskey from 'misskey-js';
+import { animations } from '@formkit/drag-and-drop';
+import { dragAndDrop } from '@formkit/drag-and-drop/vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -74,19 +74,68 @@ import { i18n } from '@/i18n.js';
 import { deepClone } from '@/scripts/clone.js';
 import { rolesCache } from '@/cache.js';
 
-const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
-
 const emit = defineEmits<{
-	(ev: 'update:modelValue', value: any): void;
+	(ev: 'update:modelValue', value: Misskey.entities.RoleCondFormulaValue): void;
 	(ev: 'remove'): void;
 }>();
 
 const props = defineProps<{
-	modelValue: any;
+	modelValue: Misskey.entities.RoleCondFormulaValue;
 	draggable?: boolean;
 }>();
 
+function assertLogicFormula(f: Misskey.entities.RoleCondFormulaValue): f is Misskey.entities.RoleCondFormulaLogics {
+	return ['and', 'or'].includes(f.type);
+}
+
+function assertValueNot(f: Misskey.entities.RoleCondFormulaValue): f is Misskey.entities.RoleCondFormulaValueNot {
+	return f.type === 'not';
+}
+
+const dndParentEl = shallowRef<HTMLElement>();
 const v = ref(deepClone(props.modelValue));
+
+const valueKv = computed(() => {
+	if (assertLogicFormula(v.value)) {
+		return Object.fromEntries(v.value.values.map(v => [v.id, v] as const));
+	} else {
+		return [];
+	}
+});
+
+function updateValueIds(to: Misskey.entities.RoleCondFormulaValue) {
+	if (assertLogicFormula(to)) {
+		return to.values.map(v => v.id);
+	} else {
+		return [];
+	}
+}
+
+const valueIds = ref(updateValueIds(v.value));
+
+watch(v, () => {
+	valueIds.value = updateValueIds(v.value);
+}, { deep: true });
+
+dragAndDrop({
+	parent: dndParentEl,
+	values: valueIds,
+	// TODO: v0.2.0時点では親子階層のドラッグアンドドロップは不安定
+	//group: 'roleFormula',
+	dragHandle: '.drag-handle',
+	plugins: [animations()],
+	onDragend: () => {
+		if (assertLogicFormula(v.value)) {
+			v.value.values = valueIds.value.map(id => {
+				if (assertLogicFormula(v.value)) {
+					return v.value.values.find(v => v.id === id) ?? null;
+				} else {
+					return null;
+				}
+			}).filter(v => v !== null);
+		}
+	},
+});
 
 const roles = await rolesCache.fetch();
 
@@ -102,33 +151,37 @@ watch(v, () => {
 const type = computed({
 	get: () => v.value.type,
 	set: (t) => {
-		if (t === 'and') v.value.values = [];
-		if (t === 'or') v.value.values = [];
-		if (t === 'not') v.value.value = { id: uuid(), type: 'isRemote' };
-		if (t === 'roleAssignedTo') v.value.roleId = '';
-		if (t === 'createdLessThan') v.value.sec = 86400;
-		if (t === 'createdMoreThan') v.value.sec = 86400;
-		if (t === 'followersLessThanOrEq') v.value.value = 10;
-		if (t === 'followersMoreThanOrEq') v.value.value = 10;
-		if (t === 'followingLessThanOrEq') v.value.value = 10;
-		if (t === 'followingMoreThanOrEq') v.value.value = 10;
-		if (t === 'notesLessThanOrEq') v.value.value = 10;
-		if (t === 'notesMoreThanOrEq') v.value.value = 10;
 		v.value.type = t;
+
+		if (v.value.type === 'and') v.value.values = [];
+		if (v.value.type === 'or') v.value.values = [];
+		if (v.value.type === 'not') v.value.value = { id: uuid(), type: 'isRemote' };
+		if (v.value.type === 'roleAssignedTo') v.value.roleId = '';
+		if (v.value.type === 'createdLessThan') v.value.sec = 86400;
+		if (v.value.type === 'createdMoreThan') v.value.sec = 86400;
+		if (v.value.type === 'followersLessThanOrEq') v.value.value = 10;
+		if (v.value.type === 'followersMoreThanOrEq') v.value.value = 10;
+		if (v.value.type === 'followingLessThanOrEq') v.value.value = 10;
+		if (v.value.type === 'followingMoreThanOrEq') v.value.value = 10;
+		if (v.value.type === 'notesLessThanOrEq') v.value.value = 10;
+		if (v.value.type === 'notesMoreThanOrEq') v.value.value = 10;
 	},
 });
 
 function addValue() {
+	if (!assertLogicFormula(v.value)) return;
 	v.value.values.push({ id: uuid(), type: 'isRemote' });
 }
 
-function valuesItemUpdated(item) {
+function valuesItemUpdated(item: Misskey.entities.RoleCondFormulaValue) {
+	if (!assertLogicFormula(v.value)) return;
 	const i = v.value.values.findIndex(_item => _item.id === item.id);
 	v.value.values[i] = item;
 }
 
-function removeItem(item) {
-	v.value.values = v.value.values.filter(_item => _item.id !== item.id);
+function removeItem(itemId: string) {
+	if (!assertLogicFormula(v.value)) return;
+	v.value.values = v.value.values.filter(_item => _item.id !== itemId);
 }
 
 function removeSelf() {

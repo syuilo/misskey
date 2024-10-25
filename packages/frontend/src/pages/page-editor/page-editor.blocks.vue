@@ -4,19 +4,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<Sortable :modelValue="modelValue" tag="div" itemKey="id" handle=".drag-handle" :group="{ name: 'blocks' }" :animation="150" :swapThreshold="0.5" @update:modelValue="v => $emit('update:modelValue', v)">
-	<template #item="{element}">
-		<div :class="$style.item">
-			<!-- divが無いとエラーになる https://github.com/SortableJS/vue.draggable.next/issues/189 -->
-			<component :is="getComponent(element.type)" :modelValue="element" @update:modelValue="updateItem" @remove="() => removeItem(element)"/>
-		</div>
-	</template>
-</Sortable>
+<div ref="dndParentEl">
+	<div v-for="item in items" :key="item.id" :class="$style.item">
+		<component :is="getComponent(item.type)" :modelValue="item" @update:modelValue="updateItem" @remove="() => removeItem(item)"/>
+	</div>
+</div>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue';
 import * as Misskey from 'misskey-js';
+import { animations } from '@formkit/drag-and-drop';
+import { useDragAndDrop } from '@formkit/drag-and-drop/vue';
 import XSection from './els/page-editor.el.section.vue';
 import XText from './els/page-editor.el.text.vue';
 import XImage from './els/page-editor.el.image.vue';
@@ -32,17 +30,28 @@ function getComponent(type: string) {
 	}
 }
 
-const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
-
 const props = defineProps<{
-	modelValue: Misskey.entities.Page['content'];
+	modelValue: Misskey.entities.PageBlock[];
 }>();
 
 const emit = defineEmits<{
-	(ev: 'update:modelValue', value: Misskey.entities.Page['content']): void;
+	(ev: 'update:modelValue', value: Misskey.entities.PageBlock[]): void;
 }>();
 
-function updateItem(v) {
+const [dndParentEl, items] = useDragAndDrop(props.modelValue, {
+	dragHandle: '.drag-handle',
+	group: 'blocks',
+	plugins: [animations()],
+	threshold: {
+		horizontal: 0.5,
+		vertical: 0.5,
+	},
+	onDragend: () => {
+		emit('update:modelValue', items.value);
+	},
+});
+
+function updateItem(v: Misskey.entities.PageBlock) {
 	const i = props.modelValue.findIndex(x => x.id === v.id);
 	const newValue = [
 		...props.modelValue.slice(0, i),
@@ -52,8 +61,8 @@ function updateItem(v) {
 	emit('update:modelValue', newValue);
 }
 
-function removeItem(el) {
-	const i = props.modelValue.findIndex(x => x.id === el.id);
+function removeItem(v: Misskey.entities.PageBlock) {
+	const i = props.modelValue.findIndex(x => x.id === v.id);
 	const newValue = [
 		...props.modelValue.slice(0, i),
 		...props.modelValue.slice(i + 1),

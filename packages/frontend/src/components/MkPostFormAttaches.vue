@@ -4,53 +4,73 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-show="props.modelValue.length != 0" :class="$style.root">
-	<Sortable :modelValue="props.modelValue" :class="$style.files" itemKey="id" :animation="150" :delay="100" :delayOnTouchOnly="true" @update:modelValue="v => emit('update:modelValue', v)">
-		<template #item="{element}">
-			<div
-				:class="$style.file"
-				role="button"
-				tabindex="0"
-				@click="showFileMenu(element, $event)"
-				@keydown.space.enter="showFileMenu(element, $event)"
-				@contextmenu.prevent="showFileMenu(element, $event)"
-			>
-				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover"/>
-				<div v-if="element.isSensitive" :class="$style.sensitive">
-					<i class="ti ti-eye-exclamation" style="margin: auto;"></i>
-				</div>
+<div
+	v-show="props.modelValue.length != 0"
+	:class="$style.root"
+	@dragover.stop
+	@dragenter.stop
+	@dragleave.stop
+	@drop.stop
+>
+	<div ref="dndParentEl" :class="$style.files">
+		<div
+			v-for="file in files"
+			:key="file.id"
+			:class="$style.file"
+			role="button"
+			tabindex="0"
+			@click="showFileMenu(file, $event)"
+			@keydown.space.enter="showFileMenu(file, $event)"
+			@contextmenu.prevent="showFileMenu(file, $event)"
+		>
+			<MkDriveFileThumbnail :data-id="file.id" :class="$style.thumbnail" :file="file" fit="cover"/>
+			<div v-if="file.isSensitive" :class="$style.sensitive">
+				<i class="ti ti-eye-exclamation" style="margin: auto;"></i>
 			</div>
-		</template>
-	</Sortable>
+		</div>
+	</div>
 	<p :class="$style.remain">{{ 16 - props.modelValue.length }}/16</p>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, inject } from 'vue';
+import { defineAsyncComponent, computed, inject, shallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
+import { animations } from '@formkit/drag-and-drop';
+import { dragAndDrop } from '@formkit/drag-and-drop/vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import type { MenuItem } from '@/types/menu.js';
 
-const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
-
 const props = defineProps<{
-	modelValue: any[];
+	modelValue: Misskey.entities.DriveFile[];
 	detachMediaFn?: (id: string) => void;
 }>();
 
 const mock = inject<boolean>('mock', false);
 
 const emit = defineEmits<{
-	(ev: 'update:modelValue', value: any[]): void;
+	(ev: 'update:modelValue', value: Misskey.entities.DriveFile[]): void;
 	(ev: 'detach', id: string): void;
 	(ev: 'changeSensitive', file: Misskey.entities.DriveFile, isSensitive: boolean): void;
 	(ev: 'changeName', file: Misskey.entities.DriveFile, newName: string): void;
 	(ev: 'replaceFile', file: Misskey.entities.DriveFile, newFile: Misskey.entities.DriveFile): void;
 }>();
+
+const dndParentEl = shallowRef<HTMLElement>();
+
+const files = computed({
+	get: () => props.modelValue,
+	set: (v) => emit('update:modelValue', v),
+});
+
+dragAndDrop({
+	parent: dndParentEl,
+	values: files,
+	plugins: [animations()],
+});
 
 let menuShowing = false;
 

@@ -9,16 +9,23 @@ import { Form, GetFormResultType } from '@/scripts/form.js';
 import * as os from '@/os.js';
 import { deepClone } from '@/scripts/clone.js';
 
-export type Widget<P extends Record<string, unknown>> = {
+export type WidgetProps = Record<string, unknown>;
+
+export type Widget<P extends WidgetProps = WidgetProps> = {
+	name: string;
 	id: string;
 	data: Partial<P>;
 };
 
-export type WidgetComponentProps<P extends Record<string, unknown>> = {
+export type DefaultStoredWidget<P extends WidgetProps = WidgetProps> = {
+	place: 'left' | 'right' | null;
+} & Widget<P>;
+
+export type WidgetComponentProps<P extends WidgetProps = WidgetProps> = {
 	widget?: Widget<P>;
 };
 
-export type WidgetComponentEmits<P extends Record<string, unknown>> = {
+export type WidgetComponentEmits<P extends WidgetProps = WidgetProps> = {
 	(ev: 'updateProps', props: P);
 };
 

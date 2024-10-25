@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@discordapp/twemoji": "15.1.0",
+		"@formkit/drag-and-drop": "0.2.0",
 		"@github/webauthn-json": "2.1.1",
 		"@mcaptcha/vanilla-glue": "0.1.0-alpha-3",
 		"@misskey-dev/browser-image-resizer": "2024.1.0",
@@ -72,8 +73,7 @@
 		"uuid": "10.0.0",
 		"v-code-diff": "1.13.1",
 		"vite": "5.4.8",
-		"vue": "3.5.11",
-		"vuedraggable": "next"
+		"vue": "3.5.11"
 	},
 	"devDependencies": {
 		"@misskey-dev/summaly": "5.1.0",

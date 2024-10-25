@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps_m">
 	<div class="_panel">
-		<div :class="$style.banner" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }">
+		<div :class="$style.banner" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : undefined }">
 			<MkButton primary rounded :class="$style.bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
 		</div>
 		<div :class="$style.avatarContainer">
@@ -58,30 +58,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.metadataRoot" class="_gaps_s">
 				<MkInfo>{{ i18n.ts._profile.verifiedLinkDescription }}</MkInfo>
 
-				<Sortable
-					v-model="fields"
-					class="_gaps_s"
-					itemKey="id"
-					:animation="150"
-					:handle="'.' + $style.dragItemHandle"
-					@start="e => e.item.classList.add('active')"
-					@end="e => e.item.classList.remove('active')"
-				>
-					<template #item="{element, index}">
-						<div v-panel :class="$style.fieldDragItem">
-							<button v-if="!fieldEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
-							<button v-if="fieldEditMode" :disabled="fields.length <= 1" class="_button" :class="$style.dragItemRemove" @click="deleteField(index)"><i class="ti ti-x"></i></button>
-							<div :class="$style.dragItemForm">
-								<FormSplit :minWidth="200">
-									<MkInput v-model="element.name" small :placeholder="i18n.ts._profile.metadataLabel">
-									</MkInput>
-									<MkInput v-model="element.value" small :placeholder="i18n.ts._profile.metadataContent">
-									</MkInput>
-								</FormSplit>
-							</div>
+				<div ref="fieldsRootEl" class="_gaps_s">
+					<div v-for="field, index in fields" :key="field.id" :class="$style.fieldDragItem">
+						<button v-if="!fieldEditMode" class="_button handle" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
+						<button v-if="fieldEditMode" :disabled="fields.length <= 1" class="_button" :class="$style.dragItemRemove" @click="deleteField(index)"><i class="ti ti-x"></i></button>
+						<div :class="$style.dragItemForm">
+							<FormSplit :minWidth="200">
+								<MkInput v-model="field.name" small>
+									<template #label>{{ i18n.ts._profile.metadataLabel }}</template>
+								</MkInput>
+								<MkInput v-model="field.value" small>
+									<template #label>{{ i18n.ts._profile.metadataContent }}</template>
+								</MkInput>
+							</FormSplit>
 						</div>
-					</template>
-				</Sortable>
+					</div>
+				</div>
 			</div>
 		</MkFolder>
 		<template #caption>{{ i18n.ts._profile.metadataDescription }}</template>
@@ -116,7 +108,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, watch, defineAsyncComponent } from 'vue';
+import { computed, reactive, ref, shallowRef, watch } from 'vue';
+import { animations } from '@formkit/drag-and-drop';
+import { dragAndDrop } from '@formkit/drag-and-drop/vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -138,7 +132,9 @@ import MkTextarea from '@/components/MkTextarea.vue';
 
 const $i = signinRequired();
 
-const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
+function assertValidLang(value: string | null): value is keyof typeof langmap {
+	return value !== null && Object.keys(langmap).includes(value);
+}
 
 const reactionAcceptance = computed(defaultStore.makeGetterSetter('reactionAcceptance'));
 
@@ -152,7 +148,7 @@ const profile = reactive({
 	followedMessage: $i.followedMessage,
 	location: $i.location,
 	birthday: $i.birthday,
-	lang: assertVaildLang($i.lang) ? $i.lang : null,
+	lang: assertValidLang($i.lang) ? $i.lang : null,
 	isBot: $i.isBot ?? false,
 	isCat: $i.isCat ?? false,
 });
@@ -165,6 +161,16 @@ watch(() => profile, () => {
 
 const fields = ref($i.fields.map(field => ({ id: Math.random().toString(), name: field.name, value: field.value })) ?? []);
 const fieldEditMode = ref(false);
+
+const fieldsRootEl = shallowRef<HTMLElement>();
+
+dragAndDrop({
+	parent: fieldsRootEl,
+	values: fields,
+	plugins: [animations()],
+	dragHandle: '.handle',
+	draggable: () => !fieldEditMode.value,
+});
 
 function addField() {
 	fields.value.push({
