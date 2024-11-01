@@ -4,10 +4,17 @@
  */
 
 import type { ObjectDirective } from 'vue';
-import { defaultStore } from '@/store.js';
 
-export const vClickAnime: ObjectDirective<HTMLElement, null | undefined> = {
-	mounted(src) {
+type VClickAnime = ObjectDirective<HTMLElement, null | undefined>;
+
+export const vClickAnime = {
+	async mounted(src) {
+		const [
+			{ defaultStore },
+		] = await Promise.all([
+			import('@/store.js'),
+		]);
+
 		if (!defaultStore.state.animation) return;
 
 		const target = src.children[0];
@@ -37,4 +44,4 @@ export const vClickAnime: ObjectDirective<HTMLElement, null | undefined> = {
 			target.classList.add('_anime_bounce_standBy');
 		});
 	},
-};
+} satisfies VClickAnime as VClickAnime;

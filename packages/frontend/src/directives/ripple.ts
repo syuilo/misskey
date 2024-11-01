@@ -4,11 +4,18 @@
  */
 
 import type { ObjectDirective } from 'vue';
-import { popup } from '@/os.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
-export const vRipple: ObjectDirective<HTMLElement, boolean | null | undefined> = {
-	mounted(src, binding) {
+type VRipple = ObjectDirective<HTMLElement, boolean | null | undefined>;
+
+export const vRipple = {
+	async mounted(src, binding) {
+		const [
+			{ popup },
+		] = await Promise.all([
+			import('@/os.js'),
+		]);
+
 		// 明示的に false であればバインドしない
 		if (binding.value === false) return;
 
@@ -23,4 +30,4 @@ export const vRipple: ObjectDirective<HTMLElement, boolean | null | undefined> =
 			});
 		});
 	},
-};
+} satisfies VRipple as VRipple;

@@ -5,8 +5,10 @@
 
 import type { ObjectDirective } from 'vue';
 
-export const vAppear: ObjectDirective<HTMLElement, (() => unknown) | null | undefined> = {
-	mounted(src, binding) {
+type VAppear = ObjectDirective<HTMLElement, (() => unknown) | null | undefined>;
+
+export const vAppear = {
+	async mounted(src, binding) {
 		const fn = binding.value;
 		if (fn == null) return;
 
@@ -21,7 +23,7 @@ export const vAppear: ObjectDirective<HTMLElement, (() => unknown) | null | unde
 		src._observer_ = observer;
 	},
 
-	unmounted(src) {
+	async unmounted(src) {
 		src._observer_?.disconnect();
 	},
-};
+} satisfies VAppear as VAppear;

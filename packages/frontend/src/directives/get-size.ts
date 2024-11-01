@@ -11,8 +11,10 @@ const mountings = new Map<HTMLElement, {
 	fn: (w: number, h: number) => void;
 }>();
 
-export const vGetSize: ObjectDirective<HTMLElement, ((w: number, h: number) => unknown) | null | undefined> = {
-	mounted(src, binding) {
+type VGetSize = ObjectDirective<HTMLElement, ((w: number, h: number) => unknown) | null | undefined>;
+
+export const vGetSize = {
+	async mounted(src, binding) {
 		const resize = new ResizeObserver(() => {
 			calc(src);
 		});
@@ -22,15 +24,15 @@ export const vGetSize: ObjectDirective<HTMLElement, ((w: number, h: number) => u
 		calc(src);
 	},
 
-	unmounted(src, binding) {
-		if (binding.value != null) binding.value(0, 0);
+	async unmounted(src, binding) {
+		binding.value(0, 0);
 		const info = mountings.get(src);
 		if (!info) return;
 		info.resize.disconnect();
 		if (info.intersection) info.intersection.disconnect();
 		mountings.delete(src);
 	},
-};
+} satisfies VGetSize as VGetSize;
 
 function calc(src: HTMLElement) {
 	const info = mountings.get(src);

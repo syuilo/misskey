@@ -5,10 +5,17 @@
 
 import type { ObjectDirective } from 'vue';
 import type { Keymap } from '@/scripts/hotkey.js';
-import { makeHotkey } from '@/scripts/hotkey.js';
 
-export const vHotkey: ObjectDirective<HTMLElement, Keymap | null | undefined, 'global'> = {
-	mounted(src, binding) {
+type VHotkey = ObjectDirective<HTMLElement, Keymap | null | undefined, 'global'>;
+
+export const vHotkey = {
+	async mounted(src, binding) {
+		const [
+			{ makeHotkey },
+		] = await Promise.all([
+			import('@/scripts/hotkey.js'),
+		]);
+
 		src._hotkey_global = binding.modifiers.global === true;
 
 		src._keyHandler = makeHotkey(binding.value);
@@ -20,11 +27,11 @@ export const vHotkey: ObjectDirective<HTMLElement, Keymap | null | undefined, 'g
 		}
 	},
 
-	unmounted(src) {
+	async unmounted(src) {
 		if (src._hotkey_global) {
 			document.removeEventListener('keydown', src._keyHandler);
 		} else {
 			src.removeEventListener('keydown', src._keyHandler);
 		}
 	},
-};
+} satisfies VHotkey as VHotkey;

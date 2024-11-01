@@ -4,10 +4,17 @@
  */
 
 import type { ObjectDirective } from 'vue';
-import { getBgColor } from '@/scripts/get-bg-color.js';
 
-export const vAdaptiveBg: ObjectDirective<HTMLElement, null | undefined> = {
-	mounted(src) {
+type VAdaptiveBg = ObjectDirective<HTMLElement, null | undefined>;
+
+export const vAdaptiveBg = {
+	async mounted(src) {
+		const [
+			{ getBgColor },
+		] = await Promise.all([
+			import('@/scripts/get-bg-color.js'),
+		]);
+
 		const parentBg = getBgColor(src.parentElement) ?? 'transparent';
 
 		const myBg = window.getComputedStyle(src).backgroundColor;
@@ -18,4 +25,4 @@ export const vAdaptiveBg: ObjectDirective<HTMLElement, null | undefined> = {
 			src.style.backgroundColor = myBg;
 		}
 	},
-};
+} satisfies VAdaptiveBg as VAdaptiveBg;

@@ -4,10 +4,17 @@
  */
 
 import type { ObjectDirective } from 'vue';
-import { getBgColor } from '@/scripts/get-bg-color.js';
 
-export const vPanel: ObjectDirective<HTMLElement, null | undefined> = {
-	mounted(src) {
+type VPanel = ObjectDirective<HTMLElement, null | undefined>;
+
+export const vPanel = {
+	async mounted(src) {
+		const [
+			{ getBgColor },
+		] = await Promise.all([
+			import('@/scripts/get-bg-color.js'),
+		]);
+
 		const parentBg = getBgColor(src.parentElement) ?? 'transparent';
 
 		const myBg = getComputedStyle(document.documentElement).getPropertyValue('--MI_THEME-panel');
@@ -18,4 +25,4 @@ export const vPanel: ObjectDirective<HTMLElement, null | undefined> = {
 			src.style.backgroundColor = 'var(--MI_THEME-panel)';
 		}
 	},
-};
+} satisfies VPanel as VPanel;

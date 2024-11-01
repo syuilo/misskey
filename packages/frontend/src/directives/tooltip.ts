@@ -6,16 +6,23 @@
 // TODO: useTooltip関数使うようにしたい
 // ただディレクティブ内でonUnmountedなどのcomposition api使えるのか不明
 
-import { defineAsyncComponent, ref } from 'vue';
-import type { ObjectDirective } from 'vue';
-import { isTouchUsing } from '@/scripts/touch.js';
-import { popup, alert } from '@/os.js';
+import { type ObjectDirective, defineAsyncComponent, ref } from 'vue';
 
-const start = isTouchUsing ? 'touchstart' : 'mouseenter';
-const end = isTouchUsing ? 'touchend' : 'mouseleave';
+type VTooltip = ObjectDirective<HTMLElement, string | null | undefined, 'noDelay' | 'mfm' | 'top' | 'right' | 'bottom' | 'left', 'dialog'>;
 
-export const vTooltip: ObjectDirective<HTMLElement, string | null | undefined, 'noDelay' | 'mfm' | 'top' | 'right' | 'bottom' | 'left', 'dialog'> = {
-	mounted(src, binding) {
+export const vTooltip = {
+	async mounted(src, binding) {
+		const [
+			{ alert, popup },
+			{ isTouchUsing },
+		] = await Promise.all([
+			import('@/os.js'),
+			import('@/scripts/touch.js'),
+		]);
+
+		const start = isTouchUsing ? 'touchstart' : 'mouseenter';
+		const end = isTouchUsing ? 'touchend' : 'mouseleave';
+
 		const delay = binding.modifiers.noDelay ? 0 : 100;
 
 		const self = (src as any)._tooltipDirective_ = {} as any;
@@ -97,13 +104,13 @@ export const vTooltip: ObjectDirective<HTMLElement, string | null | undefined, '
 		});
 	},
 
-	updated(src, binding) {
+	async updated(src, binding) {
 		const self = (src as any)._tooltipDirective_;
 		self.text = binding.value as string;
 	},
 
-	unmounted(src) {
+	async unmounted(src) {
 		const self = (src as any)._tooltipDirective_;
 		window.clearInterval(self.checkTimer);
 	},
-};
+} satisfies VTooltip as VTooltip;

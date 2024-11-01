@@ -54,7 +54,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { v4 as uuid } from 'uuid';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
-import { widgets as widgetDefs } from '@/widgets/index.js';
+import { widgetDefs } from '@/widgets/index.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { isLink } from '@@/js/is-link.js';

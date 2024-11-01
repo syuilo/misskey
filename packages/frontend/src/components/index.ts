@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import Mfm from './global/MkMfm.js';
 import MkA from './global/MkA.vue';
@@ -34,28 +34,28 @@ export default function(app: App) {
 }
 
 export const components = {
-	I18n: I18n,
-	RouterView: RouterView,
-	Mfm: Mfm,
-	MkA: MkA,
-	MkAcct: MkAcct,
-	MkAvatar: MkAvatar,
-	MkEmoji: MkEmoji,
-	MkCondensedLine: MkCondensedLine,
-	MkCustomEmoji: MkCustomEmoji,
-	MkUserName: MkUserName,
-	MkEllipsis: MkEllipsis,
-	MkTime: MkTime,
-	MkUrl: MkUrl,
-	MkLoading: MkLoading,
-	MkError: MkError,
-	MkAd: MkAd,
-	MkPageHeader: MkPageHeader,
-	MkSpacer: MkSpacer,
-	MkFooterSpacer: MkFooterSpacer,
-	MkStickyContainer: MkStickyContainer,
-	MkLazy: MkLazy,
-};
+	I18n,
+	RouterView,
+	Mfm,
+	MkA,
+	MkAcct,
+	MkAd,
+	MkAvatar,
+	MkCondensedLine,
+	MkCustomEmoji,
+	MkEllipsis,
+	MkEmoji,
+	MkError,
+	MkFooterSpacer,
+	MkLazy,
+	MkLoading,
+	MkPageHeader,
+	MkSpacer,
+	MkStickyContainer,
+	MkTime,
+	MkUrl,
+	MkUserName,
+} as const;
 
 declare module '@vue/runtime-core' {
 	export interface GlobalComponents {
@@ -64,21 +64,21 @@ declare module '@vue/runtime-core' {
 		Mfm: typeof Mfm;
 		MkA: typeof MkA;
 		MkAcct: typeof MkAcct;
+		MkAd: typeof MkAd;
 		MkAvatar: typeof MkAvatar;
-		MkEmoji: typeof MkEmoji;
 		MkCondensedLine: typeof MkCondensedLine;
 		MkCustomEmoji: typeof MkCustomEmoji;
-		MkUserName: typeof MkUserName;
 		MkEllipsis: typeof MkEllipsis;
-		MkTime: typeof MkTime;
-		MkUrl: typeof MkUrl;
-		MkLoading: typeof MkLoading;
+		MkEmoji: typeof MkEmoji;
 		MkError: typeof MkError;
-		MkAd: typeof MkAd;
+		MkFooterSpacer: typeof MkFooterSpacer;
+		MkLazy: typeof MkLazy;
+		MkLoading: typeof MkLoading;
 		MkPageHeader: typeof MkPageHeader;
 		MkSpacer: typeof MkSpacer;
-		MkFooterSpacer: typeof MkFooterSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
-		MkLazy: typeof MkLazy;
+		MkTime: typeof MkTime;
+		MkUrl: typeof MkUrl;
+		MkUserName: typeof MkUserName;
 	}
 }
