@@ -80,8 +80,8 @@ export const vTooltip = {
 		});
 
 		src.addEventListener(start, () => {
-			window.clearTimeout(self.showTimer);
-			window.clearTimeout(self.hideTimer);
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
+			if (self.hideTimer != null) window.clearTimeout(self.hideTimer);
 			if (delay === 0) {
 				self.show();
 			} else {
@@ -90,8 +90,8 @@ export const vTooltip = {
 		}, { passive: true });
 
 		src.addEventListener(end, () => {
-			window.clearTimeout(self.showTimer);
-			window.clearTimeout(self.hideTimer);
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
+			if (self.hideTimer != null) window.clearTimeout(self.hideTimer);
 			if (delay === 0) {
 				self.close();
 			} else {
@@ -100,7 +100,7 @@ export const vTooltip = {
 		}, { passive: true });
 
 		src.addEventListener('click', () => {
-			window.clearTimeout(self.showTimer);
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
 			self.close();
 		});
 	},
@@ -114,6 +114,6 @@ export const vTooltip = {
 	async unmounted(src) {
 		//@ts-expect-error HTMLElementにプロパティを追加している
 		const self = src._tooltipDirective_;
-		window.clearInterval(self.checkTimer);
+		if (self.checkTimer != null) window.clearInterval(self.checkTimer);
 	},
 } satisfies VTooltip as VTooltip;
