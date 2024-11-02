@@ -73,7 +73,7 @@ export type Extension = {
 		author: string;
 		description?: string;
 		permissions?: string[];
-		config?: Record<string, any>;
+		config?: Record<string, unknown>;
 	};
 } | {
 	type: 'theme';

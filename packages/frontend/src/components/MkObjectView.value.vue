@@ -39,7 +39,7 @@ import number from '@/filters/number.js';
 import XValue from '@/components/MkObjectView.value.vue';
 
 const props = defineProps<{
-	value: any;
+	value: unknown;
 }>();
 
 const collapsed = reactive({});
@@ -50,19 +50,19 @@ if (isObject(props.value)) {
 	}
 }
 
-function isObject(v): boolean {
+function isObject(v: unknown): v is Record<PropertyKey, unknown> {
 	return typeof v === 'object' && !Array.isArray(v) && v !== null;
 }
 
-function isArray(v): boolean {
+function isArray(v: unknown): v is unknown[] {
 	return Array.isArray(v);
 }
 
-function isEmpty(v): boolean {
+function isEmpty(v: unknown): v is Record<PropertyKey, never> | never[] {
 	return (isArray(v) && v.length === 0) || (isObject(v) && Object.keys(v).length === 0);
 }
 
-function collapsable(v): boolean {
+function collapsable(v: unknown): boolean {
 	return (isObject(v) || isArray(v)) && !isEmpty(v);
 }
 </script>

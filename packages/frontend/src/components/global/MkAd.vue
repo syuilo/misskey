@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="chosen && !shouldHide" :class="$style.root">
+<div v-if="chosen && !shouldHide">
 	<div
 		v-if="!showMenu"
 		:class="[$style.main, {
@@ -120,10 +120,6 @@ function reduceFrequency(): void {
 </script>
 
 <style lang="scss" module>
-.root {
-
-}
-
 .main {
 	text-align: center;
 

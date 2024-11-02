@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:withOkButton="true"
 	@close="cancel()"
 	@ok="ok()"
-	@closed="$emit('closed')"
+	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.cropImage }}</template>
 	<template #default="{ width, height }">

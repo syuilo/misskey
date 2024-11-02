@@ -8,9 +8,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	ref="windowEl"
 	:initialWidth="400"
 	:initialHeight="500"
-	:canResize="false"
-	@close="windowEl.close()"
-	@closed="$emit('closed')"
+	:canResize="true"
+	@close="windowEl?.close()"
+	@closed="emit('closed')"
 >
 	<template v-if="emoji" #header>:{{ emoji.name }}:</template>
 	<template v-else #header>New emoji</template>
@@ -95,14 +95,19 @@ import { selectFile } from '@/scripts/select-file.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 
 const props = defineProps<{
-	emoji?: any,
+	emoji?: Misskey.entities.EmojiDetailed,
+}>();
+
+const emit = defineEmits<{
+	(ev: 'done', v: { deleted?: boolean; updated?: Misskey.entities.AdminEmojiUpdateRequest; created?: Misskey.entities.AdminEmojiUpdateRequest }): void,
+	(ev: 'closed'): void
 }>();
 
 const windowEl = ref<InstanceType<typeof MkWindow> | null>(null);
 const name = ref<string>(props.emoji ? props.emoji.name : '');
-const category = ref<string>(props.emoji ? props.emoji.category : '');
+const category = ref<string>(props.emoji?.category ? props.emoji.category : '');
 const aliases = ref<string>(props.emoji ? props.emoji.aliases.join(' ') : '');
-const license = ref<string>(props.emoji ? (props.emoji.license ?? '') : '');
+const license = ref<string>(props.emoji?.license ? props.emoji.license : '');
 const isSensitive = ref(props.emoji ? props.emoji.isSensitive : false);
 const localOnly = ref(props.emoji ? props.emoji.localOnly : false);
 const roleIdsThatCanBeUsedThisEmojiAsReaction = ref(props.emoji ? props.emoji.roleIdsThatCanBeUsedThisEmojiAsReaction : []);
@@ -115,12 +120,7 @@ watch(roleIdsThatCanBeUsedThisEmojiAsReaction, async () => {
 
 const imgUrl = computed(() => file.value ? file.value.url : props.emoji ? `/emoji/${props.emoji.name}.webp` : null);
 
-const emit = defineEmits<{
-	(ev: 'done', v: { deleted?: boolean; updated?: any; created?: any }): void,
-	(ev: 'closed'): void
-}>();
-
-async function changeImage(ev) {
+async function changeImage(ev: Event) {
 	file.value = await selectFile(ev.currentTarget ?? ev.target, null);
 	const candidate = file.value.name.replace(/\.(.+)$/, '');
 	if (candidate.match(/^[a-z0-9_]+$/)) {
@@ -140,7 +140,7 @@ async function addRole() {
 	rolesThatCanBeUsedThisEmojiAsReaction.value.push(role);
 }
 
-async function removeRole(role, ev) {
+async function removeRole(role: Misskey.entities.RoleLite, ev: Event) {
 	rolesThatCanBeUsedThisEmojiAsReaction.value = rolesThatCanBeUsedThisEmojiAsReaction.value.filter(x => x.id !== role.id);
 }
 
@@ -172,7 +172,7 @@ async function done() {
 			},
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	} else {
 		const created = await os.apiWithDialog('admin/emoji/add', params);
 
@@ -180,11 +180,12 @@ async function done() {
 			created: created,
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	}
 }
 
 async function del() {
+	if (!props.emoji) return;
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.tsx.removeAreYouSure({ x: name.value }),
@@ -197,7 +198,7 @@ async function del() {
 		emit('done', {
 			deleted: true,
 		});
-		windowEl.value.close();
+		windowEl.value?.close();
 	});
 }
 </script>

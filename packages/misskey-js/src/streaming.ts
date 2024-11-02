@@ -51,7 +51,7 @@ export default class Stream extends EventEmitter<StreamEvents> implements IStrea
 	private idCounter = 0;
 
 	constructor(origin: string, user: { token: string; } | null, options?: {
-		WebSocket?: WebSocket;
+		WebSocket?: _ReconnectingWebsocket.Options['WebSocket'];
 	}) {
 		super();
 

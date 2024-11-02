@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</template>
 
-	<div :class="$style.root" class="_gaps_s">
+	<div class="_gaps_s">
 		<MkFolder :withSpacer="false">
 			<template #icon><MkAvatar :user="report.targetUser" style="width: 18px; height: 18px;"/></template>
 			<template #label>{{ i18n.ts.target }}: <MkAcct :user="report.targetUser"/></template>
@@ -151,6 +151,4 @@ function showMenu(ev: MouseEvent) {
 </script>
 
 <style lang="scss" module>
-.root {
-}
 </style>

@@ -21,6 +21,7 @@ import { url } from '@@/js/config.js';
 import { parseEmbedParams } from '@@/js/embed-page.js';
 import { postMessageToParentWindow, setIframeId } from '@/post-message.js';
 import { serverContext } from '@/server-context.js';
+import { i18n } from '@/i18n.js';
 
 import type { Theme } from '@/theme.js';
 
@@ -126,6 +127,27 @@ window.onerror = null;
 window.onunhandledrejection = null;
 
 removeSplash();
+
+//#region Self-XSS 対策メッセージ
+console.log(
+	`%c${i18n.ts._selfXssPrevention.warning}`,
+	'color: #f00; background-color: #ff0; font-size: 36px; padding: 4px;',
+);
+console.log(
+	`%c${i18n.ts._selfXssPrevention.title}`,
+	'color: #f00; font-weight: 900; font-family: "Hiragino Sans W9", "Hiragino Kaku Gothic ProN", sans-serif; font-size: 24px;',
+);
+console.log(
+	`%c${i18n.ts._selfXssPrevention.description1}`,
+	'font-size: 16px; font-weight: 700;',
+);
+console.log(
+	`%c${i18n.ts._selfXssPrevention.description2}`,
+	'font-size: 16px;',
+	'font-size: 20px; font-weight: 700; color: #f00;',
+);
+console.log(i18n.tsx._selfXssPrevention.description3({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
+//#endregion
 
 function removeSplash() {
 	const splash = document.getElementById('splash');

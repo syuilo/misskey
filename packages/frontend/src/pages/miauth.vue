@@ -4,94 +4,78 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="800">
-		<div v-if="$i">
-			<div v-if="state == 'waiting'">
-				<MkLoading/>
-			</div>
-			<div v-if="state == 'denied'">
-				<p>{{ i18n.ts._auth.denied }}</p>
-			</div>
-			<div v-else-if="state == 'accepted'" class="accepted">
-				<p v-if="callback">{{ i18n.ts._auth.callback }}<MkEllipsis/></p>
-				<p v-else>{{ i18n.ts._auth.pleaseGoBack }}</p>
-			</div>
-			<div v-else>
-				<div v-if="_permissions.length > 0">
-					<p v-if="name">{{ i18n.tsx._auth.permission({ name }) }}</p>
-					<p v-else>{{ i18n.ts._auth.permissionAsk }}</p>
-					<ul>
-						<li v-for="p in _permissions" :key="p">{{ i18n.ts._permissions[p] }}</li>
-					</ul>
-				</div>
-				<div v-if="name">{{ i18n.tsx._auth.shareAccess({ name }) }}</div>
-				<div v-else>{{ i18n.ts._auth.shareAccessAsk }}</div>
-				<div :class="$style.buttons">
-					<MkButton inline @click="deny">{{ i18n.ts.cancel }}</MkButton>
-					<MkButton inline primary @click="accept">{{ i18n.ts.accept }}</MkButton>
-				</div>
-			</div>
+<div>
+	<MkAnimBg style="position: fixed; top: 0;"/>
+	<div :class="$style.formContainer">
+		<div :class="$style.form">
+			<MkAuthConfirm
+				ref="authRoot"
+				:name="name"
+				:icon="icon || undefined"
+				:permissions="_permissions"
+				@accept="onAccept"
+				@deny="onDeny"
+			>
+				<template #consentAdditionalInfo>
+					<div v-if="callback != null" class="_gaps_s" :class="$style.redirectRoot">
+						<div>{{ i18n.ts._auth.byClickingYouWillBeRedirectedToThisUrl }}</div>
+						<div class="_monospace" :class="$style.redirectUrl">{{ callback }}</div>
+					</div>
+				</template>
+			</MkAuthConfirm>
 		</div>
-		<div v-else>
-			<p :class="$style.loginMessage">{{ i18n.ts._auth.pleaseLogin }}</p>
-			<MkSignin @login="onLogin"/>
-		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import MkSignin from '@/components/MkSignin.vue';
-import MkButton from '@/components/MkButton.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { $i, login } from '@/account.js';
+import { computed, useTemplateRef } from 'vue';
+import * as Misskey from 'misskey-js';
+
+import MkAnimBg from '@/components/MkAnimBg.vue';
+import MkAuthConfirm from '@/components/MkAuthConfirm.vue';
+
 import { i18n } from '@/i18n.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const props = defineProps<{
 	session: string;
 	callback?: string;
-	name: string;
-	icon: string;
-	permission: string; // コンマ区切り
+	name?: string;
+	icon?: string;
+	permission?: string; // コンマ区切り
 }>();
 
-const _permissions = props.permission ? props.permission.split(',') : [];
+const _permissions = computed(() => {
+	return (props.permission ? props.permission.split(',').filter((p): p is typeof Misskey.permissions[number] => (Misskey.permissions as readonly string[]).includes(p)) : []);
+});
 
-const state = ref<string | null>(null);
+const authRoot = useTemplateRef('authRoot');
 
-async function accept(): Promise<void> {
-	state.value = 'waiting';
+async function onAccept(token: string) {
 	await misskeyApi('miauth/gen-token', {
 		session: props.session,
 		name: props.name,
 		iconUrl: props.icon,
-		permission: _permissions,
+		permission: _permissions.value,
+	}, token).catch(() => {
+		authRoot.value?.showUI('failed');
 	});
 
-	state.value = 'accepted';
-	if (props.callback) {
+	if (props.callback && props.callback !== '') {
 		const cbUrl = new URL(props.callback);
 		if (['javascript:', 'file:', 'data:', 'mailto:', 'tel:'].includes(cbUrl.protocol)) throw new Error('invalid url');
 		cbUrl.searchParams.set('session', props.session);
-		location.href = cbUrl.href;
+		location.href = cbUrl.toString();
+	} else {
+		authRoot.value?.showUI('success');
 	}
 }
 
-function deny(): void {
-	state.value = 'denied';
+function onDeny() {
+	authRoot.value?.showUI('denied');
 }
-
-function onLogin(res): void {
-	login(res.i);
-}
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: 'MiAuth',
@@ -100,15 +84,38 @@ definePageMetadata(() => ({
 </script>
 
 <style lang="scss" module>
-.buttons {
-	margin-top: 16px;
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
+.formContainer {
+	min-height: 100svh;
+	padding: 32px 32px calc(env(safe-area-inset-bottom, 0px) + 32px) 32px;
+	box-sizing: border-box;
+	display: grid;
+	place-content: center;
 }
 
-.loginMessage {
-	text-align: center;
-	margin: 8px 0 24px;
+.form {
+	position: relative;
+	z-index: 10;
+	border-radius: var(--MI-radius);
+	background-color: var(--MI_THEME-panel);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	overflow: clip;
+	max-width: 500px;
+	width: calc(100vw - 64px);
+	height: min(65svh, calc(100svh - calc(env(safe-area-inset-bottom, 0px) + 64px)));
+	overflow-y: scroll;
+}
+
+.redirectRoot {
+	padding: 16px;
+	border-radius: var(--MI-radius);
+	background-color: var(--MI_THEME-bg);
+}
+
+.redirectUrl {
+	font-size: 90%;
+	padding: 12px;
+	border-radius: var(--MI-radius);
+	background-color: var(--MI_THEME-panel);
+	overflow-x: scroll;
 }
 </style>

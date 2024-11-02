@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
-<XContainer :draggable="true" @remove="() => $emit('remove')">
+<XContainer :draggable="true" @remove="() => emit('remove')">
 	<template #header><i class="ti ti-note"></i> {{ props.modelValue.title }}</template>
 	<template #func>
 		<button class="_button" @click="rename()">
@@ -21,8 +21,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable vue/no-mutating-props */
+ 
 import { defineAsyncComponent, inject, onMounted, watch, ref } from 'vue';
+import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
 import XContainer from '../page-editor.container.vue';
 import * as os from '@/os.js';
@@ -33,14 +34,13 @@ import { getPageBlockList } from '@/pages/page-editor/common.js';
 
 const XBlocks = defineAsyncComponent(() => import('../page-editor.blocks.vue'));
 
-const props = withDefaults(defineProps<{
-	modelValue: any,
-}>(), {
-	modelValue: {},
-});
+const props = defineProps<{
+	modelValue: Misskey.entities.PageBlock & { type: 'section'; },
+}>();
 
 const emit = defineEmits<{
-	(ev: 'update:modelValue', value: any): void;
+	(ev: 'update:modelValue', value: Misskey.entities.PageBlock & { type: 'section' }): void;
+	(ev: 'remove'): void;
 }>();
 
 const children = ref(deepClone(props.modelValue.children ?? []));

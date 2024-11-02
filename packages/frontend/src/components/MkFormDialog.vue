@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@click="cancel()"
 	@ok="ok()"
 	@close="cancel()"
-	@closed="$emit('closed')"
+	@closed="emit('closed')"
 >
 	<template #header>
 		{{ title }}

@@ -15,7 +15,7 @@ type Hidden = boolean | ((v: any) => boolean);
 export type FormItem = {
 	label?: string;
 	type: 'string';
-	default: string | null;
+	default?: string | null;
 	description?: string;
 	required?: boolean;
 	hidden?: Hidden;
@@ -24,7 +24,7 @@ export type FormItem = {
 } | {
 	label?: string;
 	type: 'number';
-	default: number | null;
+	default?: number | null;
 	description?: string;
 	required?: boolean;
 	hidden?: Hidden;
@@ -32,20 +32,20 @@ export type FormItem = {
 } | {
 	label?: string;
 	type: 'boolean';
-	default: boolean | null;
+	default?: boolean | null;
 	description?: string;
 	hidden?: Hidden;
 } | {
 	label?: string;
 	type: 'enum';
-	default: string | null;
+	default?: string | null;
 	required?: boolean;
 	hidden?: Hidden;
 	enum: EnumItem[];
 } | {
 	label?: string;
 	type: 'radio';
-	default: unknown | null;
+	default?: unknown | null;
 	required?: boolean;
 	hidden?: Hidden;
 	options: {
@@ -55,7 +55,7 @@ export type FormItem = {
 } | {
 	label?: string;
 	type: 'range';
-	default: number | null;
+	default?: number | null;
 	description?: string;
 	required?: boolean;
 	step?: number;
@@ -66,12 +66,12 @@ export type FormItem = {
 } | {
 	label?: string;
 	type: 'object';
-	default: Record<string, unknown> | null;
+	default?: Record<string, unknown> | null;
 	hidden: Hidden;
 } | {
 	label?: string;
 	type: 'array';
-	default: unknown[] | null;
+	default?: unknown[] | null;
 	hidden: Hidden;
 } | {
 	type: 'button';

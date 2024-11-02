@@ -55,13 +55,13 @@ const pagination = {
 
 function accept(user) {
 	misskeyApi('following/requests/accept', { userId: user.id }).then(() => {
-		paginationComponent.value.reload();
+		paginationComponent.value?.reload();
 	});
 }
 
 function reject(user) {
 	misskeyApi('following/requests/reject', { userId: user.id }).then(() => {
-		paginationComponent.value.reload();
+		paginationComponent.value?.reload();
 	});
 }
 

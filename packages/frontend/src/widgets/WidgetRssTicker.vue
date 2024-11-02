@@ -99,7 +99,7 @@ const items = computed(() => {
 const fetching = ref(true);
 const fetchEndpoint = computed(() => {
 	const url = new URL('/api/fetch-rss', base);
-	url.searchParams.set('url', widgetProps.url);
+	url.searchParams.set('url', encodeURIComponent(widgetProps.url));
 	return url;
 });
 const intervalClear = ref<(() => void) | undefined>();

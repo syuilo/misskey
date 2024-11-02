@@ -467,8 +467,8 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			default: {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				console.error('unrecognized ast type:', (token as any).type);
+				// @ts-expect-error 存在しないASTタイプ
+				console.error('unrecognized ast type:', token.type);
 
 				return [];
 			}

@@ -15,6 +15,7 @@ const merge = (...args) => args.reduce((a, c) => ({
 
 const languages = [
 	'ar-SA',
+	'ca-ES',
 	'cs-CZ',
 	'da-DK',
 	'de-DE',

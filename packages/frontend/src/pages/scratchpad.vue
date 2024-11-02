@@ -76,7 +76,11 @@ import { claimAchievement } from '@/scripts/achievements.js';
 const parser = new Parser();
 let aiscript: Interpreter;
 const code = ref('');
-const logs = ref<any[]>([]);
+const logs = ref<{
+	id: number;
+	text: string;
+	print: boolean;
+}[]>([]);
 const root = ref<AsUiRoot>();
 const components = ref<Ref<AsUiComponent>[]>([]);
 const uiKey = ref(0);

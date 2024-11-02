@@ -47,11 +47,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
 
 const props = defineProps<{
-	channel: Record<string, any>;
+	channel: Misskey.entities.Channel;
 }>();
 
 const getLastReadedAt = (): number | null => {

@@ -52,7 +52,7 @@ const props = defineProps<{
 
 const scope = computed(() => props.path ? props.path.split('/') : []);
 
-const keys = ref<any>(null);
+const keys = ref<[string, string][]>([]);
 
 function fetchKeys() {
 	misskeyApi('i/registry/keys-with-type', {

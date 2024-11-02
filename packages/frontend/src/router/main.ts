@@ -4,7 +4,7 @@
  */
 
 import { EventEmitter } from 'eventemitter3';
-import { IRouter, Resolved, RouteDef, RouterEvent } from '@/nirax.js';
+import { IRouter, Resolved, RouteDef, RouterEvent, RouterFlag } from '@/nirax.js';
 
 import type { App, ShallowRef } from 'vue';
 
@@ -79,7 +79,7 @@ class MainRouterProxy implements IRouter {
 		return this.supplier().currentRoute;
 	}
 
-	get navHook(): ((path: string, flag?: any) => boolean) | null {
+	get navHook(): ((path: string, flag?: RouterFlag) => boolean) | null {
 		return this.supplier().navHook;
 	}
 
@@ -91,11 +91,11 @@ class MainRouterProxy implements IRouter {
 		return this.supplier().getCurrentKey();
 	}
 
-	getCurrentPath(): any {
+	getCurrentPath(): string {
 		return this.supplier().getCurrentPath();
 	}
 
-	push(path: string, flag?: any): void {
+	push(path: string, flag?: RouterFlag): void {
 		this.supplier().push(path, flag);
 	}
 

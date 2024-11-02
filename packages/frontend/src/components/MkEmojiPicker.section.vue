@@ -90,7 +90,7 @@ function computeButtonTitle(ev: MouseEvent): void {
 	elm.title = getEmojiName(emoji);
 }
 
-function nestedChosen(emoji: any, ev: MouseEvent) {
+function nestedChosen(emoji: string, ev: MouseEvent) {
 	emit('chosen', emoji, ev);
 }
 </script>

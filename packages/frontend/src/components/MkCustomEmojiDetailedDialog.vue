@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkModalWindow ref="dialogEl" @close="cancel()" @closed="$emit('closed')">
+<MkModalWindow ref="dialogEl" @close="cancel()" @closed="emit('closed')">
 	<template #header>:{{ emoji.name }}:</template>
 	<template #default>
 		<MkSpacer>

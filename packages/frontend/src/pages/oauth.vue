@@ -4,40 +4,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader/></template>
-	<MkSpacer :contentMax="800">
-		<div v-if="$i">
-			<div v-if="permissions.length > 0">
-				<p v-if="name">{{ i18n.tsx._auth.permission({ name }) }}</p>
-				<p v-else>{{ i18n.ts._auth.permissionAsk }}</p>
-				<ul>
-					<li v-for="p in permissions" :key="p">{{ i18n.ts._permissions[p] }}</li>
-				</ul>
-			</div>
-			<div v-if="name">{{ i18n.tsx._auth.shareAccess({ name }) }}</div>
-			<div v-else>{{ i18n.ts._auth.shareAccessAsk }}</div>
-			<form :class="$style.buttons" action="/oauth/decision" accept-charset="utf-8" method="post">
-				<input name="login_token" type="hidden" :value="$i.token"/>
-				<input name="transaction_id" type="hidden" :value="transactionIdMeta?.content"/>
-				<MkButton inline name="cancel" value="cancel">{{ i18n.ts.cancel }}</MkButton>
-				<MkButton inline primary>{{ i18n.ts.accept }}</MkButton>
-			</form>
+<div>
+	<MkAnimBg style="position: fixed; top: 0;"/>
+	<div :class="$style.formContainer">
+		<div :class="$style.form">
+			<MkAuthConfirm
+				ref="authRoot"
+				:name="name"
+				:permissions="permissions"
+				:waitOnDeny="true"
+				@accept="onAccept"
+				@deny="onDeny"
+			/>
 		</div>
-		<div v-else>
-			<p :class="$style.loginMessage">{{ i18n.ts._auth.pleaseLogin }}</p>
-			<MkSignin @login="onLogin"/>
-		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</div>
 </template>
 
 <script lang="ts" setup>
-import MkSignin from '@/components/MkSignin.vue';
-import MkButton from '@/components/MkButton.vue';
-import { $i, login } from '@/account.js';
-import { i18n } from '@/i18n.js';
+import * as Misskey from 'misskey-js';
+import MkAnimBg from '@/components/MkAnimBg.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import MkAuthConfirm from '@/components/MkAuthConfirm.vue';
 
 const transactionIdMeta = document.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:transaction-id"]');
 if (transactionIdMeta) {
@@ -45,10 +33,44 @@ if (transactionIdMeta) {
 }
 
 const name = document.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:client-name"]')?.content;
-const permissions = document.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:scope"]')?.content.split(' ') ?? [];
+const permissions = document.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:scope"]')?.content.split(' ').filter((p): p is typeof Misskey.permissions[number] => (Misskey.permissions as readonly string[]).includes(p)) ?? [];
 
-function onLogin(res): void {
-	login(res.i);
+function doPost(token: string, decision: 'accept' | 'deny') {
+	const form = document.createElement('form');
+	form.action = '/oauth/decision';
+	form.method = 'post';
+	form.acceptCharset = 'utf-8';
+
+	const loginToken = document.createElement('input');
+	loginToken.type = 'hidden';
+	loginToken.name = 'login_token';
+	loginToken.value = token;
+	form.appendChild(loginToken);
+
+	const transactionId = document.createElement('input');
+	transactionId.type = 'hidden';
+	transactionId.name = 'transaction_id';
+	transactionId.value = transactionIdMeta?.content ?? '';
+	form.appendChild(transactionId);
+
+	if (decision === 'deny') {
+		const cancel = document.createElement('input');
+		cancel.type = 'hidden';
+		cancel.name = 'cancel';
+		cancel.value = 'cancel';
+		form.appendChild(cancel);
+	}
+
+	document.body.appendChild(form);
+	form.submit();
+}
+
+function onAccept(token: string) {
+	doPost(token, 'accept');
+}
+
+function onDeny(token: string) {
+	doPost(token, 'deny');
 }
 
 definePageMetadata(() => ({
@@ -58,15 +80,24 @@ definePageMetadata(() => ({
 </script>
 
 <style lang="scss" module>
-.buttons {
-	margin-top: 16px;
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
+.formContainer {
+	min-height: 100svh;
+	padding: 32px 32px calc(env(safe-area-inset-bottom, 0px) + 32px) 32px;
+	box-sizing: border-box;
+	display: grid;
+	place-content: center;
 }
 
-.loginMessage {
-	text-align: center;
-	margin: 8px 0 24px;
+.form {
+	position: relative;
+	z-index: 10;
+	border-radius: var(--MI-radius);
+	background-color: var(--MI_THEME-panel);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	overflow: clip;
+	max-width: 500px;
+	width: calc(100vw - 64px);
+	height: min(65svh, calc(100svh - calc(env(safe-area-inset-bottom, 0px) + 64px)));
+	overflow-y: scroll;
 }
 </style>

@@ -110,7 +110,7 @@ function addUser() {
 			listId: list.value.id,
 			userId: user.id,
 		}).then(() => {
-			paginationEl.value.reload();
+			paginationEl.value?.reload();
 		});
 	});
 }
@@ -126,7 +126,7 @@ async function removeUser(item, ev) {
 				listId: list.value.id,
 				userId: item.userId,
 			}).then(() => {
-				paginationEl.value.removeItem(item.id);
+				paginationEl.value?.removeItem(item.id);
 			});
 		},
 	}], ev.currentTarget ?? ev.target);

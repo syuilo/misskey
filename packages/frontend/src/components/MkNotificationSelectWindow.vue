@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-const typesMap: TypesMap = notificationTypes.reduce((p, t) => ({ ...p, [t]: ref<boolean>(!props.excludeTypes.includes(t)) }), {} as any);
+const typesMap = notificationTypes.reduce((p, t) => ({ ...p, [t]: ref<boolean>(!props.excludeTypes.includes(t)) }), {} as TypesMap);
 
 function ok() {
 	emit('done', {

@@ -16,12 +16,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import * as Misskey from 'misskey-js';
 import MkTooltip from './MkTooltip.vue';
 
 defineProps<{
 	showing: boolean;
-	users: any[]; // TODO
+	users: Misskey.entities.UserLite[];
 	count: number;
 	targetElement: HTMLElement;
 }>();

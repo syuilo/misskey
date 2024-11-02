@@ -19,13 +19,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import type * as Misskey from 'misskey-js';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { getAccounts, addAccount as addAccounts, removeAccount as _removeAccount, login, $i } from '@/account.js';
+import { getAccounts, removeAccount as _removeAccount, login, $i, getAccountWithSigninDialog, getAccountWithSignupDialog } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -74,27 +74,23 @@ async function removeAccount(account: Misskey.entities.UserDetailed) {
 }
 
 function addExistingAccount() {
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
-		done: async (res: Misskey.entities.SigninFlowResponse & { finished: true }) => {
-			await addAccounts(res.id, res.i);
+	getAccountWithSigninDialog().then((res) => {
+		if (res != null) {
 			os.success();
 			init();
-		},
-		closed: () => dispose(),
+		}
 	});
 }
 
 function createAccount() {
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
-		done: async (res: Misskey.entities.SignupResponse) => {
-			await addAccounts(res.id, res.token);
+	getAccountWithSignupDialog().then((res) => {
+		if (res != null) {
 			switchAccountWithToken(res.token);
-		},
-		closed: () => dispose(),
+		}
 	});
 }
 
-async function switchAccount(account: any) {
+async function switchAccount(account: Misskey.entities.UserDetailed) {
 	const fetchedAccounts = await getAccounts();
 	const token = fetchedAccounts.find(x => x.id === account.id)!.token;
 	switchAccountWithToken(token);

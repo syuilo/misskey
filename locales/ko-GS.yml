@@ -468,7 +468,7 @@ tooShort: "억수로 짜립니다"
 tooLong: "억수로 집니다"
 passwordMatched: "맞십니다"
 passwordNotMatched: "안 맞십니다"
-signinWith: "{n}서 로그인"
+signinWith: "{x} 서 로그인"
 signinFailed: "로그인 몬 했십니다. 고 이름이랑 비밀번호 제대로 썼는가 확인해 주이소."
 or: "아니면"
 language: "언어"
@@ -809,11 +809,13 @@ _notification:
   _types:
     follow: "팔로잉"
     mention: "멘션"
+    renote: "리노트"
     quote: "따오기"
     reaction: "반엉"
     login: "로그인"
   _actions:
     reply: "답하기"
+    renote: "리노트"
 _deck:
   _columns:
     notifications: "알림"

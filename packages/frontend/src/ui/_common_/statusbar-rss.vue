@@ -48,7 +48,7 @@ const fetching = ref(true);
 const key = ref(0);
 
 const tick = () => {
-	window.fetch(`/api/fetch-rss?url=${props.url}`, {}).then(res => {
+	window.fetch(`/api/fetch-rss?url=${encodeURIComponent(props.url)}`, {}).then(res => {
 		res.json().then((feed: Misskey.entities.FetchRssResponse) => {
 			if (props.shuffle) {
 				shuffle(feed.items);
