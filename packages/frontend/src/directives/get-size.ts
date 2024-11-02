@@ -15,6 +15,8 @@ type VGetSize = ObjectDirective<HTMLElement, ((w: number, h: number) => unknown)
 
 export const vGetSize = {
 	async mounted(src, binding) {
+		if (!binding.value) return;
+
 		const resize = new ResizeObserver(() => {
 			calc(src);
 		});
@@ -25,6 +27,7 @@ export const vGetSize = {
 	},
 
 	async unmounted(src, binding) {
+		if (!binding.value) return;
 		binding.value(0, 0);
 		const info = mountings.get(src);
 		if (!info) return;

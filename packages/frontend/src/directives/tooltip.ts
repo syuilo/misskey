@@ -25,7 +25,8 @@ export const vTooltip = {
 
 		const delay = binding.modifiers.noDelay ? 0 : 100;
 
-		const self = (src as any)._tooltipDirective_ = {} as any;
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_ = {} as any;
 
 		self.text = binding.value as string;
 		self._close = null;
@@ -47,7 +48,7 @@ export const vTooltip = {
 				ev.stopPropagation();
 				alert({
 					type: 'info',
-					text: binding.value,
+					text: binding.value ?? '',
 				});
 				return false;
 			});
@@ -105,12 +106,14 @@ export const vTooltip = {
 	},
 
 	async updated(src, binding) {
-		const self = (src as any)._tooltipDirective_;
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_;
 		self.text = binding.value as string;
 	},
 
 	async unmounted(src) {
-		const self = (src as any)._tooltipDirective_;
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_;
 		window.clearInterval(self.checkTimer);
 	},
 } satisfies VTooltip as VTooltip;

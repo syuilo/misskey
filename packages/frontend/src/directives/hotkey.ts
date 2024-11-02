@@ -16,21 +16,29 @@ export const vHotkey = {
 			import('@/scripts/hotkey.js'),
 		]);
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		src._hotkey_global = binding.modifiers.global === true;
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		src._keyHandler = makeHotkey(binding.value);
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		if (src._hotkey_global) {
+			//@ts-expect-error HTMLElementにプロパティを追加している
 			document.addEventListener('keydown', src._keyHandler, { passive: false });
 		} else {
+			//@ts-expect-error HTMLElementにプロパティを追加している
 			src.addEventListener('keydown', src._keyHandler, { passive: false });
 		}
 	},
 
 	async unmounted(src) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		if (src._hotkey_global) {
+			//@ts-expect-error HTMLElementにプロパティを追加している
 			document.removeEventListener('keydown', src._keyHandler);
 		} else {
+			//@ts-expect-error HTMLElementにプロパティを追加している
 			src.removeEventListener('keydown', src._keyHandler);
 		}
 	},

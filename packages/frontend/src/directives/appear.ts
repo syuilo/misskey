@@ -20,10 +20,12 @@ export const vAppear = {
 
 		observer.observe(src);
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		src._observer_ = observer;
 	},
 
 	async unmounted(src) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		src._observer_?.disconnect();
 	},
 } satisfies VAppear as VAppear;

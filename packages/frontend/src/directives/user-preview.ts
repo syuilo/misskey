@@ -22,6 +22,7 @@ export const vUserPreview = {
 	async unmounted(src, binding) {
 		if (binding.value == null) return;
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		const self = src._userPreviewDirective_;
 		self.preview.detach();
 	},
