@@ -22,6 +22,7 @@
 - Fix: デッキのタイムラインカラムで「センシティブなファイルを含むノートを表示」設定が使用できなかった問題を修正
 - Fix: Encode RSS urls with escape sequences before fetching allowing query parameters to be used
 - Fix: リンク切れを修正
+- Fix: 別アカウントを指定してノートを投稿した場合でも自分のアカウントの実績が解除されてしまう問題を修正
 
 ### Server
 - Enhance: 起動前の疎通チェックで、DBとメイン以外のRedisの疎通確認も行うように  

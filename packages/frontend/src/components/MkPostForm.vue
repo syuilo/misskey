@@ -835,17 +835,24 @@ async function post(ev?: MouseEvent) {
 				miLocalStorage.setItem('hashtags', JSON.stringify(unique(hashtags_.concat(history))));
 			}
 			posting.value = false;
-			postAccount.value = null;
 
-			incNotesCount();
-			if (notesCount === 1) {
-				claimAchievement('notes1');
+			const isMe = postAccount.value?.id === $i.id;
+
+			if (isMe) {
+				incNotesCount();
+				if (notesCount === 1) {
+					claimAchievement('notes1');
+				}
+			} else if ((postAccount.value?.notesCount ?? 0) <= 0) {
+				claimAchievement('notes1', token);
 			}
+
+			postAccount.value = null;
 
 			const text = postData.text ?? '';
 			const lowerCase = text.toLowerCase();
 			if ((lowerCase.includes('love') || lowerCase.includes('❤')) && lowerCase.includes('misskey')) {
-				claimAchievement('iLoveMisskey');
+				claimAchievement('iLoveMisskey', token);
 			}
 			if ([
 				'https://youtu.be/Efrlqw8ytg4',
@@ -861,11 +868,11 @@ async function post(ev?: MouseEvent) {
 				'https://open.spotify.com/track/5Odr16TvEN4my22K9nbH7l',
 				'https://open.spotify.com/album/5bOlxyl4igOrp2DwVQxBco',
 			].some(url => text.includes(url))) {
-				claimAchievement('brainDiver');
+				claimAchievement('brainDiver', token);
 			}
 
 			if (props.renote && (props.renote.userId === $i.id) && text.length > 0) {
-				claimAchievement('selfQuote');
+				claimAchievement('selfQuote', token);
 			}
 
 			const date = new Date();
@@ -873,10 +880,10 @@ async function post(ev?: MouseEvent) {
 			const m = date.getMinutes();
 			const s = date.getSeconds();
 			if (h >= 0 && h <= 3) {
-				claimAchievement('postedAtLateNight');
+				claimAchievement('postedAtLateNight', token);
 			}
 			if (m === 0 && s === 0) {
-				claimAchievement('postedAt0min0sec');
+				claimAchievement('postedAt0min0sec', token);
 			}
 		});
 	}).catch(err => {
