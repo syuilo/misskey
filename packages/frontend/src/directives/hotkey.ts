@@ -3,27 +3,43 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Directive } from 'vue';
-import { makeHotkey } from '@/scripts/hotkey.js';
+import type { ObjectDirective } from 'vue';
+import type { Keymap } from '@/scripts/hotkey.js';
 
-export default {
-	mounted(el, binding) {
-		el._hotkey_global = binding.modifiers.global === true;
+type VHotkey = ObjectDirective<HTMLElement, Keymap | null | undefined, 'global'>;
 
-		el._keyHandler = makeHotkey(binding.value);
+export const vHotkey = {
+	async mounted(src, binding) {
+		const [
+			{ makeHotkey },
+		] = await Promise.all([
+			import('@/scripts/hotkey.js'),
+		]);
 
-		if (el._hotkey_global) {
-			document.addEventListener('keydown', el._keyHandler, { passive: false });
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		src._hotkey_global = binding.modifiers.global === true;
+
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		src._keyHandler = makeHotkey(binding.value);
+
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		if (src._hotkey_global) {
+			//@ts-expect-error HTMLElementにプロパティを追加している
+			document.addEventListener('keydown', src._keyHandler, { passive: false });
 		} else {
-			el.addEventListener('keydown', el._keyHandler, { passive: false });
+			//@ts-expect-error HTMLElementにプロパティを追加している
+			src.addEventListener('keydown', src._keyHandler, { passive: false });
 		}
 	},
 
-	unmounted(el) {
-		if (el._hotkey_global) {
-			document.removeEventListener('keydown', el._keyHandler);
+	async unmounted(src) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		if (src._hotkey_global) {
+			//@ts-expect-error HTMLElementにプロパティを追加している
+			document.removeEventListener('keydown', src._keyHandler);
 		} else {
-			el.removeEventListener('keydown', el._keyHandler);
+			//@ts-expect-error HTMLElementにプロパティを追加している
+			src.removeEventListener('keydown', src._keyHandler);
 		}
 	},
-} as Directive;
+} satisfies VHotkey as VHotkey;

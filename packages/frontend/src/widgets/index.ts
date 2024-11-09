@@ -3,40 +3,75 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App, defineAsyncComponent } from 'vue';
+import { type App, defineAsyncComponent } from 'vue';
+
+const WidgetProfile = defineAsyncComponent(() => import('@/widgets/WidgetProfile.vue'));
+const WidgetInstanceInfo = defineAsyncComponent(() => import('@/widgets/WidgetInstanceInfo.vue'));
+const WidgetMemo = defineAsyncComponent(() => import('@/widgets/WidgetMemo.vue'));
+const WidgetNotifications = defineAsyncComponent(() => import('@/widgets/WidgetNotifications.vue'));
+const WidgetTimeline = defineAsyncComponent(() => import('@/widgets/WidgetTimeline.vue'));
+const WidgetCalendar = defineAsyncComponent(() => import('@/widgets/WidgetCalendar.vue'));
+const WidgetRss = defineAsyncComponent(() => import('@/widgets/WidgetRss.vue'));
+const WidgetRssTicker = defineAsyncComponent(() => import('@/widgets/WidgetRssTicker.vue'));
+const WidgetTrends = defineAsyncComponent(() => import('@/widgets/WidgetTrends.vue'));
+const WidgetClock = defineAsyncComponent(() => import('@/widgets/WidgetClock.vue'));
+const WidgetActivity = defineAsyncComponent(() => import('@/widgets/WidgetActivity.vue'));
+const WidgetPhotos = defineAsyncComponent(() => import('@/widgets/WidgetPhotos.vue'));
+const WidgetDigitalClock = defineAsyncComponent(() => import('@/widgets/WidgetDigitalClock.vue'));
+const WidgetUnixClock = defineAsyncComponent(() => import('@/widgets/WidgetUnixClock.vue'));
+const WidgetFederation = defineAsyncComponent(() => import('@/widgets/WidgetFederation.vue'));
+const WidgetInstanceCloud = defineAsyncComponent(() => import('@/widgets/WidgetInstanceCloud.vue'));
+const WidgetPostForm = defineAsyncComponent(() => import('@/widgets/WidgetPostForm.vue'));
+const WidgetSlideshow = defineAsyncComponent(() => import('@/widgets/WidgetSlideshow.vue'));
+const WidgetServerMetric = defineAsyncComponent(() => import('@/widgets/server-metric/index.vue'));
+const WidgetOnlineUsers = defineAsyncComponent(() => import('@/widgets/WidgetOnlineUsers.vue'));
+const WidgetJobQueue = defineAsyncComponent(() => import('@/widgets/WidgetJobQueue.vue'));
+const WidgetButton = defineAsyncComponent(() => import('@/widgets/WidgetButton.vue'));
+const WidgetAiscript = defineAsyncComponent(() => import('@/widgets/WidgetAiscript.vue'));
+const WidgetAiscriptApp = defineAsyncComponent(() => import('@/widgets/WidgetAiscriptApp.vue'));
+const WidgetAichan = defineAsyncComponent(() => import('@/widgets/WidgetAichan.vue'));
+const WidgetUserList = defineAsyncComponent(() => import('@/widgets/WidgetUserList.vue'));
+const WidgetClicker = defineAsyncComponent(() => import('@/widgets/WidgetClicker.vue'));
+const WidgetBirthdayFollowings = defineAsyncComponent(() => import('@/widgets/WidgetBirthdayFollowings.vue'));
 
 export default function(app: App) {
-	app.component('WidgetProfile', defineAsyncComponent(() => import('./WidgetProfile.vue')));
-	app.component('WidgetInstanceInfo', defineAsyncComponent(() => import('./WidgetInstanceInfo.vue')));
-	app.component('WidgetMemo', defineAsyncComponent(() => import('./WidgetMemo.vue')));
-	app.component('WidgetNotifications', defineAsyncComponent(() => import('./WidgetNotifications.vue')));
-	app.component('WidgetTimeline', defineAsyncComponent(() => import('./WidgetTimeline.vue')));
-	app.component('WidgetCalendar', defineAsyncComponent(() => import('./WidgetCalendar.vue')));
-	app.component('WidgetRss', defineAsyncComponent(() => import('./WidgetRss.vue')));
-	app.component('WidgetRssTicker', defineAsyncComponent(() => import('./WidgetRssTicker.vue')));
-	app.component('WidgetTrends', defineAsyncComponent(() => import('./WidgetTrends.vue')));
-	app.component('WidgetClock', defineAsyncComponent(() => import('./WidgetClock.vue')));
-	app.component('WidgetActivity', defineAsyncComponent(() => import('./WidgetActivity.vue')));
-	app.component('WidgetPhotos', defineAsyncComponent(() => import('./WidgetPhotos.vue')));
-	app.component('WidgetDigitalClock', defineAsyncComponent(() => import('./WidgetDigitalClock.vue')));
-	app.component('WidgetUnixClock', defineAsyncComponent(() => import('./WidgetUnixClock.vue')));
-	app.component('WidgetFederation', defineAsyncComponent(() => import('./WidgetFederation.vue')));
-	app.component('WidgetPostForm', defineAsyncComponent(() => import('./WidgetPostForm.vue')));
-	app.component('WidgetSlideshow', defineAsyncComponent(() => import('./WidgetSlideshow.vue')));
-	app.component('WidgetServerMetric', defineAsyncComponent(() => import('./server-metric/index.vue')));
-	app.component('WidgetOnlineUsers', defineAsyncComponent(() => import('./WidgetOnlineUsers.vue')));
-	app.component('WidgetJobQueue', defineAsyncComponent(() => import('./WidgetJobQueue.vue')));
-	app.component('WidgetInstanceCloud', defineAsyncComponent(() => import('./WidgetInstanceCloud.vue')));
-	app.component('WidgetButton', defineAsyncComponent(() => import('./WidgetButton.vue')));
-	app.component('WidgetAiscript', defineAsyncComponent(() => import('./WidgetAiscript.vue')));
-	app.component('WidgetAiscriptApp', defineAsyncComponent(() => import('./WidgetAiscriptApp.vue')));
-	app.component('WidgetAichan', defineAsyncComponent(() => import('./WidgetAichan.vue')));
-	app.component('WidgetUserList', defineAsyncComponent(() => import('./WidgetUserList.vue')));
-	app.component('WidgetClicker', defineAsyncComponent(() => import('./WidgetClicker.vue')));
-	app.component('WidgetBirthdayFollowings', defineAsyncComponent(() => import('./WidgetBirthdayFollowings.vue')));
+	for (const [key, value] of Object.entries(widgets)) {
+		app.component(key, value);
+	}
 }
 
-export const widgets = [
+const widgets = {
+	WidgetProfile,
+	WidgetInstanceInfo,
+	WidgetMemo,
+	WidgetNotifications,
+	WidgetTimeline,
+	WidgetCalendar,
+	WidgetRss,
+	WidgetRssTicker,
+	WidgetTrends,
+	WidgetClock,
+	WidgetActivity,
+	WidgetPhotos,
+	WidgetDigitalClock,
+	WidgetUnixClock,
+	WidgetFederation,
+	WidgetInstanceCloud,
+	WidgetPostForm,
+	WidgetSlideshow,
+	WidgetServerMetric,
+	WidgetOnlineUsers,
+	WidgetJobQueue,
+	WidgetButton,
+	WidgetAiscript,
+	WidgetAiscriptApp,
+	WidgetAichan,
+	WidgetUserList,
+	WidgetClicker,
+	WidgetBirthdayFollowings,
+} as const;
+
+export const widgetDefs = [
 	'profile',
 	'instanceInfo',
 	'memo',
@@ -65,4 +100,37 @@ export const widgets = [
 	'userList',
 	'clicker',
 	'birthdayFollowings',
-];
+] as const;
+
+declare module '@vue/runtime-core' {
+	export interface GlobalComponents {
+		WidgetProfile: typeof WidgetProfile;
+		WidgetInstanceInfo: typeof WidgetInstanceInfo;
+		WidgetMemo: typeof WidgetMemo;
+		WidgetNotifications: typeof WidgetNotifications;
+		WidgetTimeline: typeof WidgetTimeline;
+		WidgetCalendar: typeof WidgetCalendar;
+		WidgetRss: typeof WidgetRss;
+		WidgetRssTicker: typeof WidgetRssTicker;
+		WidgetTrends: typeof WidgetTrends;
+		WidgetClock: typeof WidgetClock;
+		WidgetActivity: typeof WidgetActivity;
+		WidgetPhotos: typeof WidgetPhotos;
+		WidgetDigitalClock: typeof WidgetDigitalClock;
+		WidgetUnixClock: typeof WidgetUnixClock;
+		WidgetFederation: typeof WidgetFederation;
+		WidgetInstanceCloud: typeof WidgetInstanceCloud;
+		WidgetPostForm: typeof WidgetPostForm;
+		WidgetSlideshow: typeof WidgetSlideshow;
+		WidgetServerMetric: typeof WidgetServerMetric;
+		WidgetOnlineUsers: typeof WidgetOnlineUsers;
+		WidgetJobQueue: typeof WidgetJobQueue;
+		WidgetButton: typeof WidgetButton;
+		WidgetAiscript: typeof WidgetAiscript;
+		WidgetAiscriptApp: typeof WidgetAiscriptApp;
+		WidgetAichan: typeof WidgetAichan;
+		WidgetUserList: typeof WidgetUserList;
+		WidgetClicker: typeof WidgetClicker;
+		WidgetBirthdayFollowings: typeof WidgetBirthdayFollowings;
+	}
+}

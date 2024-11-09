@@ -6,18 +6,27 @@
 // TODO: useTooltip関数使うようにしたい
 // ただディレクティブ内でonUnmountedなどのcomposition api使えるのか不明
 
-import { defineAsyncComponent, Directive, ref } from 'vue';
-import { isTouchUsing } from '@/scripts/touch.js';
-import { popup, alert } from '@/os.js';
+import { type ObjectDirective, defineAsyncComponent, ref } from 'vue';
 
-const start = isTouchUsing ? 'touchstart' : 'mouseenter';
-const end = isTouchUsing ? 'touchend' : 'mouseleave';
+type VTooltip = ObjectDirective<HTMLElement, string | null | undefined, 'noDelay' | 'mfm' | 'top' | 'right' | 'bottom' | 'left', 'dialog'>;
 
-export default {
-	mounted(el: HTMLElement, binding, vn) {
+export const vTooltip = {
+	async mounted(src, binding) {
+		const [
+			{ alert, popup },
+			{ isTouchUsing },
+		] = await Promise.all([
+			import('@/os.js'),
+			import('@/scripts/touch.js'),
+		]);
+
+		const start = isTouchUsing ? 'touchstart' : 'mouseenter';
+		const end = isTouchUsing ? 'touchend' : 'mouseleave';
+
 		const delay = binding.modifiers.noDelay ? 0 : 100;
 
-		const self = (el as any)._tooltipDirective_ = {} as any;
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_ = {} as any;
 
 		self.text = binding.value as string;
 		self._close = null;
@@ -34,19 +43,19 @@ export default {
 		};
 
 		if (binding.arg === 'dialog') {
-			el.addEventListener('click', (ev) => {
+			src.addEventListener('click', (ev) => {
 				ev.preventDefault();
 				ev.stopPropagation();
 				alert({
 					type: 'info',
-					text: binding.value,
+					text: binding.value ?? '',
 				});
 				return false;
 			});
 		}
 
 		self.show = () => {
-			if (!document.body.contains(el)) return;
+			if (!document.body.contains(src)) return;
 			if (self._close) return;
 			if (self.text == null) return;
 
@@ -56,7 +65,7 @@ export default {
 				text: self.text,
 				asMfm: binding.modifiers.mfm,
 				direction: binding.modifiers.left ? 'left' : binding.modifiers.right ? 'right' : binding.modifiers.top ? 'top' : binding.modifiers.bottom ? 'bottom' : 'top',
-				targetElement: el,
+				targetElement: src,
 			}, {
 				closed: () => dispose(),
 			});
@@ -66,13 +75,13 @@ export default {
 			};
 		};
 
-		el.addEventListener('selectstart', ev => {
+		src.addEventListener('selectstart', (ev) => {
 			ev.preventDefault();
 		});
 
-		el.addEventListener(start, (ev) => {
-			window.clearTimeout(self.showTimer);
-			window.clearTimeout(self.hideTimer);
+		src.addEventListener(start, () => {
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
+			if (self.hideTimer != null) window.clearTimeout(self.hideTimer);
 			if (delay === 0) {
 				self.show();
 			} else {
@@ -80,9 +89,9 @@ export default {
 			}
 		}, { passive: true });
 
-		el.addEventListener(end, () => {
-			window.clearTimeout(self.showTimer);
-			window.clearTimeout(self.hideTimer);
+		src.addEventListener(end, () => {
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
+			if (self.hideTimer != null) window.clearTimeout(self.hideTimer);
 			if (delay === 0) {
 				self.close();
 			} else {
@@ -90,19 +99,21 @@ export default {
 			}
 		}, { passive: true });
 
-		el.addEventListener('click', () => {
-			window.clearTimeout(self.showTimer);
+		src.addEventListener('click', () => {
+			if (self.showTimer != null) window.clearTimeout(self.showTimer);
 			self.close();
 		});
 	},
 
-	updated(el, binding) {
-		const self = el._tooltipDirective_;
+	async updated(src, binding) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_;
 		self.text = binding.value as string;
 	},
 
-	unmounted(el, binding, vn) {
-		const self = el._tooltipDirective_;
-		window.clearInterval(self.checkTimer);
+	async unmounted(src) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		const self = src._tooltipDirective_;
+		if (self.checkTimer != null) window.clearInterval(self.checkTimer);
 	},
-} as Directive;
+} satisfies VTooltip as VTooltip;

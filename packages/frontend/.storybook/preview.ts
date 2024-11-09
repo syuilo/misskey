@@ -64,13 +64,13 @@ initialize({
 initLocalStorage();
 queueMicrotask(() => {
 	Promise.all([
-		import('../src/components'),
-		import('../src/directives'),
-		import('../src/widgets'),
-		import('../src/scripts/theme'),
-		import('../src/store'),
-		import('../src/os'),
-	]).then(([{ default: components }, { default: directives }, { default: widgets }, { applyTheme }, { defaultStore }, os]) => {
+		import('../src/directives/index.js'),
+		import('../src/components/index.js'),
+		import('../src/widgets/index.js'),
+		import('../src/scripts/theme.js'),
+		import('../src/store.js'),
+		import('../src/os.js'),
+	]).then(([{ default: directives }, { default: components }, { default: widgets }, { applyTheme }, { defaultStore }, os]) => {
 		setup((app) => {
 			moduleInitialized = true;
 			if (app[appInitialized]) {
@@ -78,8 +78,8 @@ queueMicrotask(() => {
 			}
 			app[appInitialized] = true;
 			loadTheme(applyTheme);
-			components(app);
 			directives(app);
+			components(app);
 			widgets(app);
 			misskeyOS = os;
 			if (isChromatic()) {

@@ -3,25 +3,29 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Directive } from 'vue';
+import type { ObjectDirective } from 'vue';
 
-export default {
-	mounted(src, binding, vn) {
+type VAppear = ObjectDirective<HTMLElement, (() => unknown) | null | undefined>;
+
+export const vAppear = {
+	async mounted(src, binding) {
 		const fn = binding.value;
 		if (fn == null) return;
 
-		const observer = new IntersectionObserver(entries => {
-			if (entries.some(entry => entry.isIntersecting)) {
+		const observer = new IntersectionObserver((entries) => {
+			if (entries.some((entry) => entry.isIntersecting)) {
 				fn();
 			}
 		});
 
 		observer.observe(src);
 
+		//@ts-expect-error HTMLElementにプロパティを追加している
 		src._observer_ = observer;
 	},
 
-	unmounted(src, binding, vn) {
-		if (src._observer_) src._observer_.disconnect();
+	async unmounted(src) {
+		//@ts-expect-error HTMLElementにプロパティを追加している
+		src._observer_?.disconnect();
 	},
-} as Directive;
+} satisfies VAppear as VAppear;
