@@ -37,6 +37,8 @@
 - Fix: メールアドレス登録有効化時の「完了」ダイアログボックスの表示条件を修正
 - Fix: 画面幅が狭い環境でデザインが崩れる問題を修正  
 	(Cherry-picked from https://github.com/MisskeyIO/misskey/pull/815)
+- Fix: リアルタイム通信の接続が瞬間的に切れた際には再接続を促すダイアログが表示されないように  
+  (Cherry-picked from https://github.com/MisskeyIO/misskey/pull/172)
 
 ### Server
 - Enhance: DockerのNode.jsを22.11.0に更新
