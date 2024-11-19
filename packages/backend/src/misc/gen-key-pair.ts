@@ -3,39 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as crypto from 'node:crypto';
-import * as util from 'node:util';
+import { genEd25519KeyPair, genRsaKeyPair } from '@misskey-dev/node-http-message-signatures';
 
-const generateKeyPair = util.promisify(crypto.generateKeyPair);
-
-export async function genRsaKeyPair(modulusLength = 2048) {
-	return await generateKeyPair('rsa', {
-		modulusLength,
-		publicKeyEncoding: {
-			type: 'spki',
-			format: 'pem',
-		},
-		privateKeyEncoding: {
-			type: 'pkcs8',
-			format: 'pem',
-			cipher: undefined,
-			passphrase: undefined,
-		},
-	});
-}
-
-export async function genEcKeyPair(namedCurve: 'prime256v1' | 'secp384r1' | 'secp521r1' | 'curve25519' = 'prime256v1') {
-	return await generateKeyPair('ec', {
-		namedCurve,
-		publicKeyEncoding: {
-			type: 'spki',
-			format: 'pem',
-		},
-		privateKeyEncoding: {
-			type: 'pkcs8',
-			format: 'pem',
-			cipher: undefined,
-			passphrase: undefined,
-		},
-	});
+export async function genRSAAndEd25519KeyPair(rsaModulusLength = 4096) {
+	const [rsa, ed25519] = await Promise.all([genRsaKeyPair(rsaModulusLength), genEd25519KeyPair()]);
+	return {
+		publicKey: rsa.publicKey,
+		privateKey: rsa.privateKey,
+		ed25519PublicKey: ed25519.publicKey,
+		ed25519PrivateKey: ed25519.privateKey,
+	};
 }

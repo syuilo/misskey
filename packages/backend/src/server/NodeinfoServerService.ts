@@ -94,6 +94,13 @@ export class NodeinfoServerService {
 					localComments: 0,
 				},
 				metadata: {
+					/**
+					 * '00': Draft, RSA only
+					 * '01': Draft, Ed25519 suported
+					 * '11': RFC 9421, Ed25519 supported
+					 */
+					httpMessageSignaturesImplementationLevel: '01',
+
 					nodeName: meta.name,
 					nodeDescription: meta.description,
 					nodeAdmins: [{

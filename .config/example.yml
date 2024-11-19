@@ -254,15 +254,15 @@ id: 'aidx'
 #clusterLimit: 1
 
 # Job concurrency per worker
-#deliverJobConcurrency: 128
-#inboxJobConcurrency: 16
+#deliverJobConcurrency: 16
+#inboxJobConcurrency: 4
 #relationshipJobConcurrency: 16
 # What's relationshipJob?:
 #  Follow, unfollow, block and unblock(ings) while following-imports, etc. or account migrations.
 
 # Job rate limiter
-#deliverJobPerSec: 128
-#inboxJobPerSec: 32
+#deliverJobPerSec: 1024
+#inboxJobPerSec: 64
 #relationshipJobPerSec: 64
 
 # Job attempts

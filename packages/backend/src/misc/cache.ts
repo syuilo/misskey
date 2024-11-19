@@ -238,6 +238,11 @@ export class MemoryKVCache<T> {
 	}
 
 	@bindThis
+	public getRaw(key: string): { date: number; value: T; } | undefined {
+		return this.cache.get(key);
+	}
+
+	@bindThis
 	public delete(key: string): void {
 		this.cache.delete(key);
 	}

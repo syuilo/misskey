@@ -14,6 +14,7 @@ import type { InstanceActorService } from '@/core/InstanceActorService.js';
 import type { LoggerService } from '@/core/LoggerService.js';
 import type { MetaService } from '@/core/MetaService.js';
 import type { UtilityService } from '@/core/UtilityService.js';
+import type { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { bindThis } from '@/decorators.js';
 import type {
 	FollowRequestsRepository,
@@ -48,6 +49,7 @@ export class MockResolver extends Resolver {
 			{} as HttpRequestService,
 			{} as ApRendererService,
 			{} as ApDbResolverService,
+			{} as FederatedInstanceService,
 			loggerService,
 		);
 	}

@@ -158,4 +158,9 @@ export class MiInstance {
 		length: 16384, default: '',
 	})
 	public moderationNote: string;
+
+	@Column('varchar', {
+		length: 16, default: '00', nullable: false,
+	})
+	public httpMessageSignaturesImplementationLevel: string;
 }

@@ -8,6 +8,11 @@ export const MAX_NOTE_TEXT_LENGTH = 3000;
 export const USER_ONLINE_THRESHOLD = 1000 * 60 * 10; // 10min
 export const USER_ACTIVE_THRESHOLD = 1000 * 60 * 60 * 24 * 3; // 3days
 
+export const REMOTE_USER_CACHE_TTL = 1000 * 60 * 60 * 3; // 3hours
+export const REMOTE_USER_MOVE_COOLDOWN = 1000 * 60 * 60 * 24 * 14; // 14days
+
+export const REMOTE_SERVER_CACHE_TTL = 1000 * 60 * 60 * 3; // 3hours
+
 export const PER_NOTE_REACTION_USER_PAIR_CACHE_MAX = 16;
 
 //#region hard limits

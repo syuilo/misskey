@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
 import { IsNull, DataSource } from 'typeorm';
-import { genRsaKeyPair } from '@/misc/gen-key-pair.js';
+import { genRSAAndEd25519KeyPair } from '@/misc/gen-key-pair.js';
 import { MiUser } from '@/models/User.js';
 import { MiUserProfile } from '@/models/UserProfile.js';
 import { IdService } from '@/core/IdService.js';
@@ -38,7 +38,7 @@ export class CreateSystemUserService {
 		// Generate secret
 		const secret = generateNativeUserToken();
 
-		const keyPair = await genRsaKeyPair();
+		const keyPair = await genRSAAndEd25519KeyPair();
 
 		let account!: MiUser;
 
@@ -64,9 +64,8 @@ export class CreateSystemUserService {
 			}).then(x => transactionalEntityManager.findOneByOrFail(MiUser, x.identifiers[0]));
 
 			await transactionalEntityManager.insert(MiUserKeypair, {
-				publicKey: keyPair.publicKey,
-				privateKey: keyPair.privateKey,
 				userId: account.id,
+				...keyPair,
 			});
 
 			await transactionalEntityManager.insert(MiUserProfile, {

@@ -72,34 +72,35 @@ export class DeliverProcessorService {
 		}
 
 		try {
-			await this.apRequestService.signedPost(job.data.user, job.data.to, job.data.content, job.data.digest);
+			const server = await (this.meta.enableStatsForFederatedInstances
+				? this.federatedInstanceService.fetchOrRegister(host)
+				: this.federatedInstanceService.fetch(host));
 
+			await this.apRequestService.signedPost(
+				job.data.user,
+				job.data.to,
+				job.data.content,
+				server?.httpMessageSignaturesImplementationLevel ?? '00',
+				job.data.digest,
+				job.data.privateKey,
+			);
+
+			// Update stats
 			this.apRequestChart.deliverSucc();
 			this.federationChart.deliverd(host, true);
 
-			// Update instance stats
-			process.nextTick(async () => {
-				const i = await (this.meta.enableStatsForFederatedInstances
-					? this.federatedInstanceService.fetchOrRegister(host)
-					: this.federatedInstanceService.fetch(host));
+			if (server == null) return 'Success';
 
-				if (i == null) return;
+			if (server.isNotResponding) {
+				this.federatedInstanceService.update(server.id, {
+					isNotResponding: false,
+					notRespondingSince: null,
+				});
+			}
 
-				if (i.isNotResponding) {
-					this.federatedInstanceService.update(i.id, {
-						isNotResponding: false,
-						notRespondingSince: null,
-					});
-				}
-
-				if (this.meta.enableStatsForFederatedInstances) {
-					this.fetchInstanceMetadataService.fetchInstanceMetadata(i);
-				}
-
-				if (this.meta.enableChartsForFederatedInstances) {
-					this.instanceChart.requestSent(i.host, true);
-				}
-			});
+			if (this.meta.enableChartsForFederatedInstances) {
+				this.instanceChart.requestSent(server.host, true);
+			}
 
 			return 'Success';
 		} catch (res) {
@@ -134,6 +135,11 @@ export class DeliverProcessorService {
 			});
 
 			if (res instanceof StatusError) {
+				if (res.statusCode === 401) {
+					// 401 Unauthorized: this may be caused by a time difference between the server and the target server.
+					// Let the job be retried.
+					throw new Error(`${res.statusCode} ${res.statusMessage}\n* 401 may be caused by a time difference between the server and the target server.`);
+				}
 				// 4xx
 				if (!res.isRetryable) {
 					// 相手が閉鎖していることを明示しているため、配送停止する

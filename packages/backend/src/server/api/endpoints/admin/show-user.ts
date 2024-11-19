@@ -11,6 +11,9 @@ import { RoleService } from '@/core/RoleService.js';
 import { RoleEntityService } from '@/core/entities/RoleEntityService.js';
 import { IdService } from '@/core/IdService.js';
 import { notificationRecieveConfig } from '@/models/json-schema/user.js';
+import { ApDbResolverService } from '@/core/activitypub/ApDbResolverService.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
+import { UserKeypairService } from '@/core/UserKeypairService.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -176,6 +179,53 @@ export const meta = {
 					},
 				},
 			},
+			publicKeys: {
+				type: 'array',
+				optional: false, nullable: true,
+				items: {
+					type: 'object',
+					properties: {
+						userId: {
+							type: 'string',
+							optional: false, nullable: false,
+						},
+						keyId: {
+							type: 'string',
+							optional: false, nullable: false,
+						},
+						keyPem: {
+							type: 'string',
+							optional: false, nullable: false,
+						},
+					},
+				},
+			},
+			keyPairs: {
+				type: 'object',
+				optional: false, nullable: true,
+				properties: {
+					userId: {
+						type: 'string',
+						optional: false, nullable: false,
+					},
+					publicKey: {
+						type: 'string',
+						optional: false, nullable: false,
+					},
+					privateKey: {
+						type: 'string',
+						optional: false, nullable: false,
+					},
+					ed25519PublicKey: {
+						type: 'string',
+						optional: false, nullable: true,
+					},
+					ed25519PrivateKey: {
+						type: 'string',
+						optional: false, nullable: true,
+					},
+				},
+			},
 		},
 	},
 } as const;
@@ -203,6 +253,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private roleService: RoleService,
 		private roleEntityService: RoleEntityService,
 		private idService: IdService,
+		private apDbResolverService: ApDbResolverService,
+		private userEntityService: UserEntityService,
+		private userKeypairService: UserKeypairService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const [user, profile] = await Promise.all([
@@ -256,6 +309,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					expiresAt: a.expiresAt ? a.expiresAt.toISOString() : null,
 					roleId: a.roleId,
 				})),
+				publicKeys: this.userEntityService.isRemoteUser(user) ? await this.apDbResolverService.getPublicKeyByUserId(user.id) : null,
+				keyPairs: this.userEntityService.isLocalUser(user) ? await this.userKeypairService.getUserKeypair(user.id) : null,
 			};
 		});
 	}

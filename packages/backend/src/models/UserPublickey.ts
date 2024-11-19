@@ -9,7 +9,13 @@ import { MiUser } from './User.js';
 
 @Entity('user_publickey')
 export class MiUserPublickey {
-	@PrimaryColumn(id())
+	@PrimaryColumn('varchar', {
+		length: 256,
+	})
+	public keyId: string;
+
+	@Index()
+	@Column(id())
 	public userId: MiUser['id'];
 
 	@OneToOne(type => MiUser, {
@@ -17,12 +23,6 @@ export class MiUserPublickey {
 	})
 	@JoinColumn()
 	public user: MiUser | null;
-
-	@Index({ unique: true })
-	@Column('varchar', {
-		length: 256,
-	})
-	public keyId: string;
 
 	@Column('varchar', {
 		length: 4096,

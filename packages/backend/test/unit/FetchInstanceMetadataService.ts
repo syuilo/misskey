@@ -75,62 +75,61 @@ describe('FetchInstanceMetadataService', () => {
 	test('Lock and update', async () => {
 		redisClient.set = mockRedis();
 		const now = Date.now();
-		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: { getTime: () => { return now - 10 * 1000 * 60 * 60 * 24; } } } as any);
+		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: new Date(now - 10 * 1000 * 60 * 60 * 24) } as any);
 		httpRequestService.getJson.mockImplementation(() => { throw Error(); });
 		const tryLockSpy = jest.spyOn(fetchInstanceMetadataService, 'tryLock');
 		const unlockSpy = jest.spyOn(fetchInstanceMetadataService, 'unlock');
 
 		await fetchInstanceMetadataService.fetchInstanceMetadata({ host: 'example.com' } as any);
+		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(1);
 		expect(tryLockSpy).toHaveBeenCalledTimes(1);
 		expect(unlockSpy).toHaveBeenCalledTimes(1);
-		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(1);
 		expect(httpRequestService.getJson).toHaveBeenCalled();
 	});
 
-	test('Lock and don\'t update', async () => {
+	test('Don\'t lock and update if recently updated', async () => {
 		redisClient.set = mockRedis();
-		const now = Date.now();
-		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: { getTime: () => now } } as any);
+		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: new Date() } as any);
 		httpRequestService.getJson.mockImplementation(() => { throw Error(); });
 		const tryLockSpy = jest.spyOn(fetchInstanceMetadataService, 'tryLock');
 		const unlockSpy = jest.spyOn(fetchInstanceMetadataService, 'unlock');
 
 		await fetchInstanceMetadataService.fetchInstanceMetadata({ host: 'example.com' } as any);
-		expect(tryLockSpy).toHaveBeenCalledTimes(1);
-		expect(unlockSpy).toHaveBeenCalledTimes(1);
 		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(1);
+		expect(tryLockSpy).toHaveBeenCalledTimes(0);
+		expect(unlockSpy).toHaveBeenCalledTimes(0);
 		expect(httpRequestService.getJson).toHaveBeenCalledTimes(0);
 	});
 
 	test('Do nothing when lock not acquired', async () => {
 		redisClient.set = mockRedis();
 		const now = Date.now();
-		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: { getTime: () => now - 10 * 1000 * 60 * 60 * 24 } } as any);
+		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: new Date(now - 10 * 1000 * 60 * 60 * 24) } as any);
 		httpRequestService.getJson.mockImplementation(() => { throw Error(); });
 		await fetchInstanceMetadataService.tryLock('example.com');
 		const tryLockSpy = jest.spyOn(fetchInstanceMetadataService, 'tryLock');
 		const unlockSpy = jest.spyOn(fetchInstanceMetadataService, 'unlock');
 
 		await fetchInstanceMetadataService.fetchInstanceMetadata({ host: 'example.com' } as any);
+		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(1);
 		expect(tryLockSpy).toHaveBeenCalledTimes(1);
 		expect(unlockSpy).toHaveBeenCalledTimes(0);
-		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(0);
 		expect(httpRequestService.getJson).toHaveBeenCalledTimes(0);
 	});
 
-	test('Do when lock not acquired but forced', async () => {
+	test('Do when forced', async () => {
 		redisClient.set = mockRedis();
 		const now = Date.now();
-		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: { getTime: () => now - 10 * 1000 * 60 * 60 * 24 } } as any);
+		federatedInstanceService.fetchOrRegister.mockResolvedValue({ infoUpdatedAt: new Date(now - 10 * 1000 * 60 * 60 * 24) } as any);
 		httpRequestService.getJson.mockImplementation(() => { throw Error(); });
 		await fetchInstanceMetadataService.tryLock('example.com');
 		const tryLockSpy = jest.spyOn(fetchInstanceMetadataService, 'tryLock');
 		const unlockSpy = jest.spyOn(fetchInstanceMetadataService, 'unlock');
 
 		await fetchInstanceMetadataService.fetchInstanceMetadata({ host: 'example.com' } as any, true);
+		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(0);
 		expect(tryLockSpy).toHaveBeenCalledTimes(0);
 		expect(unlockSpy).toHaveBeenCalledTimes(1);
-		expect(federatedInstanceService.fetchOrRegister).toHaveBeenCalledTimes(0);
 		expect(httpRequestService.getJson).toHaveBeenCalled();
 	});
 });
