@@ -57,7 +57,7 @@
 		"ignore-walk": "6.0.5",
 		"js-yaml": "4.1.0",
 		"postcss": "8.4.49",
-		"tar": "6.2.1",
+		"tar": "7.4.3",
 		"terser": "5.36.0",
 		"typescript": "5.6.3",
 		"esbuild": "0.24.0",
