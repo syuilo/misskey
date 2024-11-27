@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkA>
 	</div>
 	<div :class="$style.bottom">
-		<button class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
+		<button class="_button" :class="$style.post" data-cy-open-post-form @click="post">
 			<i :class="$style.postIcon" class="ti ti-pencil ti-fw"></i><span style="position: relative;">{{ i18n.ts.note }}</span>
 		</button>
 		<button class="_button" :class="$style.account" @click="openAccountMenu">
@@ -57,7 +57,10 @@ import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+import { useRouter } from '@/router/supplier.js';
+import { postButtonHandler } from '@/scripts/post-button-handler.js';
 
+const router = useRouter();
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
 	for (const def in navbarItemDef) {
@@ -77,6 +80,10 @@ function more() {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {}, {
 		closed: () => dispose(),
 	});
+}
+
+function post() {
+	postButtonHandler(router.currentRef.value);
 }
 </script>
 

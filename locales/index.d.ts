@@ -8799,6 +8799,18 @@ export interface Locale extends ILocale {
          */
         "specifiedDescription": string;
         /**
+         * チャンネル
+         */
+        "channel": string;
+        /**
+         * 選択したチャンネルに公開
+         */
+        "channelDescription": string;
+        /**
+         * 選択中:{name}
+         */
+        "channelSelected": ParameterizedString<"name">;
+        /**
          * 連合なし
          */
         "disableFederation": string;

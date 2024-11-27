@@ -332,6 +332,7 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/channel-editor.vue')),
 	loginRequired: true,
 }, {
+	name: 'channel',
 	path: '/channels/:channelId',
 	component: page(() => import('@/pages/channel.vue')),
 }, {

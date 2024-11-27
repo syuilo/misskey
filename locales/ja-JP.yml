@@ -2314,6 +2314,9 @@ _visibility:
   followersDescription: "自分のフォロワーのみに公開"
   specified: "ダイレクト"
   specifiedDescription: "指定したユーザーのみに公開"
+  channel: "チャンネル"
+  channelDescription: "選択したチャンネルに公開"
+  channelSelected: "選択中:{name}"
   disableFederation: "連合なし"
   disableFederationDescription: "他サーバーへの配信を行いません"
 
