@@ -246,8 +246,8 @@ importers:
         specifier: 14.4.4
         version: 14.4.4
       happy-dom:
-        specifier: 15.11.4
-        version: 15.11.4
+        specifier: 15.10.2
+        version: 15.10.2
       hpagent:
         specifier: 1.2.0
         version: 1.2.0
@@ -729,7 +729,7 @@ importers:
         version: 3.5.12
       aiscript-vscode:
         specifier: github:aiscript-dev/aiscript-vscode#v0.1.11
-        version: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9
+        version: git+https://git@github.com:aiscript-dev/aiscript-vscode.git#e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9
       astring:
         specifier: 1.9.0
         version: 1.9.0
@@ -967,7 +967,7 @@ importers:
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))
       '@vue/runtime-core':
         specifier: 3.5.12
         version: 3.5.12
@@ -990,8 +990,8 @@ importers:
         specifier: 3.3.2
         version: 3.3.2
       happy-dom:
-        specifier: 10.0.3
-        version: 10.0.3
+        specifier: 15.10.2
+        version: 15.10.2
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
@@ -1027,16 +1027,16 @@ importers:
         version: 8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)
       storybook-addon-misskey-theme:
         specifier: github:misskey-dev/storybook-addon-misskey-theme
-        version: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       vite-plugin-turbosnap:
         specifier: 1.0.3
         version: 1.0.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
+        version: 1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
       vitest-fetch-mock:
         specifier: 0.2.2
-        version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))
+        version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))
       vue-component-type-helpers:
         specifier: 2.1.10
         version: 2.1.10
@@ -1163,7 +1163,7 @@ importers:
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))
       '@vue/runtime-core':
         specifier: 3.5.12
         version: 3.5.12
@@ -1183,8 +1183,8 @@ importers:
         specifier: 3.3.2
         version: 3.3.2
       happy-dom:
-        specifier: 10.0.3
-        version: 10.0.3
+        specifier: 15.10.2
+        version: 15.10.2
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
@@ -4935,8 +4935,8 @@ packages:
     resolution: {integrity: sha512-gOsf2YwSlleG6IjRYG2A7k0HmBMEo6qVNk9Bp/EaLgAJT5ngH6PXbqa4ItvnEwCm/velL5jAnQgsHsWnjhGmvw==}
     engines: {node: '>=18'}
 
-  aiscript-vscode@https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9:
-    resolution: {tarball: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9}
+  aiscript-vscode@git+https://git@github.com:aiscript-dev/aiscript-vscode.git#e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9:
+    resolution: {commit: e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9, repo: git@github.com:aiscript-dev/aiscript-vscode.git, type: git}
     version: 0.1.11
     engines: {vscode: ^1.83.0}
 
@@ -6947,11 +6947,8 @@ packages:
     resolution: {integrity: sha512-tSQXBXS/MWQOn/RKckawJ61vvsDpCom87JgxiYdGwHdOa0ht0vzUWDlfioofFCRU0L+6NGDt6XzbgoJvZkMeRQ==}
     engines: {node: '>=0.8.0'}
 
-  happy-dom@10.0.3:
-    resolution: {integrity: sha512-WkCP+Z5fX6U5PY+yHP3ElV5D9PoxRAHRWPFq3pG9rg/6Hjf5ak7dozAgSCywsTRUq2qfa8vV8OQvUy5pRXy8EQ==}
-
-  happy-dom@15.11.4:
-    resolution: {integrity: sha512-AU6tzh3ADd28vSmXahgLsGyGGihXPGeKH0owDn9lhHolB6vIwEhag//T+TBzDoAcHhmVEwlxwSgtW1KZep+1MA==}
+  happy-dom@15.10.2:
+    resolution: {integrity: sha512-NbA5XrSovenJIIcfixCREX3ZnV7yHP4phhbfuxxf4CPn+LZpz/jIM9EqJ2DrPwgVDSMoAKH3pZwQvkbsSiCrUw==}
     engines: {node: '>=18.0.0'}
 
   har-schema@2.0.0:
@@ -10083,8 +10080,8 @@ packages:
     resolution: {integrity: sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==}
     engines: {node: '>= 0.4'}
 
-  storybook-addon-misskey-theme@https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640}
+  storybook-addon-misskey-theme@git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640:
+    resolution: {commit: cf583db098365b2ccc81a82f63ca9c93bc32b640, repo: git@github.com:misskey-dev/storybook-addon-misskey-theme.git, type: git}
     version: 0.0.0
     peerDependencies:
       '@storybook/blocks': ^7.0.0-rc.4
@@ -11033,10 +11030,6 @@ packages:
 
   webpack-virtual-modules@0.5.0:
     resolution: {integrity: sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==}
-
-  whatwg-encoding@2.0.0:
-    resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
-    engines: {node: '>=12'}
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -15365,7 +15358,7 @@ snapshots:
       vite: 5.4.11(@types/node@22.9.0)(sass@1.79.4)(terser@5.36.0)
       vue: 3.5.12(typescript@5.6.3)
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -15380,11 +15373,11 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -15399,7 +15392,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -15658,7 +15651,7 @@ snapshots:
       clean-stack: 5.2.0
       indent-string: 5.0.0
 
-  aiscript-vscode@https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9:
+  aiscript-vscode@git+https://git@github.com:aiscript-dev/aiscript-vscode.git#e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9:
     dependencies:
       '@aiscript-dev/aiscript-languageserver': https://github.com/aiscript-dev/aiscript-languageserver/releases/download/0.1.6/aiscript-dev-aiscript-languageserver-0.1.6.tgz
       vscode-languageclient: 9.0.1
@@ -18254,16 +18247,7 @@ snapshots:
 
   hammerjs@2.0.8: {}
 
-  happy-dom@10.0.3:
-    dependencies:
-      css.escape: 1.5.1
-      entities: 4.5.0
-      iconv-lite: 0.6.3
-      webidl-conversions: 7.0.0
-      whatwg-encoding: 2.0.0
-      whatwg-mimetype: 3.0.0
-
-  happy-dom@15.11.4:
+  happy-dom@15.10.2:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -21946,7 +21930,7 @@ snapshots:
     dependencies:
       internal-slot: 1.0.5
 
-  storybook-addon-misskey-theme@https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  storybook-addon-misskey-theme@git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@storybook/blocks': 8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4))
       '@storybook/components': 8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4))
@@ -22734,14 +22718,14 @@ snapshots:
       sass: 1.79.4
       terser: 5.36.0
 
-  vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)):
+  vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)):
     dependencies:
       cross-fetch: 3.1.6(encoding@0.1.13)
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0)
     transitivePeerDependencies:
       - encoding
 
-  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0):
+  vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -22765,7 +22749,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 22.9.0
-      happy-dom: 10.0.3
+      happy-dom: 15.10.2
       jsdom: 24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - less
@@ -22777,7 +22761,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0):
+  vitest@1.6.0(@types/node@22.9.0)(happy-dom@15.10.2)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -22801,7 +22785,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 22.9.0
-      happy-dom: 10.0.3
+      happy-dom: 15.10.2
       jsdom: 24.1.1
     transitivePeerDependencies:
       - less
@@ -22964,10 +22948,6 @@ snapshots:
   webpack-sources@3.2.3: {}
 
   webpack-virtual-modules@0.5.0: {}
-
-  whatwg-encoding@2.0.0:
-    dependencies:
-      iconv-lite: 0.6.3
 
   whatwg-encoding@3.1.1:
     dependencies:
