@@ -5222,6 +5222,14 @@ export interface Locale extends ILocale {
      * 注意事項を理解した上でオンにします。
      */
     "acknowledgeNotesAndEnable": string;
+    /**
+     * 公開範囲に応じて色分けする
+     */
+    "enableNoteVisibilityColor": string;
+    /**
+     * ノートの詳細表示ページなど、一部の箇所には適用されません。
+     */
+    "enableNoteVisibilityColorDescription": string;
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする

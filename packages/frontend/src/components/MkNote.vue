@@ -9,7 +9,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-show="!isDeleted"
 	ref="rootEl"
 	v-hotkey="keymap"
-	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover, [$style.skipRender]: defaultStore.state.skipNoteRender }]"
+	:class="[$style.root, {
+		[$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover,
+		[$style.skipRender]: defaultStore.state.skipNoteRender,
+		[$style.noteVisibilityColor]: defaultStore.state.enableNoteVisibilityColor,
+		[$style.bgPublic]: appearNote.visibility === 'public',
+		[$style.bgHome]: appearNote.visibility === 'home',
+		[$style.bgFollowers]: appearNote.visibility === 'followers',
+		[$style.bgSpecified]: appearNote.visibility === 'specified',
+	}]"
 	:tabindex="isDeleted ? '-1' : '0'"
 >
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
@@ -632,6 +640,8 @@ function emitUpdReaction(emoji: string, delta: number) {
 	font-size: 1.05em;
 	overflow: clip;
 	contain: content;
+	--noteBg: var(--MI_THEME-panel);
+	background-color: var(--noteBg);
 
 	&:focus-visible {
 		outline: none;
@@ -689,6 +699,26 @@ function emitUpdReaction(emoji: string, delta: number) {
 	&.showActionsOnlyHover:hover {
 		.footer {
 			visibility: visible;
+		}
+	}
+
+	&.noteVisibilityColor {
+		--noteBg: color-mix(in srgb, var(--MI_THEME-panel), var(--noteThemeColor) 10%);
+
+		&.bgPublic {
+			--noteThemeColor: var(--MI_THEME-notePublic);
+		}
+
+		&.bgHome {
+			--noteThemeColor: var(--MI_THEME-noteHome);
+		}
+
+		&.bgFollowers {
+			--noteThemeColor: var(--MI_THEME-noteFollowers);
+		}
+
+		&.bgSpecified {
+			--noteThemeColor: var(--MI_THEME-noteSpecified);
 		}
 	}
 }
@@ -868,7 +898,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	z-index: 2;
 	width: 100%;
 	height: 64px;
-	background: linear-gradient(0deg, var(--MI_THEME-panel), color(from var(--MI_THEME-panel) srgb r g b / 0));
+	background: linear-gradient(0deg, var(--noteBg), color(from var(--noteBg) srgb r g b / 0));
 
 	&:hover > .collapsedLabel {
 		background: var(--MI_THEME-panelHighlight);

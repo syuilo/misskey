@@ -1301,6 +1301,8 @@ lockdown: "ロックダウン"
 pleaseSelectAccount: "アカウントを選択してください"
 availableRoles: "利用可能なロール"
 acknowledgeNotesAndEnable: "注意事項を理解した上でオンにします。"
+enableNoteVisibilityColor: "公開範囲に応じて色分けする"
+enableNoteVisibilityColorDescription: "ノートの詳細表示ページなど、一部の箇所には適用されません。"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"

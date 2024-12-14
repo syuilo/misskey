@@ -47,6 +47,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
 					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="enableNoteVisibilityColor">
+					<template #label>{{ i18n.ts.enableNoteVisibilityColor }}</template>
+					<template #caption>{{ i18n.ts.enableNoteVisibilityColorDescription }}</template>
+				</MkSwitch>
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
@@ -297,6 +301,7 @@ const menuStyle = computed(defaultStore.makeGetterSetter('menuStyle'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
 const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
+const enableNoteVisibilityColor = computed(defaultStore.makeGetterSetter('enableNoteVisibilityColor'));
 const highlightSensitiveMedia = computed(defaultStore.makeGetterSetter('highlightSensitiveMedia'));
 const imageNewTab = computed(defaultStore.makeGetterSetter('imageNewTab'));
 const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
@@ -352,6 +357,7 @@ watch([
 	squareAvatars,
 	showNoteActionsOnlyHover,
 	showGapBetweenNotesInTimeline,
+	enableNoteVisibilityColor,
 	instanceTicker,
 	overridedDeviceKind,
 	mediaListWithOneImageAppearance,

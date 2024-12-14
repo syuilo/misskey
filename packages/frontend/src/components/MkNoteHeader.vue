@@ -23,7 +23,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkA v-else :to="notePage(note)">
 			<MkTime :time="note.createdAt" colored/>
 		</MkA>
-		<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[note.visibility]">
+		<span
+			v-if="note.visibility !== 'public'"
+			style="margin-left: 0.5em;"
+			:class="{
+				[$style.enableColorlize]: defaultStore.state.enableNoteVisibilityColor,
+				[$style.colorHome]: note.visibility === 'home',
+				[$style.colorFollowers]: note.visibility === 'followers',
+				[$style.colorSpecified]: note.visibility === 'specified',
+			}"
+			:title="i18n.ts._visibility[note.visibility]"
+		>
 			<i v-if="note.visibility === 'home'" class="ti ti-home"></i>
 			<i v-else-if="note.visibility === 'followers'" class="ti ti-lock"></i>
 			<i v-else-if="note.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
@@ -54,6 +64,20 @@ const mock = inject<boolean>('mock', false);
 	display: flex;
 	align-items: baseline;
 	white-space: nowrap;
+}
+
+.enableColorlize {
+	&.colorHome {
+		color: var(--MI_THEME-noteHome);
+	}
+
+	&.colorFollowers {
+		color: var(--MI_THEME-noteFollowers);
+	}
+
+	&.colorSpecified {
+		color: var(--MI_THEME-noteSpecified);
+	}
 }
 
 .name {

@@ -195,6 +195,8 @@ export default defineComponent({
 		border: none;
 		border-radius: 0;
 		box-shadow: none;
+		box-sizing: border-box;
+		background-clip: padding-box;
 
 		&:not(:last-child) {
 			border-bottom: solid 0.5px var(--MI_THEME-divider);
