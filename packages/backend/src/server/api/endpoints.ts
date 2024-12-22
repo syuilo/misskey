@@ -28,6 +28,7 @@ import * as ep___admin_ad_update from './endpoints/admin/ad/update.js';
 import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
+import * as ep___admin_announcements_resetReads from './endpoints/admin/announcements/reset-reads.js';
 import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
 import * as ep___admin_avatarDecorations_create from './endpoints/admin/avatar-decorations/create.js';
 import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-decorations/delete.js';
@@ -415,6 +416,7 @@ const eps = [
 	['admin/announcements/create', ep___admin_announcements_create],
 	['admin/announcements/delete', ep___admin_announcements_delete],
 	['admin/announcements/list', ep___admin_announcements_list],
+	['admin/announcements/reset-reads', ep___admin_announcements_resetReads],
 	['admin/announcements/update', ep___admin_announcements_update],
 	['admin/avatar-decorations/create', ep___admin_avatarDecorations_create],
 	['admin/avatar-decorations/delete', ep___admin_avatarDecorations_delete],

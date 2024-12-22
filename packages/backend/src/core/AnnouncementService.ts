@@ -180,6 +180,32 @@ export class AnnouncementService {
 	}
 
 	@bindThis
+	public async resetReads(announcementId: MiAnnouncement['id'], moderator?: MiUser): Promise<void> {
+		await this.announcementReadsRepository.delete({
+			announcementId: announcementId,
+		});
+
+		if (moderator) {
+			const announcement = await this.announcementsRepository.findOneByOrFail({ id: announcementId });
+			if (announcement.userId) {
+				const user = await this.usersRepository.findOneByOrFail({ id: announcement.userId });
+				this.moderationLogService.log(moderator, 'resetReadsForUserAnnouncement', {
+					announcementId: announcement.id,
+					announcement: announcement,
+					userId: announcement.userId,
+					userUsername: user.username,
+					userHost: user.host,
+				});
+			} else {
+				this.moderationLogService.log(moderator, 'resetReadsForGlobalAnnouncement', {
+					announcementId: announcement.id,
+					announcement: announcement,
+				});
+			}
+		}
+	}
+
+	@bindThis
 	public async getAnnouncement(announcementId: MiAnnouncement['id'], me: MiUser | null): Promise<Packed<'Announcement'>> {
 		const announcement = await this.announcementsRepository.findOneByOrFail({ id: announcementId });
 		if (me) {

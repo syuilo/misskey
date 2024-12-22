@@ -39,7 +39,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts._announcement.needConfirmationToRead }}
 					<template #caption>{{ i18n.ts._announcement.needConfirmationToReadDescription }}</template>
 				</MkSwitch>
-				<MkButton v-if="announcement" danger @click="del()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+				<div class="_buttons">
+					<MkButton v-if="announcement" @click="resetReads()">{{ i18n.ts.resetReads }}</MkButton>
+					<MkButton v-if="announcement" danger @click="del()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+				</div>
 			</div>
 		</MkSpacer>
 		<div :class="$style.footer">
@@ -115,6 +118,20 @@ async function done() {
 
 		dialog.value?.close();
 	}
+}
+
+async function resetReads() {
+	if (!props.announcement) return;
+
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.tsx.resetReadsAreYouSure({ x: props.announcement.title }),
+	});
+	if (canceled) return;
+
+	await os.apiWithDialog('admin/announcements/reset-reads', {
+		announcementId: props.announcement.id,
+	});
 }
 
 async function del() {

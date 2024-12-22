@@ -23,6 +23,7 @@ import * as ep___admin_ad_update from './endpoints/admin/ad/update.js';
 import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
+import * as ep___admin_announcements_resetReads from './endpoints/admin/announcements/reset-reads.js';
 import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
 import * as ep___admin_avatarDecorations_create from './endpoints/admin/avatar-decorations/create.js';
 import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-decorations/delete.js';
@@ -411,6 +412,7 @@ const $admin_ad_update: Provider = { provide: 'ep:admin/ad/update', useClass: ep
 const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements/create', useClass: ep___admin_announcements_create.default };
 const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
 const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
+const $admin_announcements_resetReads: Provider = { provide: 'ep:admin/announcements/reset-reads', useClass: ep___admin_announcements_resetReads.default };
 const $admin_announcements_update: Provider = { provide: 'ep:admin/announcements/update', useClass: ep___admin_announcements_update.default };
 const $admin_avatarDecorations_create: Provider = { provide: 'ep:admin/avatar-decorations/create', useClass: ep___admin_avatarDecorations_create.default };
 const $admin_avatarDecorations_delete: Provider = { provide: 'ep:admin/avatar-decorations/delete', useClass: ep___admin_avatarDecorations_delete.default };
@@ -803,6 +805,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,
+		$admin_announcements_resetReads,
 		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,
@@ -1189,6 +1192,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,
+		$admin_announcements_resetReads,
 		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,

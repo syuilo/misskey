@@ -298,6 +298,17 @@ export type ModerationLogPayloads = {
 		userUsername: string;
 		userHost: string | null;
 	};
+	resetReadsForGlobalAnnouncement: {
+		announcementId: string;
+		announcement: Announcement;
+	};
+	resetReadsForUserAnnouncement: {
+		announcementId: string;
+		announcement: Announcement;
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
+	};
 	resetPassword: {
 		userId: string;
 		userUsername: string;

@@ -151,7 +151,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'announcements'" class="_gaps">
-				<MkButton primary rounded @click="createAnnouncement"><i class="ti ti-plus"></i> {{ i18n.ts.new }}</MkButton>
+				<MkButton primary rounded @click="createAnnouncement"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
 
 				<MkSelect v-model="announcementsStatus">
 					<template #label>{{ i18n.ts.filter }}</template>

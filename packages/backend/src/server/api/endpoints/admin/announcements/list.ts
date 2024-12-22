@@ -53,6 +53,37 @@ export const meta = {
 					type: 'string',
 					optional: false, nullable: true,
 				},
+				icon: {
+					type: 'string',
+					optional: false, nullable: false,
+					enum: ['info', 'warning', 'error', 'success'],
+				},
+				display: {
+					type: 'string',
+					optional: false, nullable: false,
+					enum: ['normal', 'banner', 'dialog'],
+				},
+				isActive: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
+				forExistingUsers: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
+				silence: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
+				needConfirmationToRead: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
+				userId: {
+					type: 'string',
+					optional: false, nullable: true,
+					format: 'id',
+				},
 				reads: {
 					type: 'number',
 					optional: false, nullable: false,
@@ -125,7 +156,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				silence: announcement.silence,
 				needConfirmationToRead: announcement.needConfirmationToRead,
 				userId: announcement.userId,
-				reads: reads.get(announcement)!,
+				reads: reads.get(announcement) ?? 0,
 			}));
 		});
 	}

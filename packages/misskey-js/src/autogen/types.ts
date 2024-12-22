@@ -170,6 +170,15 @@ export type paths = {
      */
     post: operations['admin___announcements___list'];
   };
+  '/admin/announcements/reset-reads': {
+    /**
+     * admin/announcements/reset-reads
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
+     */
+    post: operations['admin___announcements___reset-reads'];
+  };
   '/admin/announcements/update': {
     /**
      * admin/announcements/update
@@ -6216,9 +6225,71 @@ export type operations = {
               text: string;
               title: string;
               imageUrl: string | null;
+              /** @enum {string} */
+              icon: 'info' | 'warning' | 'error' | 'success';
+              /** @enum {string} */
+              display: 'normal' | 'banner' | 'dialog';
+              isActive: boolean;
+              forExistingUsers: boolean;
+              silence: boolean;
+              needConfirmationToRead: boolean;
+              /** Format: id */
+              userId: string | null;
               reads: number;
             })[];
         };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/announcements/reset-reads
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
+   */
+  'admin___announcements___reset-reads': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          announcementId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
       };
       /** @description Client error */
       400: {

@@ -1301,6 +1301,8 @@ lockdown: "ロックダウン"
 pleaseSelectAccount: "アカウントを選択してください"
 availableRoles: "利用可能なロール"
 acknowledgeNotesAndEnable: "注意事項を理解した上でオンにします。"
+resetReads: "既読をリセット"
+resetReadsAreYouSure: "「{x}」の既読をリセットしますか？"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"
@@ -2627,6 +2629,8 @@ _moderationLogTypes:
   updateUserAnnouncement: "ユーザーのお知らせを更新"
   deleteGlobalAnnouncement: "全体のお知らせを削除"
   deleteUserAnnouncement: "ユーザーのお知らせを削除"
+  resetReadsForGlobalAnnouncement: "全体のお知らせの既読をリセット"
+  resetReadsForUserAnnouncement: "ユーザーのお知らせの既読をリセット"
   resetPassword: "パスワードをリセット"
   suspendRemoteInstance: "リモートサーバーを停止"
   unsuspendRemoteInstance: "リモートサーバーを再開"

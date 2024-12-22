@@ -5222,6 +5222,14 @@ export interface Locale extends ILocale {
      * 注意事項を理解した上でオンにします。
      */
     "acknowledgeNotesAndEnable": string;
+    /**
+     * 既読をリセット
+     */
+    "resetReads": string;
+    /**
+     * 「{x}」の既読をリセットしますか？
+     */
+    "resetReadsAreYouSure": ParameterizedString<"x">;
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする
@@ -9910,6 +9918,14 @@ export interface Locale extends ILocale {
          * ユーザーのお知らせを削除
          */
         "deleteUserAnnouncement": string;
+        /**
+         * 全体のお知らせの既読をリセット
+         */
+        "resetReadsForGlobalAnnouncement": string;
+        /**
+         * ユーザーのお知らせの既読をリセット
+         */
+        "resetReadsForUserAnnouncement": string;
         /**
          * パスワードをリセット
          */

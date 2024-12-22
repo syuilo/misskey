@@ -116,6 +116,9 @@ type AdminAnnouncementsListRequest = operations['admin___announcements___list'][
 type AdminAnnouncementsListResponse = operations['admin___announcements___list']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type AdminAnnouncementsResetReadsRequest = operations['admin___announcements___reset-reads']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminAnnouncementsUpdateRequest = operations['admin___announcements___update']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1254,6 +1257,7 @@ declare namespace entities {
         AdminAnnouncementsDeleteRequest,
         AdminAnnouncementsListRequest,
         AdminAnnouncementsListResponse,
+        AdminAnnouncementsResetReadsRequest,
         AdminAnnouncementsUpdateRequest,
         AdminAvatarDecorationsCreateRequest,
         AdminAvatarDecorationsCreateResponse,
@@ -2525,6 +2529,12 @@ type ModerationLog = {
 } | {
     type: 'deleteUserAnnouncement';
     info: ModerationLogPayloads['deleteUserAnnouncement'];
+} | {
+    type: 'resetReadsForGlobalAnnouncement';
+    info: ModerationLogPayloads['resetReadsForGlobalAnnouncement'];
+} | {
+    type: 'resetReadsForUserAnnouncement';
+    info: ModerationLogPayloads['resetReadsForUserAnnouncement'];
 } | {
     type: 'resetPassword';
     info: ModerationLogPayloads['resetPassword'];

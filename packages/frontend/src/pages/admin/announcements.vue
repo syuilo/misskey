@@ -34,6 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton rounded primary @click="save(announcement)"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 							<MkButton v-if="announcement.id != null && announcement.isActive" rounded @click="archive(announcement)"><i class="ti ti-check"></i> {{ i18n.ts._announcement.end }} ({{ i18n.ts.archive }})</MkButton>
 							<MkButton v-if="announcement.id != null && !announcement.isActive" rounded @click="unarchive(announcement)"><i class="ti ti-restore"></i> {{ i18n.ts.unarchive }}</MkButton>
+							<MkButton v-if="announcement.id != null && announcement.isActive && announcement.reads > 0" rounded @click="resetReads(announcement)">{{ i18n.ts.resetReads }}</MkButton>
 							<MkButton v-if="announcement.id != null" rounded danger @click="del(announcement)"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
 						</div>
 					</template>
@@ -71,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkSwitch v-model="announcement.needConfirmationToRead" :helpText="i18n.ts._announcement.needConfirmationToReadDescription">
 							{{ i18n.ts._announcement.needConfirmationToRead }}
 						</MkSwitch>
-						<p v-if="announcement.reads">{{ i18n.tsx.nUsersRead({ n: announcement.reads }) }}</p>
+						<p v-if="announcement.reads > 0">{{ i18n.tsx.nUsersRead({ n: announcement.reads }) }}</p>
 					</div>
 				</MkFolder>
 				<MkLoading v-if="loadingMore"/>
@@ -85,6 +86,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import * as Misskey from 'misskey-js';
 import { ref, computed, watch } from 'vue';
 import XHeader from './_header_.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -141,6 +143,19 @@ function del(announcement) {
 		announcements.value = announcements.value.filter(x => x !== announcement);
 		misskeyApi('admin/announcements/delete', announcement);
 	});
+}
+
+async function resetReads(announcement) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.tsx.resetReadsAreYouSure({ x: announcement.title }),
+	});
+	if (canceled) return;
+
+	await os.apiWithDialog('admin/announcements/reset-reads', {
+		announcementId: announcement.id,
+	});
+	refresh();
 }
 
 async function archive(announcement) {
