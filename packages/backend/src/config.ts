@@ -60,6 +60,10 @@ type Source = {
 	};
 	sentryForBackend?: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; };
 	sentryForFrontend?: { options: Partial<Sentry.NodeOptions> };
+	defaultTag: {
+		tag: string;
+		append: boolean;
+	};
 
 	publishTarballInsteadOfProvideRepositoryUrl?: boolean;
 
@@ -132,6 +136,10 @@ export type Config = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	} | undefined;
+	defaultTag: {
+		tag: string;
+		append: boolean;
+	};
 	proxy: string | undefined;
 	proxySmtp: string | undefined;
 	proxyBypassHosts: string[] | undefined;
@@ -293,6 +301,7 @@ export function loadConfig(): Config {
 		perUserNotificationsMaxCount: config.perUserNotificationsMaxCount ?? 500,
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
+		defaultTag: config.defaultTag,
 	};
 }
 

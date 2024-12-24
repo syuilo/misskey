@@ -12,6 +12,8 @@ import { RoleService } from '@/core/RoleService.js';
 import { isQuotePacked, isRenotePacked } from '@/misc/is-renote.js';
 import type { JsonObject } from '@/misc/json-value.js';
 import Channel, { type MiChannelService } from '../channel.js';
+import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { loadConfig } from '@/config.js';
 
 class LocalTimelineChannel extends Channel {
 	public readonly chName = 'localTimeline';
@@ -20,6 +22,7 @@ class LocalTimelineChannel extends Channel {
 	private withRenotes: boolean;
 	private withReplies: boolean;
 	private withFiles: boolean;
+	private defaultTag: string | null;
 
 	constructor(
 		private metaService: MetaService,
@@ -41,6 +44,8 @@ class LocalTimelineChannel extends Channel {
 		this.withRenotes = !!(params.withRenotes ?? true);
 		this.withReplies = !!(params.withReplies ?? false);
 		this.withFiles = !!(params.withFiles ?? false);
+		const config = loadConfig();
+		this.defaultTag = config.defaultTag?.tag;
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -50,7 +55,12 @@ class LocalTimelineChannel extends Channel {
 	private async onNote(note: Packed<'Note'>) {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
 
-		if (note.user.host !== null) return;
+		if (this.defaultTag == null) {
+			if (note.user.host !== null) return;
+		} else {
+			const noteTags = note.tags ? note.tags.map((t: string) => t.toLowerCase()) : [];
+			if (!noteTags.includes(normalizeForSearch(this.defaultTag))) return;
+		}
 		if (note.visibility !== 'public') return;
 		if (note.channelId != null) return;
 

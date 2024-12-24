@@ -321,3 +321,7 @@ signToActivityPubGet: true
 
 # PID File of master process
 #pidFile: /tmp/misskey.pid
+
+defaultTag:
+  tag: null
+  append: true

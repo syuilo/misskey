@@ -12,6 +12,8 @@ import { RoleService } from '@/core/RoleService.js';
 import { isRenotePacked, isQuotePacked } from '@/misc/is-renote.js';
 import type { JsonObject } from '@/misc/json-value.js';
 import Channel, { type MiChannelService } from '../channel.js';
+import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { loadConfig } from '@/config.js';
 
 class HybridTimelineChannel extends Channel {
 	public readonly chName = 'hybridTimeline';
@@ -21,6 +23,7 @@ class HybridTimelineChannel extends Channel {
 	private withRenotes: boolean;
 	private withReplies: boolean;
 	private withFiles: boolean;
+	private defaultTag: string | null;
 
 	constructor(
 		private metaService: MetaService,
@@ -42,6 +45,8 @@ class HybridTimelineChannel extends Channel {
 		this.withRenotes = !!(params.withRenotes ?? true);
 		this.withReplies = !!(params.withReplies ?? false);
 		this.withFiles = !!(params.withFiles ?? false);
+		const config = loadConfig();
+		this.defaultTag = config.defaultTag?.tag;
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -49,6 +54,11 @@ class HybridTimelineChannel extends Channel {
 
 	@bindThis
 	private async onNote(note: Packed<'Note'>) {
+		let matched = false;
+		if (this.defaultTag != null) {
+			const noteTags = note.tags ? note.tags.map((t: string) => t.toLowerCase()) : [];
+			matched = noteTags.includes(normalizeForSearch(this.defaultTag));
+		}
 		const isMe = this.user!.id === note.userId;
 
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
@@ -60,7 +70,7 @@ class HybridTimelineChannel extends Channel {
 		if (!(
 			(note.channelId == null && isMe) ||
 			(note.channelId == null && Object.hasOwn(this.following, note.userId)) ||
-			(note.channelId == null && (note.user.host == null && note.visibility === 'public')) ||
+			(note.channelId == null && ((note.user.host == null || matched) && note.visibility === 'public')) ||
 			(note.channelId != null && this.followingChannels.has(note.channelId))
 		)) return;
 

@@ -332,6 +332,16 @@ export class NoteCreateService implements OnApplicationShutdown {
 			data.localOnly = true;
 		}
 
+		// デフォルトハッシュタグを本文末尾に書き足す
+		if (this.config.defaultTag?.append && ['public', 'home'].includes(data.visibility)) {
+			if (this.config.defaultTag?.tag != null) {
+				const tag = `#${this.config.defaultTag?.tag}`;
+				if (String(data.text).match(tag)) {
+					data.text = `${data.text}\n\n${tag}`;
+				}
+			}
+		}
+
 		if (data.text) {
 			if (data.text.length > DB_MAX_NOTE_TEXT_LENGTH) {
 				data.text = data.text.slice(0, DB_MAX_NOTE_TEXT_LENGTH);
@@ -950,6 +960,18 @@ export class NoteCreateService implements OnApplicationShutdown {
 					this.fanoutTimelineService.push(`homeTimeline:${user.id}`, note.id, this.meta.perUserHomeTimelineCacheMax, r);
 					if (note.fileIds.length > 0) {
 						this.fanoutTimelineService.push(`homeTimelineWithFiles:${user.id}`, note.id, this.meta.perUserHomeTimelineCacheMax / 2, r);
+					}
+				}
+			}
+
+			// デフォルトハッシュタグを含む投稿は、リモートであってもローカルタイムラインに含める
+			if (this.config.defaultTag?.tag != null) {
+				const noteTags = note.tags ? note.tags.map((t: string) => t.toLowerCase()) : [];
+				if (note.visibility === 'public' && noteTags.includes(normalizeForSearch(this.config.defaultTag?.tag))) {
+					this.fanoutTimelineService.push('localTimelineWithReplies', note.id, 300, r);
+					this.fanoutTimelineService.push('localTimeline', note.id, 1000, r);
+					if (note.fileIds.length > 0) {
+						this.fanoutTimelineService.push('localTimelineWithFiles', note.id, 500, r);
 					}
 				}
 			}

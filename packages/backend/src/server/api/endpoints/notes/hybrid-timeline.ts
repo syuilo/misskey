@@ -19,6 +19,8 @@ import { UserFollowingService } from '@/core/UserFollowingService.js';
 import { MiLocalUser } from '@/models/User.js';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
 import { ApiError } from '../../error.js';
+import { normalizeForSearch } from '@/misc/normalize-for-search.js';
+import { loadConfig } from '@/config.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -207,10 +209,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (followees.length > 0) {
 					const meOrFolloweeIds = [me.id, ...followees.map(f => f.followeeId)];
 					qb.where('note.userId IN (:...meOrFolloweeIds)', { meOrFolloweeIds: meOrFolloweeIds });
-					qb.orWhere('(note.visibility = \'public\') AND (note.userHost IS NULL)');
 				} else {
 					qb.where('note.userId = :meId', { meId: me.id });
+				}
+
+				const config = loadConfig();
+				const defaultTag: string | null = config.defaultTag?.tag;
+				if (defaultTag == null) {
 					qb.orWhere('(note.visibility = \'public\') AND (note.userHost IS NULL)');
+				} else {
+					qb.orWhere(`(note.visibility = 'public') AND (:t <@ note.tags`, { t: normalizeForSearch(defaultTag) });
 				}
 			}))
 			.innerJoinAndSelect('note.user', 'user')
