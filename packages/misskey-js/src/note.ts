@@ -1,4 +1,4 @@
-import type { Note, PureRenote } from './entities.js';
+import type { Note, StreamNote, PureRenote } from './entities.js';
 
 export function isPureRenote(note: Note): note is PureRenote {
 	return (
@@ -9,4 +9,8 @@ export function isPureRenote(note: Note): note is PureRenote {
 		(note.fileIds == null || note.fileIds.length === 0) &&
 		note.poll == null
 	);
+}
+
+export function isStreamNote(note: Note | StreamNote): note is StreamNote {
+	return '_allowCached_' in note && typeof note._allowCached_ === 'boolean';
 }

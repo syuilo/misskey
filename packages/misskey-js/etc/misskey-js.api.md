@@ -632,9 +632,10 @@ export type Channels = {
         params: {
             withRenotes?: boolean;
             withFiles?: boolean;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -643,9 +644,10 @@ export type Channels = {
             withRenotes?: boolean;
             withReplies?: boolean;
             withFiles?: boolean;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -654,9 +656,10 @@ export type Channels = {
             withRenotes?: boolean;
             withReplies?: boolean;
             withFiles?: boolean;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -664,9 +667,10 @@ export type Channels = {
         params: {
             withRenotes?: boolean;
             withFiles?: boolean;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -675,9 +679,10 @@ export type Channels = {
             listId: string;
             withFiles?: boolean;
             withRenotes?: boolean;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -693,27 +698,30 @@ export type Channels = {
     roleTimeline: {
         params: {
             roleId: string;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
     antenna: {
         params: {
             antennaId: string;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
     channel: {
         params: {
             channelId: string;
+            minimize?: boolean;
         };
         events: {
-            note: (payload: Note) => void;
+            note: (payload: Note | StreamNote) => void;
         };
         receives: null;
     };
@@ -1214,6 +1222,7 @@ declare namespace entities {
         EmojiUpdated,
         EmojiDeleted,
         AnnouncementCreated,
+        StreamNote,
         SignupRequest,
         SignupResponse,
         SignupPendingRequest,
@@ -2351,6 +2360,9 @@ type ISigninHistoryResponse = operations['i___signin-history']['responses']['200
 function isPureRenote(note: Note): note is PureRenote;
 
 // @public (undocumented)
+function isStreamNote(note: Note | StreamNote): note is StreamNote;
+
+// @public (undocumented)
 export interface IStream extends EventEmitter<StreamEvents> {
     // (undocumented)
     close(): void;
@@ -2643,7 +2655,8 @@ type Note = components['schemas']['Note'];
 
 declare namespace note {
     export {
-        isPureRenote
+        isPureRenote,
+        isStreamNote
     }
 }
 export { note }
@@ -3184,6 +3197,18 @@ export type StreamEvents = {
     _disconnected_: void;
 } & BroadcastEvents;
 
+// @public (undocumented)
+type StreamNote = {
+    id: Note['id'];
+    poll?: Pick<NonNullable<Note['poll']>, 'choices'>;
+    reply?: Pick<NonNullable<Note['reply']>, 'myReaction'>;
+    renote?: Pick<NonNullable<Note['renote']>, 'myReaction'>;
+    _allowCached_: true;
+} | {
+    id: Note['id'];
+    _allowCached_: false;
+};
+
 // Warning: (ae-forgotten-export) The symbol "SwitchCase" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "IsCaseMatched" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "GetCaseResult" needs to be exported by the entry point index.d.ts
@@ -3413,8 +3438,8 @@ type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['
 // Warnings were encountered during analysis:
 //
 // src/entities.ts:50:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:220:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:230:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
+// src/streaming.types.ts:229:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
+// src/streaming.types.ts:239:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

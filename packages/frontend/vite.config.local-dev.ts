@@ -17,9 +17,12 @@ const httpUrl = `http://localhost:${port}/`;
 const websocketUrl = `ws://localhost:${port}/`;
 const embedUrl = `http://localhost:5174/`;
 
-// activitypubリクエストはProxyを通し、それ以外はViteの開発サーバーを返す
+// activitypubリクエスト・streaming用のノートはProxyを通し、それ以外はViteの開発サーバーを返す
 function varyHandler(req: IncomingMessage) {
-	if (req.headers.accept?.includes('application/activity+json')) {
+	if (
+		req.headers.accept?.includes('application/activity+json') ||
+		/notes\/[A-Za-z0-9-]+\.json$/.test(req.url ?? '')
+	) {
 		return null;
 	}
 	return '/index.html';

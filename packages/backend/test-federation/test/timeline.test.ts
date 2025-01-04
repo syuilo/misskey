@@ -49,7 +49,12 @@ describe('Timeline', () => {
 			async () => {
 				note = (await alice.client.request('notes/create', { text, ...noteParams })).createdNote;
 			},
-			'note', msg => msg.text === text,
+			'note', (msg) => {
+				if (Misskey.note.isStreamNote(msg)) {
+					return false;
+				}
+				return msg.text === text;
+			},
 			channelParams,
 		);
 		strictEqual(streamingFired, expect);

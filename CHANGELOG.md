@@ -22,6 +22,9 @@
 - Fix: 「アカウントを管理」画面で、ユーザー情報の取得に失敗したアカウント（削除されたアカウントなど）が表示されない問題を修正
 
 ### Server
+- Feat: サーバーがCDNを利用している場合、タイムラインのリアルタイム更新時にCDNのキャッシュを併用できるように（上級者向け）
+  - この機能はCDNの設定と連携するように設計されています。Misskey側のみで機能を有効にし、CDNを正しく設定していない場合、かえって負荷が大きくなる可能性があります。詳しくはMisskey Hubのドキュメント (TODO) を参照してください。
+  - Based on https://github.com/MisskeyIO/misskey/pull/834, https://github.com/MisskeyIO/misskey/pull/851, https://github.com/MisskeyIO/misskey/pull/853
 - Fix: ユーザーのプロフィール画面をアドレス入力などで直接表示した際に概要タブの描画に失敗する問題の修正( #15032 )
 - Fix: 起動前の疎通チェックが機能しなくなっていた問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)

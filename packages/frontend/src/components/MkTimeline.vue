@@ -17,17 +17,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide, ref, shallowRef } from 'vue';
+import { computed, watch, onUnmounted, provide, shallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
 import type { BasicTimelineType } from '@/timelines.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
-import { $i } from '@/account.js';
+import { deepMerge } from '@/scripts/merge.js';
+import { $i, iAmModerator } from '@/account.js';
 import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
+import { misskeyApi } from '@/scripts/misskey-api.js';
+import { MisskeyEntity } from '@/types/date-separated-list.js';
 
 const props = withDefaults(defineProps<{
 	src: BasicTimelineType | 'mentions' | 'directs' | 'list' | 'antenna' | 'channel' | 'role';
@@ -72,8 +75,38 @@ const tlComponent = shallowRef<InstanceType<typeof MkNotes>>();
 
 let tlNotesCount = 0;
 
-function prepend(note) {
+async function prepend(data: Misskey.entities.Note | Misskey.entities.StreamNote) {
 	if (tlComponent.value == null) return;
+
+	let note: Misskey.entities.Note & MisskeyEntity;
+
+	if (Misskey.note.isStreamNote(data)) {
+		let fullNote: Misskey.entities.Note | null = null;
+
+		const { _allowCached_, ..._data } = data;
+
+		if (_allowCached_) {
+			const res = await window.fetch(`/notes/${data.id}.json`, {
+				method: 'GET',
+				credentials: 'omit',
+			});
+			if (!res.ok) return;
+			fullNote = (await res.json().catch(() => null)) as Misskey.entities.Note | null;
+		}
+
+		// キャッシュできないノート or キャッシュ用のノートが取得できなかった場合
+		if (fullNote == null) {
+			fullNote = await misskeyApi('notes/show', {
+				noteId: data.id,
+			}).catch(() => null);
+		}
+
+		if (fullNote == null) return;
+
+		note = deepMerge(_data, fullNote);
+	} else {
+		note = data;
+	}
 
 	tlNotesCount++;
 
@@ -93,6 +126,7 @@ function prepend(note) {
 let connection: Misskey.ChannelConnection | null = null;
 let connection2: Misskey.ChannelConnection | null = null;
 let paginationQuery: Paging | null = null;
+const minimize = !iAmModerator && instance.enableStreamNotesCdnCache;
 
 const stream = useStream();
 
@@ -101,11 +135,13 @@ function connectChannel() {
 		if (props.antenna == null) return;
 		connection = stream.useChannel('antenna', {
 			antennaId: props.antenna,
+			minimize: minimize,
 		});
 	} else if (props.src === 'home') {
 		connection = stream.useChannel('homeTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
+			minimize: minimize,
 		});
 		connection2 = stream.useChannel('main');
 	} else if (props.src === 'local') {
@@ -113,17 +149,20 @@ function connectChannel() {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
 			withFiles: props.onlyFiles ? true : undefined,
+			minimize: minimize,
 		});
 	} else if (props.src === 'social') {
 		connection = stream.useChannel('hybridTimeline', {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
 			withFiles: props.onlyFiles ? true : undefined,
+			minimize: minimize,
 		});
 	} else if (props.src === 'global') {
 		connection = stream.useChannel('globalTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
+			minimize: minimize,
 		});
 	} else if (props.src === 'mentions') {
 		connection = stream.useChannel('main');
@@ -142,16 +181,19 @@ function connectChannel() {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			listId: props.list,
+			minimize: minimize,
 		});
 	} else if (props.src === 'channel') {
 		if (props.channel == null) return;
 		connection = stream.useChannel('channel', {
 			channelId: props.channel,
+			minimize: minimize,
 		});
 	} else if (props.src === 'role') {
 		if (props.role == null) return;
 		connection = stream.useChannel('roleTimeline', {
 			roleId: props.role,
+			minimize: minimize,
 		});
 	}
 	if (props.src !== 'directs' && props.src !== 'mentions') connection?.on('note', prepend);
