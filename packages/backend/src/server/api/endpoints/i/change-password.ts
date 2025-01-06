@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { UserProfilesRepository } from '@/models/_.js';
@@ -50,15 +50,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}
 			}
 
-			const passwordMatched = await bcrypt.compare(ps.currentPassword, profile.password!);
+			const passwordMatched = await argon2.verify(profile.password!, ps.currentPassword);
 
 			if (!passwordMatched) {
 				throw new Error('incorrect password');
 			}
 
 			// Generate hash of password
-			const salt = await bcrypt.genSalt(8);
-			const hash = await bcrypt.hash(ps.newPassword, salt);
+			const hash = await argon2.hash(ps.newPassword);
 
 			await this.userProfilesRepository.update(me.id, {
 				password: hash,

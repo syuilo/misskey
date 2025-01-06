@@ -5,6 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { IsNull } from 'typeorm';
 import * as Misskey from 'misskey-js';
 import { DI } from '@/di-symbols.js';
@@ -155,7 +156,7 @@ export class SigninApiService {
 		}
 
 		// Compare password
-		const same = await bcrypt.compare(password, profile.password!);
+		const same = await argon2.verify(profile.password!, password) || bcrypt.compareSync(password, profile.password!);
 
 		const fail = async (status?: number, failure?: { id: string; }) => {
 			// Append signin history
@@ -204,6 +205,14 @@ export class SigninApiService {
 			}
 
 			if (same) {
+				// Check if the password is still hashed using bcrypt
+				if (profile.password!.startsWith('$2')) {
+					// Rehash the password using Argon2
+					const newHash = await argon2.hash(password);
+					this.userProfilesRepository.update(user.id, {
+						password: newHash,
+					});
+				}
 				return this.signinService.signin(request, reply, user);
 			} else {
 				return await fail(403, {
@@ -220,6 +229,14 @@ export class SigninApiService {
 			}
 
 			try {
+				// Check if the password is still hashed using bcrypt
+				if (profile.password!.startsWith('$2')) {
+					// Rehash the password using Argon2
+					const newHash = await argon2.hash(password);
+					this.userProfilesRepository.update(user.id, {
+						password: newHash,
+					});
+				}
 				await this.userAuthService.twoFactorAuthenticate(profile, token);
 			} catch (e) {
 				return await fail(403, {
