@@ -8,7 +8,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as lolex from '@sinonjs/fake-timers';
 import { addHours, addSeconds, subDays, subHours, subSeconds } from 'date-fns';
 import { CheckModeratorsActivityProcessorService } from '@/queue/processors/CheckModeratorsActivityProcessorService.js';
-import { MiSystemWebhook, MiUser, MiUserProfile, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import {
+	MiRole,
+	MiRoleAssignment,
+	MiSystemWebhook,
+	MiUser,
+	MiUserProfile,
+	RoleAssignmentsRepository,
+	RolesRepository,
+	UserProfilesRepository,
+	UsersRepository,
+} from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { RoleService } from '@/core/RoleService.js';
 import { GlobalModule } from '@/GlobalModule.js';
@@ -18,6 +28,12 @@ import { QueueLoggerService } from '@/queue/QueueLoggerService.js';
 import { EmailService } from '@/core/EmailService.js';
 import { SystemWebhookService } from '@/core/SystemWebhookService.js';
 import { AnnouncementService } from '@/core/AnnouncementService.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
+import { GlobalEventService } from '@/core/GlobalEventService.js';
+import { ModerationLogService } from '@/core/ModerationLogService.js';
+import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
+import { genAidx } from '@/misc/id/aidx.js';
+import { CacheService } from '@/core/CacheService.js';
 
 const baseDate = new Date(Date.UTC(2000, 11, 15, 12, 0, 0));
 
@@ -93,7 +109,10 @@ describe('CheckModeratorsActivityProcessorService', () => {
 					CheckModeratorsActivityProcessorService,
 					IdService,
 					{
-						provide: RoleService, useFactory: () => ({ getModerators: jest.fn() }),
+						provide: RoleService, useFactory: () => ({
+							getModerators: jest.fn(),
+							getRoles: () => Promise.resolve([]),
+						}),
 					},
 					{
 						provide: MetaService, useFactory: () => ({ fetch: jest.fn() }),
@@ -374,6 +393,272 @@ describe('CheckModeratorsActivityProcessorService', () => {
 
 			expect(systemWebhookService.enqueueSystemWebhook).toHaveBeenCalledTimes(1);
 			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[0][0]).toEqual(systemWebhook2);
+		});
+	});
+});
+
+// 本物のRoleServiceと結合しないと出来ないテスト
+describe('CheckModeratorsActivityProcessorService with RoleService', () => {
+	let app: TestingModule;
+	let clock: lolex.InstalledClock;
+	let service: CheckModeratorsActivityProcessorService;
+
+	// --------------------------------------------------------------------------------------
+
+	let usersRepository: UsersRepository;
+	let userProfilesRepository: UserProfilesRepository;
+	let rolesRepository: RolesRepository;
+	let roleAssignmentsRepository: RoleAssignmentsRepository;
+	let idService: IdService;
+	let roleService: RoleService;
+
+	let root: MiUser;
+
+	// --------------------------------------------------------------------------------------
+
+	async function createUser(data: Partial<MiUser> = {}, profile: Partial<MiUserProfile> = {}): Promise<MiUser> {
+		const id = idService.gen();
+		const user = await usersRepository
+			.insert({
+				id: id,
+				username: `user_${id}`,
+				usernameLower: `user_${id}`.toLowerCase(),
+				...data,
+			})
+			.then(x => usersRepository.findOneByOrFail(x.identifiers[0]));
+
+		await userProfilesRepository.insert({
+			userId: user.id,
+			...profile,
+		});
+
+		return user;
+	}
+
+	async function createRole(data: Partial<MiRole> = {}) {
+		const x = await rolesRepository.insert({
+			id: genAidx(Date.now()),
+			updatedAt: new Date(),
+			lastUsedAt: new Date(),
+			name: '',
+			description: '',
+			...data,
+		});
+		return await rolesRepository.findOneByOrFail(x.identifiers[0]);
+	}
+
+	async function assignRole(args: Partial<MiRoleAssignment>) {
+		const id = genAidx(Date.now());
+		await roleAssignmentsRepository.insert({
+			id,
+			...args,
+		});
+
+		return await roleAssignmentsRepository.findOneByOrFail({ id });
+	}
+
+	// --------------------------------------------------------------------------------------
+
+	beforeAll(async () => {
+		app = await Test
+			.createTestingModule({
+				imports: [
+					GlobalModule,
+				],
+				providers: [
+					CheckModeratorsActivityProcessorService,
+					IdService,
+					RoleService,
+					GlobalEventService,
+					CacheService,
+					{
+						provide: ModerationLogService, useFactory: () => ({ log: jest.fn() }),
+					},
+					{
+						provide: FanoutTimelineService, useFactory: () => ({ push: jest.fn() }),
+					},
+					{
+						provide: UserEntityService, useFactory: () => ({ pack: jest.fn() }),
+					},
+					{
+						provide: MetaService, useFactory: () => ({ fetch: jest.fn() }),
+					},
+					{
+						provide: AnnouncementService, useFactory: () => ({ create: jest.fn() }),
+					},
+					{
+						provide: EmailService, useFactory: () => ({ sendEmail: jest.fn() }),
+					},
+					{
+						provide: SystemWebhookService, useFactory: () => ({
+							fetchActiveSystemWebhooks: jest.fn(),
+							enqueueSystemWebhook: jest.fn(),
+						}),
+					},
+					{
+						provide: QueueLoggerService, useFactory: () => ({
+							logger: ({
+								createSubLogger: () => ({
+									info: jest.fn(),
+									warn: jest.fn(),
+									succ: jest.fn(),
+								}),
+							}),
+						}),
+					},
+				],
+			})
+			.compile();
+
+		usersRepository = app.get(DI.usersRepository);
+		userProfilesRepository = app.get(DI.userProfilesRepository);
+		rolesRepository = app.get<RolesRepository>(DI.rolesRepository);
+		roleAssignmentsRepository = app.get<RoleAssignmentsRepository>(DI.roleAssignmentsRepository);
+
+		service = app.get(CheckModeratorsActivityProcessorService);
+		idService = app.get(IdService);
+		roleService = app.get(RoleService);
+
+		app.enableShutdownHooks();
+	});
+
+	beforeEach(async () => {
+		clock = lolex.install({
+			now: new Date(baseDate),
+			shouldClearNativeTimers: true,
+		});
+
+		root = await createUser({ isRoot: true, lastActiveDate: new Date() });
+	});
+
+	afterEach(async () => {
+		clock.uninstall();
+		await usersRepository.delete({});
+		await userProfilesRepository.delete({});
+		await roleAssignmentsRepository.delete({});
+		await rolesRepository.delete({});
+
+		roleService.flushCaches();
+	});
+
+	afterAll(async () => {
+		await app.close();
+	});
+
+	// --------------------------------------------------------------------------------------
+
+	describe('fetchModerators', () => {
+		function expectUsers(users: MiUser[], expected: MiUser[]) {
+			expect(users.sort((x, y) => x.id.localeCompare(y.id)))
+				.toEqual(expected.sort((x, y) => x.id.localeCompare(y.id)));
+		}
+
+		test('モデレーターロール無し -> root', async () => {
+			const [user1, user2, user3] = await Promise.all([
+				createUser(),
+				createUser(),
+				createUser(),
+			]);
+
+			const [role1, role2] = await Promise.all([
+				createRole({ isModerator: false }),
+				createRole({ isModerator: false }),
+			]);
+
+			await Promise.all([
+				assignRole({ userId: user1.id, roleId: role1.id }),
+				assignRole({ userId: user2.id, roleId: role2.id }),
+				assignRole({ userId: user3.id, roleId: role1.id }),
+				assignRole({ userId: user3.id, roleId: role2.id }),
+			]);
+
+			const result = await service.fetchModerators();
+			expectUsers(result, [root]);
+		});
+
+		test('モデレーターロール有り -> root, user2, user3', async () => {
+			const [user1, user2, user3] = await Promise.all([
+				createUser(),
+				createUser(),
+				createUser(),
+			]);
+
+			const [role1, role2] = await Promise.all([
+				createRole({ isModerator: false }),
+				createRole({ isModerator: true }),
+			]);
+
+			await Promise.all([
+				assignRole({ userId: user1.id, roleId: role1.id }),
+				assignRole({ userId: user2.id, roleId: role2.id }),
+				assignRole({ userId: user3.id, roleId: role1.id }),
+				assignRole({ userId: user3.id, roleId: role2.id }),
+			]);
+
+			const result = await service.fetchModerators();
+			expectUsers(result, [root, user2, user3]);
+		});
+
+		test('モデレーターロール無し + 特殊ポリシーロール -> root, user1, user3', async () => {
+			const [user1, user2, user3] = await Promise.all([
+				createUser(),
+				createUser(),
+				createUser(),
+			]);
+
+			const [role1, role2] = await Promise.all([
+				createRole({
+					isModerator: false, policies: {
+						isModeratorInactivityCheckTarget: {
+							useDefault: false,
+							value: true,
+							priority: 0,
+						},
+					},
+				}),
+				createRole({ isModerator: false }),
+			]);
+
+			await Promise.all([
+				assignRole({ userId: user1.id, roleId: role1.id }),
+				assignRole({ userId: user2.id, roleId: role2.id }),
+				assignRole({ userId: user3.id, roleId: role1.id }),
+				assignRole({ userId: user3.id, roleId: role2.id }),
+			]);
+
+			const result = await service.fetchModerators();
+			expectUsers(result, [root, user1, user3]);
+		});
+
+		test('モデレーターロールあり + 特殊ポリシーロール -> root, user1, user2, user3', async () => {
+			const [user1, user2, user3] = await Promise.all([
+				createUser(),
+				createUser(),
+				createUser(),
+			]);
+
+			const [role1, role2] = await Promise.all([
+				createRole({
+					isModerator: false, policies: {
+						isModeratorInactivityCheckTarget: {
+							useDefault: false,
+							value: true,
+							priority: 0,
+						},
+					},
+				}),
+				createRole({ isModerator: true }),
+			]);
+
+			await Promise.all([
+				assignRole({ userId: user1.id, roleId: role1.id }),
+				assignRole({ userId: user2.id, roleId: role2.id }),
+				assignRole({ userId: user3.id, roleId: role1.id }),
+				assignRole({ userId: user3.id, roleId: role2.id }),
+			]);
+
+			const result = await service.fetchModerators();
+			expectUsers(result, [root, user1, user2, user3]);
 		});
 	});
 });

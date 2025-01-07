@@ -106,6 +106,7 @@ export const ROLE_POLICIES = [
 	'canImportFollowing',
 	'canImportMuting',
 	'canImportUserLists',
+	'isModeratorInactivityCheckTarget',
 ] as const;
 
 // なんか動かない

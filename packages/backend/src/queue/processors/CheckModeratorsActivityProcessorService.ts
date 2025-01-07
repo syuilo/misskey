@@ -8,7 +8,7 @@ import { In } from 'typeorm';
 import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { MetaService } from '@/core/MetaService.js';
-import { RoleService } from '@/core/RoleService.js';
+import { RolePolicies, RoleService } from '@/core/RoleService.js';
 import { EmailService } from '@/core/EmailService.js';
 import { MiUser, type UserProfilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
@@ -281,12 +281,47 @@ export class CheckModeratorsActivityProcessorService {
 	}
 
 	@bindThis
-	private async fetchModerators() {
-		// TODO: モデレーター以外にも特別な権限を持つユーザーがいる場合は考慮する
-		return this.roleService.getModerators({
-			includeAdmins: true,
-			includeRoot: true,
-			excludeExpire: true,
-		});
+	public async fetchModerators() {
+		const resultMap = await this.roleService
+			.getModerators({ includeAdmins: true, includeRoot: true, excludeExpire: true })
+			.then(it => new Map(it.map(it => [it.id, it])));
+
+		const additionalUsers = await this.fetchAdditionalTargetUsers();
+		for (const user of additionalUsers) {
+			resultMap.set(user.id, user);
+		}
+
+		return [...resultMap.values()];
+	}
+
+	@bindThis
+	private async fetchAdditionalTargetUsers() {
+		const roles = await this.roleService.getRoles();
+		const targetRoleIds = roles
+			.filter(it => (it.policies as unknown as Partial<RolePolicies>).isModeratorInactivityCheckTarget ?? false)
+			.map(it => it.id);
+		if (targetRoleIds.length === 0) {
+			// 該当ポリシーが有効なロールが存在しない
+			return [];
+		}
+
+		const tmpTargetUsers = await this.roleService.getUsersByRoleIds(targetRoleIds)
+			.then(it => [...new Map(it.map(it => [it.id, it])).values()]);
+		if (tmpTargetUsers.length === 0) {
+			// 該当ポリシーが有効なロールにアサインされたユーザが存在しない
+			return [];
+		}
+
+		const tmpTargetUsersWithPolicies = await Promise.all(
+			tmpTargetUsers.map(async user => {
+				// 複数ロールを組み合わせた最終的なポリシーを計算する必要がある
+				const policies = await this.roleService.getUserPolicies(user.id);
+				return { user, policies };
+			}),
+		);
+
+		return tmpTargetUsersWithPolicies
+			.filter(it => it.policies.isModeratorInactivityCheckTarget)
+			.map(it => it.user);
 	}
 }

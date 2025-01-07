@@ -480,6 +480,27 @@ describe('RoleService', () => {
 		});
 	});
 
+	describe('getUsersByRoleIds', () => {
+		test('get users by role ids', async () => {
+			const [user1, user2, user3, role1, role2, role3] = await Promise.all([
+				createUser(),
+				createUser(),
+				createUser(),
+				createRole(),
+				createRole(),
+				createRole(),
+			]);
+			await Promise.all([
+				roleService.assign(user1.id, role1.id),
+				roleService.assign(user2.id, role1.id),
+				roleService.assign(user3.id, role2.id),
+			]);
+
+			const result = await roleService.getUsersByRoleIds([role1.id]);
+			expect(result.map(u => u.id)).toEqual([user1.id, user2.id]);
+		});
+	});
+
 	describe('conditional role', () => {
 		test('～かつ～', async () => {
 			const [user1, user2, user3, user4] = await Promise.all([

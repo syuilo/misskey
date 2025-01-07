@@ -292,6 +292,10 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		isModeratorInactivityCheckTarget: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 

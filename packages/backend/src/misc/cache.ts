@@ -242,6 +242,11 @@ export class MemoryKVCache<T> {
 		this.cache.delete(key);
 	}
 
+	@bindThis
+	public deleteAll() {
+		this.cache.clear();
+	}
+
 	/**
 	 * キャッシュがあればそれを返し、無ければfetcherを呼び出して結果をキャッシュ&返します
 	 * optional: キャッシュが存在してもvalidatorでfalseを返すとキャッシュ無効扱いにします

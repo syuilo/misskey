@@ -63,6 +63,7 @@ export type RolePolicies = {
 	canImportFollowing: boolean;
 	canImportMuting: boolean;
 	canImportUserLists: boolean;
+	isModeratorInactivityCheckTarget: boolean;
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -97,6 +98,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canImportFollowing: true,
 	canImportMuting: true,
 	canImportUserLists: true,
+	isModeratorInactivityCheckTarget: false,
 };
 
 @Injectable()
@@ -402,7 +404,21 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canImportFollowing: calc('canImportFollowing', vs => vs.some(v => v === true)),
 			canImportMuting: calc('canImportMuting', vs => vs.some(v => v === true)),
 			canImportUserLists: calc('canImportUserLists', vs => vs.some(v => v === true)),
+			isModeratorInactivityCheckTarget: calc('isModeratorInactivityCheckTarget', vs => vs.some(v => v === true)),
 		};
+	}
+
+	@bindThis
+	public async getUsersByRoleIds(roleIds: MiRole['id'][]): Promise<MiUser[]> {
+		// 今のところこの関数の使用頻度は低めなのでキャッシュは作らない.
+		// 使用頻度が増えた場合はroleAssignmentByUserIdCacheのようなキャッシュを作るべきか否かを検討する必要がある.
+		const users = await this.roleAssignmentsRepository.createQueryBuilder('roleAssignment')
+			.innerJoinAndSelect('roleAssignment.user', 'user')
+			.where('roleAssignment.roleId IN (:...roleIds)', { roleIds })
+			.getMany()
+			.then(it => it.map(it => it.user).filter(it => it != null));
+
+		return [...new Map(users.map(it => [it.id, it])).values()];
 	}
 
 	@bindThis
@@ -465,6 +481,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 
 		if (includeRoot) {
 			const rootUserId = await this.rootUserIdCache.fetch(async () => {
+				// rootは必ず1人存在するという前提のもと
 				const it = await this.usersRepository.createQueryBuilder('users')
 					.select('id')
 					.where({ isRoot: true })
@@ -685,6 +702,17 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 				role: role,
 			});
 		}
+	}
+
+	/**
+	 * Service内部で保持しているキャッシュをすべて削除する.
+	 * 主にテスト向けの機能で、通常はこのメソッドを呼ぶ必要はない.
+	 */
+	@bindThis
+	public flushCaches(): void {
+		this.rootUserIdCache.delete();
+		this.rolesCache.delete();
+		this.roleAssignmentByUserIdCache.deleteAll();
 	}
 
 	@bindThis
