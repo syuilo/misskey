@@ -14,6 +14,7 @@ import { $i } from '@/account.js';
 import { alert } from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+import { canApplyWatermark, getWatermarkAppliedImage } from '@/scripts/watermark.js';
 
 type Uploading = {
 	id: string;
@@ -32,9 +33,10 @@ const mimeTypeMap = {
 
 export function uploadFile(
 	file: File,
-	folder?: string | Misskey.entities.DriveFolder,
+	folder?: string | null | Misskey.entities.DriveFolder,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
+	watermark: boolean = defaultStore.state.useWatermark,
 ): Promise<Misskey.entities.DriveFile> {
 	if ($i == null) throw new Error('Not logged in');
 
@@ -67,22 +69,27 @@ export function uploadFile(
 
 			uploads.value.push(ctx);
 
-			const config = !keepOriginal ? await getCompressionConfig(file) : undefined;
-			let resizedImage: Blob | undefined;
+			let _file: Blob = file;
+
+			if (_file.type.startsWith('image/') && watermark && canApplyWatermark(defaultStore.state.watermarkConfig)) {
+				_file = await getWatermarkAppliedImage(_file, defaultStore.state.watermarkConfig);
+			}
+
+			const config = !keepOriginal ? await getCompressionConfig(_file) : undefined;
 			if (config) {
 				try {
-					const resized = await readAndCompressImage(file, config);
-					if (resized.size < file.size || file.type === 'image/webp') {
+					const resized = await readAndCompressImage(_file, config);
+					if (resized.size < _file.size || _file.type === 'image/webp') {
 						// The compression may not always reduce the file size
 						// (and WebP is not browser safe yet)
-						resizedImage = resized;
+						_file = resized;
 					}
 					if (_DEV_) {
-						const saved = ((1 - resized.size / file.size) * 100).toFixed(2);
-						console.log(`Image compression: before ${file.size} bytes, after ${resized.size} bytes, saved ${saved}%`);
+						const saved = ((1 - resized.size / _file.size) * 100).toFixed(2);
+						console.log(`Image compression: before ${_file.size} bytes, after ${resized.size} bytes, saved ${saved}%`);
 					}
 
-					ctx.name = file.type !== config.mimeType ? `${ctx.name}.${mimeTypeMap[config.mimeType]}` : ctx.name;
+					ctx.name = _file.type !== config.mimeType ? `${ctx.name}.${mimeTypeMap[config.mimeType]}` : ctx.name;
 				} catch (err) {
 					console.error('Failed to resize image', err);
 				}
@@ -91,7 +98,7 @@ export function uploadFile(
 			const formData = new FormData();
 			formData.append('i', $i!.token);
 			formData.append('force', 'true');
-			formData.append('file', resizedImage ?? file);
+			formData.append('file', _file);
 			formData.append('name', ctx.name);
 			if (_folder) formData.append('folderId', _folder);
 

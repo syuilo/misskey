@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div class="name">{{ file.name }}</div>
 					<button v-tooltip="i18n.ts.remove" class="remove _button" @click="remove(file)"><i class="ti ti-x"></i></button>
 				</div>
-				<MkButton primary @click="selectFile"><i class="ti ti-plus"></i> {{ i18n.ts.attachFile }}</MkButton>
+				<MkButton primary @click="chooseFile"><i class="ti ti-plus"></i> {{ i18n.ts.attachFile }}</MkButton>
 			</div>
 
 			<MkSwitch v-model="isSensitive">{{ i18n.ts.markAsSensitive }}</MkSwitch>
@@ -45,7 +45,7 @@ import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormSuspense from '@/components/form/suspense.vue';
-import { selectFiles } from '@/scripts/select-file.js';
+import { selectFile } from '@/scripts/select-file.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -64,8 +64,8 @@ const description = ref<string | null>(null);
 const title = ref<string | null>(null);
 const isSensitive = ref(false);
 
-function selectFile(evt) {
-	selectFiles(evt.currentTarget ?? evt.target, null).then(selected => {
+function chooseFile(evt) {
+	selectFile(evt.currentTarget ?? evt.target, { multiple: true }).then(selected => {
 		files.value = files.value.concat(selected);
 	});
 }

@@ -27,8 +27,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:list="id"
 			:min="min"
 			:max="max"
-			@focus="focused = true"
-			@blur="focused = false"
+			@focus="onFocus"
+			@blur="onBlur"
 			@keydown="onKeydown($event)"
 			@input="onInput"
 		>
@@ -80,6 +80,8 @@ const emit = defineEmits<{
 	(ev: 'change', _ev: KeyboardEvent): void;
 	(ev: 'keydown', _ev: KeyboardEvent): void;
 	(ev: 'enter', _ev: KeyboardEvent): void;
+	(ev: 'focus', _ev: FocusEvent): void;
+	(ev: 'blur', _ev: FocusEvent): void;
 	(ev: 'update:modelValue', value: string | number): void;
 }>();
 
@@ -113,6 +115,14 @@ const onKeydown = (ev: KeyboardEvent) => {
 	if (ev.code === 'Enter') {
 		emit('enter', ev);
 	}
+};
+const onFocus = (ev: FocusEvent) => {
+	focused.value = true;
+	emit('focus', ev);
+};
+const onBlur = (ev: FocusEvent) => {
+	focused.value = false;
+	emit('blur', ev);
 };
 
 const updated = () => {

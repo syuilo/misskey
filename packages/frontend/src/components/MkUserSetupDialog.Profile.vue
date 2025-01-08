@@ -68,7 +68,9 @@ watch(description, () => {
 });
 
 function setAvatar(ev) {
-	chooseFileFromPc(false).then(async (files) => {
+	chooseFileFromPc({
+		multiple: false,
+	}).then(async (files) => {
 		const file = files[0];
 
 		let originalOrCropped = file;

@@ -116,7 +116,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { selectFiles } from '@/scripts/select-file.js';
+import { selectFile } from '@/scripts/select-file.js';
 import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
@@ -129,6 +129,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+import { canApplyWatermark } from '@/scripts/watermark.js';
 import type { PostFormProps } from '@/types/post-form.js';
 
 const $i = signinRequired();
@@ -414,7 +415,10 @@ function focus() {
 function chooseFileFrom(ev) {
 	if (props.mock) return;
 
-	selectFiles(ev.currentTarget ?? ev.target, i18n.ts.attachFile).then(files_ => {
+	selectFile(ev.currentTarget ?? ev.target, {
+		label: i18n.ts.attachFile,
+		multiple: true,
+	}).then(files_ => {
 		for (const file of files_) {
 			files.value.push(file);
 		}
@@ -440,10 +444,10 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 	files.value[files.value.findIndex(x => x.id === file.id)] = newFile;
 }
 
-function upload(file: File, name?: string): void {
+function upload(file: File, name?: string, watermark?: boolean): void {
 	if (props.mock) return;
 
-	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
+	uploadFile(file, defaultStore.state.uploadFolder, name, undefined, watermark).then(res => {
 		files.value.push(res);
 	});
 }
@@ -585,6 +589,8 @@ async function onPaste(ev: ClipboardEvent) {
 	if (props.mock) return;
 	if (!ev.clipboardData) return;
 
+	let shouldApplyWatermark: boolean | undefined = undefined;
+
 	for (const { item, i } of Array.from(ev.clipboardData.items, (data, x) => ({ item: data, i: x }))) {
 		if (item.kind === 'file') {
 			const file = item.getAsFile();
@@ -592,7 +598,24 @@ async function onPaste(ev: ClipboardEvent) {
 			const lio = file.name.lastIndexOf('.');
 			const ext = lio >= 0 ? file.name.slice(lio) : '';
 			const formatted = `${formatTimeString(new Date(file.lastModified), defaultStore.state.pastedFileName).replace(/{{number}}/g, `${i + 1}`)}${ext}`;
-			upload(file, formatted);
+
+			if (file.type.startsWith('image/')) {
+				if (
+					shouldApplyWatermark == null &&
+					defaultStore.state.clipboardWatermarkBehavior === 'confirm' &&
+					canApplyWatermark(defaultStore.reactiveState.watermarkConfig.value)
+				) {
+					const { canceled } = await os.confirm({
+						type: 'info',
+						text: i18n.ts.watermarkConfirm,
+						okText: i18n.ts.yes,
+						cancelText: i18n.ts.no,
+					});
+					shouldApplyWatermark = !canceled;
+				}
+			}
+
+			upload(file, formatted, shouldApplyWatermark);
 		}
 	}
 

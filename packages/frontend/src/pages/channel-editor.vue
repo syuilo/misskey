@@ -189,7 +189,7 @@ async function archive() {
 }
 
 function setBannerImage(evt) {
-	selectFile(evt.currentTarget ?? evt.target, null).then(file => {
+	selectFile(evt.currentTarget ?? evt.target).then(file => {
 		bannerId.value = file.id;
 	});
 }

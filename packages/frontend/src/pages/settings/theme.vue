@@ -158,7 +158,7 @@ fetchThemes().then(() => {
 });
 
 function setWallpaper(event) {
-	selectFile(event.currentTarget ?? event.target, null).then(file => {
+	selectFile(event.currentTarget ?? event.target).then(file => {
 		wallpaper.value = file.url;
 	});
 }

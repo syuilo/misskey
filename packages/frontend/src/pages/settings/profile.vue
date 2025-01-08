@@ -223,7 +223,7 @@ function save() {
 }
 
 function changeAvatar(ev) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.avatar).then(async (file) => {
+	selectFile(ev.currentTarget ?? ev.target, { label: i18n.ts.avatar }).then(async (file) => {
 		let originalOrCropped = file;
 
 		const { canceled } = await os.confirm({
@@ -250,7 +250,7 @@ function changeAvatar(ev) {
 }
 
 function changeBanner(ev) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
+	selectFile(ev.currentTarget ?? ev.target, { label: i18n.ts.banner }).then(async (file) => {
 		let originalOrCropped = file;
 
 		const { canceled } = await os.confirm({

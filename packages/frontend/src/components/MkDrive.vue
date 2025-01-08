@@ -143,6 +143,7 @@ const selectedFolders = ref<Misskey.entities.DriveFolder[]>([]);
 const uploadings = uploads;
 const connection = useStream().useChannel('drive');
 const keepOriginal = ref<boolean>(defaultStore.state.keepOriginalUploading); // 外部渡しが多いので$refは使わないほうがよい
+const useWatermark = ref<boolean>(defaultStore.state.useWatermark);
 
 // ドロップされようとしているか
 const draghover = ref(false);
@@ -391,7 +392,7 @@ function onChangeFileInput() {
 }
 
 function upload(file: File, folderToUpload?: Misskey.entities.DriveFolder | null) {
-	uploadFile(file, (folderToUpload && typeof folderToUpload === 'object') ? folderToUpload.id : null, undefined, keepOriginal.value).then(res => {
+	uploadFile(file, (folderToUpload && typeof folderToUpload === 'object') ? folderToUpload.id : null, undefined, keepOriginal.value, useWatermark.value).then(res => {
 		addFile(res, true);
 	});
 }
@@ -633,6 +634,10 @@ function getMenu() {
 		type: 'switch',
 		text: i18n.ts.keepOriginalUploading,
 		ref: keepOriginal,
+	}, {
+		type: 'switch',
+		text: i18n.ts.useWatermark,
+		ref: useWatermark,
 	}, { type: 'divider' }, {
 		text: i18n.ts.addFile,
 		type: 'label',

@@ -21,7 +21,7 @@ const compressTypeMapFallback = {
 	'image/svg+xml': { quality: 1, mimeType: 'image/png' },
 } as const;
 
-export async function getCompressionConfig(file: File): Promise<BrowserImageResizerConfigWithConvertedOutput | undefined> {
+export async function getCompressionConfig(file: Blob): Promise<BrowserImageResizerConfigWithConvertedOutput | undefined> {
 	const imgConfig = (isWebpSupported() ? compressTypeMap : compressTypeMapFallback)[file.type];
 	if (!imgConfig || await isAnimated(file)) {
 		return;

@@ -217,7 +217,7 @@ async function add() {
 }
 
 function setEyeCatchingImage(img) {
-	selectFile(img.currentTarget ?? img.target, null).then(file => {
+	selectFile(img.currentTarget ?? img.target).then(file => {
 		eyeCatchingImageId.value = file.id;
 	});
 }
