@@ -142,7 +142,7 @@
 		"misskey-js": "workspace:*",
 		"misskey-reversi": "workspace:*",
 		"ms": "3.0.0-canary.1",
-		"nanoid": "5.0.8",
+		"nanoid": "5.0.9",
 		"nested-property": "4.0.0",
 		"node-fetch": "3.3.2",
 		"nodemailer": "6.9.16",
