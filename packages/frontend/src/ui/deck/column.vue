@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@dragstart="onDragstart"
 		@dragend="onDragend"
 		@contextmenu.prevent.stop="onContextmenu"
-		@wheel="emit('headerWheel', $event)"
+		@wheel.passive="emit('headerWheel', $event)"
 	>
 		<svg viewBox="0 0 256 128" :class="$style.tabShape">
 			<g transform="matrix(6.2431,0,0,6.2431,-677.417,-29.3839)">

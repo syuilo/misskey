@@ -10,13 +10,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.main">
 		<XAnnouncements v-if="$i"/>
 		<XStatusBars/>
-		<div ref="columnsEl" :class="[$style.sections, { [$style.center]: deckStore.reactiveState.columnAlign.value === 'center', [$style.snapScroll]: snapScroll }]" @contextmenu.self.prevent="onContextmenu" @wheel.self="onWheel">
+		<!-- passive: https://bugs.webkit.org/show_bug.cgi?id=281300 -->
+		<div ref="columnsEl" :class="[$style.sections, { [$style.center]: deckStore.reactiveState.columnAlign.value === 'center', [$style.snapScroll]: snapScroll }]" @contextmenu.self.prevent="onContextmenu" @wheel.passive.self="onWheel">
 			<!-- sectionを利用しているのは、deck.vue側でcolumnに対してfirst-of-typeを効かせるため -->
 			<section
 				v-for="ids in layout"
 				:class="$style.section"
 				:style="columns.filter(c => ids.includes(c.id)).some(c => c.flexible) ? { flex: 1, minWidth: '350px' } : { width: Math.max(...columns.filter(c => ids.includes(c.id)).map(c => c.width)) + 'px' }"
-				@wheel.self="onWheel"
+				@wheel.passive.self="onWheel"
 			>
 				<component
 					:is="columnComponents[columns.find(c => c.id === id)!.type] ?? XTlColumn"
@@ -150,7 +151,8 @@ window.addEventListener('resize', () => {
 	isMobile.value = window.innerWidth <= 500;
 });
 
-const snapScroll = deviceKind === 'smartphone' || deviceKind === 'tablet';
+// ポインターイベント非対応用に初期値はUAから出す
+const snapScroll = ref(deviceKind === 'smartphone' || deviceKind === 'tablet');
 const drawerMenuShowing = ref(false);
 
 /*
@@ -201,8 +203,18 @@ const onContextmenu = (ev) => {
 	}], ev);
 };
 
+// タッチでスクロールしてるときはスナップスクロールを有効にする
+function pointerEvent(ev: PointerEvent) {
+	snapScroll.value = ev.pointerType === 'touch';
+}
+
+document.addEventListener('pointerdown', pointerEvent);
+document.addEventListener('pointermove', pointerEvent);
+document.addEventListener('pointerup', pointerEvent);
+
 function onWheel(ev: WheelEvent) {
 	if (ev.deltaX === 0 && columnsEl.value != null) {
+		snapScroll.value = false;
 		columnsEl.value.scrollLeft += ev.deltaY;
 	}
 }
