@@ -5,7 +5,7 @@
 
 // https://github.com/typeorm/typeorm/issues/2400
 import pg from 'pg';
-import { DataSource, Logger } from 'typeorm';
+import { DataSource, Logger, type QueryRunner } from 'typeorm';
 import * as highlight from 'cli-highlight';
 import { entities as charts } from '@/core/chart/entities.js';
 
@@ -92,6 +92,7 @@ const sqlLogger = dbLogger.createSubLogger('sql', 'gray');
 export type LoggerProps = {
 	disableQueryTruncation?: boolean;
 	enableQueryParamLogging?: boolean;
+	printReplicationMode?: boolean,
 }
 
 function highlightSql(sql: string) {
@@ -117,8 +118,10 @@ class MyCustomLogger implements Logger {
 	}
 
 	@bindThis
-	private transformQueryLog(sql: string) {
-		let modded = sql;
+	private transformQueryLog(sql: string, opts?: {
+		prefix?: string;
+	}) {
+		let modded = opts?.prefix ? opts.prefix + sql : sql;
 		if (!this.props.disableQueryTruncation) {
 			modded = truncateSql(modded);
 		}
@@ -136,18 +139,27 @@ class MyCustomLogger implements Logger {
 	}
 
 	@bindThis
-	public logQuery(query: string, parameters?: any[]) {
-		sqlLogger.info(this.transformQueryLog(query), this.transformParameters(parameters));
+	public logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner) {
+		const prefix = this.props.printReplicationMode
+			? `[${queryRunner?.getReplicationMode()}] `
+			: undefined;
+		sqlLogger.info(this.transformQueryLog(query, { prefix }), this.transformParameters(parameters));
 	}
 
 	@bindThis
-	public logQueryError(error: string, query: string, parameters?: any[]) {
-		sqlLogger.error(this.transformQueryLog(query), this.transformParameters(parameters));
+	public logQueryError(error: string, query: string, parameters?: any[], queryRunner?: QueryRunner) {
+		const prefix = this.props.printReplicationMode
+			? `[${queryRunner?.getReplicationMode()}] `
+			: undefined;
+		sqlLogger.error(this.transformQueryLog(query, { prefix }), this.transformParameters(parameters));
 	}
 
 	@bindThis
-	public logQuerySlow(time: number, query: string, parameters?: any[]) {
-		sqlLogger.warn(this.transformQueryLog(query), this.transformParameters(parameters));
+	public logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner) {
+		const prefix = this.props.printReplicationMode
+			? `[${queryRunner?.getReplicationMode()}] `
+			: undefined;
+		sqlLogger.warn(this.transformQueryLog(query, { prefix }), this.transformParameters(parameters));
 	}
 
 	@bindThis
@@ -289,6 +301,7 @@ export function createPostgresDataSource(config: Config) {
 			? new MyCustomLogger({
 				disableQueryTruncation: config.logging?.sql?.disableQueryTruncation,
 				enableQueryParamLogging: config.logging?.sql?.enableQueryParamLogging,
+				printReplicationMode: !!config.dbReplications,
 			})
 			: undefined,
 		maxQueryExecutionTime: 300,

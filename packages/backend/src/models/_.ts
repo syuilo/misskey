@@ -3,13 +3,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FindOneOptions, InsertQueryBuilder, ObjectLiteral, Repository, SelectQueryBuilder, TypeORMError } from 'typeorm';
-import { DriverUtils } from 'typeorm/driver/DriverUtils.js';
+import {
+	FindOneOptions,
+	InsertQueryBuilder,
+	ObjectLiteral,
+	QueryRunner,
+	Repository,
+	SelectQueryBuilder,
+} from 'typeorm';
 import { RelationCountLoader } from 'typeorm/query-builder/relation-count/RelationCountLoader.js';
 import { RelationIdLoader } from 'typeorm/query-builder/relation-id/RelationIdLoader.js';
-import { RawSqlResultsToEntityTransformer } from 'typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js';
-import { ObjectUtils } from 'typeorm/util/ObjectUtils.js';
-import { OrmUtils } from 'typeorm/util/OrmUtils.js';
+import {
+	RawSqlResultsToEntityTransformer,
+} from 'typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions.js';
 import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAbuseReportNotificationRecipient } from '@/models/AbuseReportNotificationRecipient.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
@@ -83,7 +90,11 @@ import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialE
 
 export interface MiRepository<T extends ObjectLiteral> {
 	createTableColumnNames(this: Repository<T> & MiRepository<T>): string[];
+
 	insertOne(this: Repository<T> & MiRepository<T>, entity: QueryDeepPartialEntity<T>, findOptions?: Pick<FindOneOptions<T>, 'relations'>): Promise<T>;
+
+	insertOneImpl(this: Repository<T> & MiRepository<T>, entity: QueryDeepPartialEntity<T>, findOptions?: Pick<FindOneOptions<T>, 'relations'>, queryRunner?: QueryRunner): Promise<T>;
+
 	selectAliasColumnNames(this: Repository<T> & MiRepository<T>, queryBuilder: InsertQueryBuilder<T>, builder: SelectQueryBuilder<T>): void;
 }
 
@@ -92,6 +103,21 @@ export const miRepository = {
 		return this.metadata.columns.filter(column => column.isSelect && !column.isVirtual).map(column => column.databaseName);
 	},
 	async insertOne(entity, findOptions?) {
+		const opt = this.manager.connection.options as PostgresConnectionOptions;
+		if (opt.replication) {
+			const queryRunner = this.manager.connection.createQueryRunner('master');
+			try {
+				return this.insertOneImpl(entity, findOptions, queryRunner);
+			} finally {
+				await queryRunner.release();
+			}
+		} else {
+			return this.insertOneImpl(entity, findOptions);
+		}
+	},
+	async insertOneImpl(entity, findOptions?, queryRunner?) {
+		// ---- insert + returningの結果を共通テーブル式(CTE)に保持するクエリを生成 ----
+
 		const queryBuilder = this.createQueryBuilder().insert().values(entity);
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const mainAlias = queryBuilder.expressionMap.mainAlias!;
@@ -99,7 +125,9 @@ export const miRepository = {
 		mainAlias.name = 't';
 		const columnNames = this.createTableColumnNames();
 		queryBuilder.returning(columnNames.reduce((a, c) => `${a}, ${queryBuilder.escape(c)}`, '').slice(2));
-		const builder = this.createQueryBuilder().addCommonTableExpression(queryBuilder, 'cte', { columnNames });
+
+		// ---- 共通テーブル式(CTE)から結果を取得 ----
+		const builder = this.createQueryBuilder(undefined, queryRunner).addCommonTableExpression(queryBuilder, 'cte', { columnNames });
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		builder.expressionMap.mainAlias!.tablePath = 'cte';
 		this.selectAliasColumnNames(queryBuilder, builder);
@@ -197,7 +225,9 @@ export {
 };
 
 export type AbuseUserReportsRepository = Repository<MiAbuseUserReport> & MiRepository<MiAbuseUserReport>;
-export type AbuseReportNotificationRecipientRepository = Repository<MiAbuseReportNotificationRecipient> & MiRepository<MiAbuseReportNotificationRecipient>;
+export type AbuseReportNotificationRecipientRepository =
+	Repository<MiAbuseReportNotificationRecipient>
+	& MiRepository<MiAbuseReportNotificationRecipient>;
 export type AccessTokensRepository = Repository<MiAccessToken> & MiRepository<MiAccessToken>;
 export type AdsRepository = Repository<MiAd> & MiRepository<MiAd>;
 export type AnnouncementsRepository = Repository<MiAnnouncement> & MiRepository<MiAnnouncement>;

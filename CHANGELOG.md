@@ -56,6 +56,7 @@
 - Fix: `/api/pages/update`にて`name`を指定せずにリクエストするとエラーが発生する問題を修正
 - Fix: AIセンシティブ判定が arm64 環境で動作しない問題を修正
 - Fix: 非Misskey系のソフトウェアからHTML`<ruby>`タグを含むノートを受信した場合、MFMの読み仮名（ルビ）文法に変換して表示
+- Fix: リードレプリカ設定時にレコードの追加・更新・削除を伴うクエリを発行した際はmasterノードで実行されるように調整( #10897 )
 
 ### Misskey.js
 - Feat: allow setting `binaryType` of WebSocket connection
