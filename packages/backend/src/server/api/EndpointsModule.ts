@@ -31,6 +31,7 @@ import * as ep___admin_avatarDecorations_update from './endpoints/admin/avatar-d
 import * as ep___admin_captcha_current from './endpoints/admin/captcha/current.js';
 import * as ep___admin_captcha_save from './endpoints/admin/captcha/save.js';
 import * as ep___admin_deleteAllFilesOfAUser from './endpoints/admin/delete-all-files-of-a-user.js';
+import * as ep___admin_updateProxyAccount from './endpoints/admin/update-proxy-account.js';
 import * as ep___admin_unsetUserAvatar from './endpoints/admin/unset-user-avatar.js';
 import * as ep___admin_unsetUserBanner from './endpoints/admin/unset-user-banner.js';
 import * as ep___admin_drive_cleanRemoteFiles from './endpoints/admin/drive/clean-remote-files.js';
@@ -421,6 +422,7 @@ const $admin_avatarDecorations_update: Provider = { provide: 'ep:admin/avatar-de
 const $admin_captcha_current: Provider = { provide: 'ep:admin/captcha/current', useClass: ep___admin_captcha_current.default };
 const $admin_captcha_save: Provider = { provide: 'ep:admin/captcha/save', useClass: ep___admin_captcha_save.default };
 const $admin_deleteAllFilesOfAUser: Provider = { provide: 'ep:admin/delete-all-files-of-a-user', useClass: ep___admin_deleteAllFilesOfAUser.default };
+const $admin_updateProxyAccount: Provider = { provide: 'ep:admin/update-proxy-account', useClass: ep___admin_updateProxyAccount.default };
 const $admin_unsetUserAvatar: Provider = { provide: 'ep:admin/unset-user-avatar', useClass: ep___admin_unsetUserAvatar.default };
 const $admin_unsetUserBanner: Provider = { provide: 'ep:admin/unset-user-banner', useClass: ep___admin_unsetUserBanner.default };
 const $admin_drive_cleanRemoteFiles: Provider = { provide: 'ep:admin/drive/clean-remote-files', useClass: ep___admin_drive_cleanRemoteFiles.default };
@@ -815,6 +817,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_captcha_current,
 		$admin_captcha_save,
 		$admin_deleteAllFilesOfAUser,
+		$admin_updateProxyAccount,
 		$admin_unsetUserAvatar,
 		$admin_unsetUserBanner,
 		$admin_drive_cleanRemoteFiles,
@@ -1203,6 +1206,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_captcha_current,
 		$admin_captcha_save,
 		$admin_deleteAllFilesOfAUser,
+		$admin_updateProxyAccount,
 		$admin_unsetUserAvatar,
 		$admin_unsetUserBanner,
 		$admin_drive_cleanRemoteFiles,

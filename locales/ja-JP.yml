@@ -2625,6 +2625,7 @@ _moderationLogTypes:
   updateCustomEmoji: "カスタム絵文字更新"
   deleteCustomEmoji: "カスタム絵文字削除"
   updateServerSettings: "サーバー設定更新"
+  updateUser: "ユーザーを更新"
   updateUserNote: "ユーザーのモデレーションノート更新"
   deleteDriveFile: "ファイルを削除"
   deleteNote: "ノートを削除"

@@ -73,6 +73,7 @@ export const moderationLogTypes = [
 	'updateServerSettings',
 	'suspend',
 	'unsuspend',
+	'updateUser',
 	'updateUserNote',
 	'addCustomEmoji',
 	'updateCustomEmoji',
@@ -310,6 +311,11 @@ export type ModerationLogPayloads = {
 	deleteAvatarDecoration: {
 		avatarDecorationId: string;
 		avatarDecoration: any;
+	};
+	updateUser: {
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
 	};
 	unsetUserAvatar: {
 		userId: string;

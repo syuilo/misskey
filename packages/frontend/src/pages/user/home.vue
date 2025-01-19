@@ -61,6 +61,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkA>
 						</span>
 					</div>
+					<div v-if="['instance.actor', 'relay.actor', 'proxy.actor'].includes(user.username)" class="isSystemAccount">
+						<MkInfo>{{ i18n.ts.isSystemAccount }}</MkInfo>
+					</div>
 					<div v-if="iAmModerator" class="moderationNote">
 						<MkTextarea v-if="editModerationNote || (moderationNote != null && moderationNote !== '')" v-model="moderationNote" manualSave>
 							<template #label>{{ i18n.ts.moderationNote }}</template>
@@ -487,6 +490,10 @@ onUnmounted(() => {
 							font-size: 0.85em;
 						}
 					}
+				}
+
+				> .isSystemAccount {
+					padding: 24px 24px 0 154px;
 				}
 
 				> .roles {
