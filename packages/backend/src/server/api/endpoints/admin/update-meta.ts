@@ -185,6 +185,7 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
+		featuredUpdateRatio: { type: 'number' },
 	},
 	required: [],
 } as const;
@@ -671,6 +672,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (Array.isArray(ps.federationHosts)) {
 				set.federationHosts = ps.federationHosts.filter(Boolean).map(x => x.toLowerCase());
+			}
+
+			if (ps.featuredUpdateRatio !== undefined) {
+				set.featuredUpdateRatio = ps.featuredUpdateRatio;
 			}
 
 			const before = await this.metaService.fetch(true);

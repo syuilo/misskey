@@ -249,6 +249,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkButton primary @click="chooseProxyAccount">{{ i18n.ts.selectAccount }}</MkButton>
 					</div>
 				</MkFolder>
+
+				<MkFolder>
+					<template #icon><i class="ti ti-bolt"></i></template>
+					<template #label>{{ i18n.ts._featuredSetting.title }}</template>
+					<template v-if="featuredForm.modified.value" #footer>
+						<MkFormFooter :form="featuredForm"/>
+					</template>
+
+					<div class="_gaps_m">
+						<MkRange v-model="featuredForm.state.featuredUpdateRatio" :min="0" :max="1" :step="0.05">
+							<template #label>{{ i18n.ts._featuredSetting.updateRatio }} <span v-if="featuredForm.modifiedStates.featuredUpdateRatio" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts._featuredSetting.updateRatioDescription }}</template>
+						</MkRange>
+					</div>
+				</MkFolder>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -270,6 +285,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
+import MkRange from '@/components/MkRange.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import { useForm } from '@/scripts/use-form.js';
 import MkFormFooter from '@/components/MkFormFooter.vue';
@@ -374,6 +390,15 @@ const federationForm = useForm({
 	await os.apiWithDialog('admin/update-meta', {
 		federation: state.federation,
 		federationHosts: state.federationHosts.split('\n'),
+	});
+	fetchInstance(true);
+});
+
+const featuredForm = useForm({
+	featuredUpdateRatio: meta.featuredUpdateRatio,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-meta', {
+		featuredUpdateRatio: state.featuredUpdateRatio,
 	});
 	fetchInstance(true);
 });

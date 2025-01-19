@@ -10511,6 +10511,20 @@ export interface Locale extends ILocale {
          */
         "summaryProxyDescription2": string;
     };
+    "_featuredSetting": {
+        /**
+         * トレンド・見つける
+         */
+        "title": string;
+        /**
+         * トレンド・見つけるの更新比率
+         */
+        "updateRatio": string;
+        /**
+         * トレンド・見つけるのリアクションやリノートスコアの更新比率を設定します。更新比率が高いほどトレンド・見つけるの精度が上がりますが、Redisの負荷が高くなります。
+         */
+        "updateRatioDescription": string;
+    };
     "_mediaControls": {
         /**
          * ピクチャインピクチャ

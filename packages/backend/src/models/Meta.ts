@@ -658,4 +658,9 @@ export class MiMeta {
 		default: '{}',
 	})
 	public federationHosts: string[];
+
+	@Column('float', {
+		default: 0.3,
+	})
+	public featuredUpdateRatio: number;
 }

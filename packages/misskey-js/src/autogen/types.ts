@@ -5243,6 +5243,7 @@ export type operations = {
             urlPreviewSummaryProxyUrl: string | null;
             federation: string;
             federationHosts: string[];
+            featuredUpdateRatio: number;
           };
         };
       };
@@ -9743,6 +9744,7 @@ export type operations = {
           /** @enum {string} */
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
+          featuredUpdateRatio?: number;
         };
       };
     };

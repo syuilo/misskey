@@ -2797,6 +2797,11 @@ _urlPreviewSetting:
   summaryProxyDescription: "Misskey本体ではなく、サマリープロキシを使用してプレビューを生成します。"
   summaryProxyDescription2: "プロキシには下記パラメータがクエリ文字列として連携されます。プロキシ側がこれらをサポートしない場合、設定値は無視されます。"
 
+_featuredSetting:
+  title: "トレンド・見つける"
+  updateRatio: "トレンド・見つけるの更新比率"
+  updateRatioDescription: "トレンド・見つけるのリアクションやリノートスコアの更新比率を設定します。更新比率が高いほどトレンド・見つけるの精度が上がりますが、Redisの負荷が高くなります。"
+
 _mediaControls:
   pip: "ピクチャインピクチャ"
   playbackRate: "再生速度"

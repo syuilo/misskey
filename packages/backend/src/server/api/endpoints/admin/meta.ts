@@ -522,6 +522,10 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			featuredUpdateRatio: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -662,6 +666,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				urlPreviewSummaryProxyUrl: instance.urlPreviewSummaryProxyUrl,
 				federation: instance.federation,
 				federationHosts: instance.federationHosts,
+				featuredUpdateRatio: instance.featuredUpdateRatio,
 			};
 		});
 	}
