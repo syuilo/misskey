@@ -296,7 +296,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always',
+		default: 'remote' as 'none' | 'remote' | 'always' | 'remoteIcon' | 'alwaysIcon',
 	},
 	emojiPickerScale: {
 		where: 'device',

@@ -69,6 +69,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
 				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
+				<option value="remoteIcon">{{ i18n.ts._instanceTicker.remoteIcon }}</option>
+				<option value="alwaysIcon">{{ i18n.ts._instanceTicker.alwaysIcon }}</option>
 			</MkSelect>
 
 			<MkSelect v-model="nsfw">

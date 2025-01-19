@@ -7486,6 +7486,14 @@ export interface Locale extends ILocale {
          * 常に表示
          */
         "always": string;
+        /**
+         * リモートユーザーに表示(アイコンのみ)
+         */
+        "remoteIcon": string;
+        /**
+         * 常に表示(アイコンのみ)
+         */
+        "alwaysIcon": string;
     };
     "_serverDisconnectedBehavior": {
         /**
