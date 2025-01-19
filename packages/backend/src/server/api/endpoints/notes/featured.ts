@@ -36,6 +36,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		untilId: { type: 'string', format: 'misskey:id' },
 		channelId: { type: 'string', nullable: true, format: 'misskey:id' },
+		withSensitive: { type: 'boolean', default: true },
 	},
 	required: [],
 } as const;
@@ -103,7 +104,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			notes.sort((a, b) => a.id > b.id ? -1 : 1);
 
-			return await this.noteEntityService.packMany(notes, me);
+			let packed = await this.noteEntityService.packMany(notes, me);
+
+			if (!ps.withSensitive) {
+				packed = packed.filter(note => note.files?.length === 0 || note.files?.every(file => !file.isSensitive));
+			}
+
+			return packed;
 		});
 	}
 }
