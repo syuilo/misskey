@@ -72,7 +72,7 @@ export class Resolver {
 	}
 
 	@bindThis
-	public async resolve(value: string | IObject): Promise<IObject> {
+	public async resolve(value: string | IObject, allowHostMismatch = false): Promise<IObject> {
 		if (typeof value !== 'string') {
 			return value;
 		}
@@ -127,8 +127,10 @@ export class Resolver {
 			throw new IdentifiableError('ad2dc287-75c1-44c4-839d-3d2e64576675', 'invalid AP object: missing id');
 		}
 
-		if (this.utilityService.punyHost(object.id) !== this.utilityService.punyHost(value)) {
-			throw new IdentifiableError('fd93c2fa-69a8-440f-880b-bf178e0ec877', `invalid AP object ${value}: id ${object.id} has different host`);
+		if (!allowHostMismatch) {
+			if (this.utilityService.punyHost(object.id) !== this.utilityService.punyHost(value)) {
+				throw new IdentifiableError('fd93c2fa-69a8-440f-880b-bf178e0ec877', `invalid AP object ${value}: id ${object.id} has different host`);
+			}
 		}
 
 		return object;

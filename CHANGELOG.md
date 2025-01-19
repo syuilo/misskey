@@ -7,7 +7,7 @@
   - 詳細は #14730 および `.config/example.yml` または `.config/docker_example.yml`の'Fulltext search configuration'をご参照願います.
 
 ### General
--
+- ドメインをまたいだ照会ができない問題を修正
 
 ### Client
 - Enhance: PC画面でチャンネルが複数列で表示されるように  

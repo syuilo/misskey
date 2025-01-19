@@ -153,7 +153,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		// リモートから一旦オブジェクトフェッチ
 		const resolver = this.apResolverService.createResolver();
-		const object = await resolver.resolve(uri).catch((err) => {
+		const object = await resolver.resolve(uri, true).catch((err) => {
 			if (err instanceof IdentifiableError) {
 				switch (err.id) {
 					// resolve
