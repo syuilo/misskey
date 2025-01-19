@@ -309,6 +309,21 @@ export function inputText(props: {
 } | {
 	canceled: false; result: string;
 }>;
+// min lengthが指定されてたら result は null になり得ないことを保証する overload function
+export function inputText(props: {
+	type?: 'text' | 'email' | 'password' | 'url';
+	title?: string;
+	text?: string;
+	placeholder?: string | null;
+	autocomplete?: string;
+	default?: string;
+	minLength: number;
+	maxLength?: number;
+}): Promise<{
+	canceled: true; result: undefined;
+} | {
+	canceled: false; result: string;
+}>;
 export function inputText(props: {
 	type?: 'text' | 'email' | 'password' | 'url';
 	title?: string;

@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="async () => { await timeline?.reloadTimeline() }">
 	<template #header>
-		<i class="ti ti-antenna"></i><span style="margin-left: 8px;">{{ column.name }}</span>
+		<i class="ti ti-antenna"></i><span style="margin-left: 8px;">{{ column.name || antennaName || i18n.ts._deck._columns.antenna }}</span>
 	</template>
 
 	<MkTimeline v-if="column.antennaId" ref="timeline" src="antenna" :antenna="column.antennaId" @note="onNote"/>
@@ -35,10 +35,18 @@ const props = defineProps<{
 
 const timeline = shallowRef<InstanceType<typeof MkTimeline>>();
 const soundSetting = ref<SoundStore>(props.column.soundSetting ?? { type: null, volume: 1 });
+const antennaName = ref<string | null>(null);
 
 onMounted(() => {
 	if (props.column.antennaId == null) {
 		setAntenna();
+	}
+});
+
+watch([() => props.column.name, () => props.column.antennaId], () => {
+	if (!props.column.name && props.column.antennaId) {
+		misskeyApi('antennas/show', { antennaId: props.column.antennaId })
+			.then(value => antennaName.value = value.name);
 	}
 });
 

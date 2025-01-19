@@ -188,7 +188,7 @@ const addColumn = async (ev) => {
 	addColumnToStore({
 		type: column,
 		id: uuid(),
-		name: i18n.ts._deck._columns[column],
+		name: null,
 		width: 330,
 		soundSetting: { type: null, volume: 1 },
 	});
