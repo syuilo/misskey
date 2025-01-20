@@ -16,6 +16,7 @@ import {
 	RelationshipJobData,
 	UserWebhookDeliverJobData,
 	SystemWebhookDeliverJobData,
+	LocalUserDeliverJobData,
 } from '../queue/types.js';
 import type { Provider } from '@nestjs/common';
 
@@ -28,6 +29,7 @@ export type RelationshipQueue = Bull.Queue<RelationshipJobData>;
 export type ObjectStorageQueue = Bull.Queue;
 export type UserWebhookDeliverQueue = Bull.Queue<UserWebhookDeliverJobData>;
 export type SystemWebhookDeliverQueue = Bull.Queue<SystemWebhookDeliverJobData>;
+export type LocalUserDeliverQueue = Bull.Queue<LocalUserDeliverJobData>;
 
 const $system: Provider = {
 	provide: 'queue:system',
@@ -83,6 +85,12 @@ const $systemWebhookDeliver: Provider = {
 	inject: [DI.config],
 };
 
+const $localUserDeliver: Provider = {
+	provide: 'queue:localUserDeliver',
+	useFactory: (config: Config) => new Bull.Queue(QUEUE.LOCAL_USER_DELIVER, baseQueueOptions(config, QUEUE.LOCAL_USER_DELIVER)),
+	inject: [DI.config],
+};
+
 @Module({
 	imports: [
 	],
@@ -96,6 +104,7 @@ const $systemWebhookDeliver: Provider = {
 		$objectStorage,
 		$userWebhookDeliver,
 		$systemWebhookDeliver,
+		$localUserDeliver,
 	],
 	exports: [
 		$system,
@@ -107,6 +116,7 @@ const $systemWebhookDeliver: Provider = {
 		$objectStorage,
 		$userWebhookDeliver,
 		$systemWebhookDeliver,
+		$localUserDeliver,
 	],
 })
 export class QueueModule implements OnApplicationShutdown {
@@ -120,6 +130,7 @@ export class QueueModule implements OnApplicationShutdown {
 		@Inject('queue:objectStorage') public objectStorageQueue: ObjectStorageQueue,
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
 		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
+		@Inject('queue:localUserDeliver') public localUserDeliverQueue: LocalUserDeliverQueue,
 	) {}
 
 	public async dispose(): Promise<void> {
@@ -136,6 +147,7 @@ export class QueueModule implements OnApplicationShutdown {
 			this.objectStorageQueue.close(),
 			this.userWebhookDeliverQueue.close(),
 			this.systemWebhookDeliverQueue.close(),
+			this.localUserDeliverQueue.close(),
 		]);
 	}
 

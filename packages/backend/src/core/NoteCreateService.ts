@@ -8,6 +8,8 @@ import * as mfm from 'mfm-js';
 import { In, DataSource, IsNull, LessThan } from 'typeorm';
 import * as Redis from 'ioredis';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
+import Logger from '@/logger.js';
+import { LoggerService } from '@/core/LoggerService.js';
 import { extractMentions } from '@/misc/extract-mentions.js';
 import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { extractHashtags } from '@/misc/extract-hashtags.js';
@@ -123,6 +125,8 @@ type MinimumUser = {
 	uri: MiUser['uri'];
 };
 
+type PostNoteUser = Pick<MiUser, 'id' | 'host' | 'username' | 'isBot'>
+
 type Option = {
 	createdAt?: Date | null;
 	name?: string | null;
@@ -145,10 +149,26 @@ type Option = {
 	app?: MiApp | null;
 };
 
+export type PostNoteCreateData = {
+	note: MiNote;
+	user: PostNoteUser;
+	data: Option;
+	silent: boolean;
+	tags: string[];
+	mentionedUsers: MinimumUser[];
+}
+
 @Injectable()
 export class NoteCreateService implements OnApplicationShutdown {
 	#shutdownController = new AbortController();
 	private updateNotesCountQueue: CollapsedQueue<MiNote['id'], number>;
+	/**
+	 * @see NoteCreateService#postNoteCreated
+	 * @see QueueService#localUserDeliver
+	 * @see LocalUserDeliverProcessorService
+	 */
+	private readonly postNoteCreatedCaller: (p: PostNoteCreateData) => void | Promise<void>;
+	private readonly logger: Logger;
 
 	constructor(
 		@Inject(DI.config)
@@ -219,8 +239,32 @@ export class NoteCreateService implements OnApplicationShutdown {
 		private utilityService: UtilityService,
 		private userBlockingService: UserBlockingService,
 		private cacheService: CacheService,
+		private loggerService: LoggerService,
 	) {
+		this.logger = this.loggerService.getLogger('note-create-service');
 		this.updateNotesCountQueue = new CollapsedQueue(process.env.NODE_ENV !== 'test' ? 60 * 1000 * 5 : 0, this.collapseNotesCount, this.performUpdateNotesCount);
+
+		const runOnImmediate = (p: PostNoteCreateData) => {
+			setImmediate('post created', { signal: this.#shutdownController.signal }).then(
+				() => this.postNoteCreated(p),
+				() => { /* aborted, ignore this */ },
+			);
+		};
+
+		const runOnWorker = async (p: PostNoteCreateData) => {
+			await this.queueService.localUserDeliver({
+				type: 'postNoteCreated',
+				data: p,
+			});
+		};
+
+		this.postNoteCreatedCaller = this.config.deliverLocalUser?.postNoteCreated?.runOn === 'worker'
+			? runOnWorker
+			: runOnImmediate;
+		const runOnName = this.config.deliverLocalUser?.postNoteCreated?.runOn
+			? this.config.deliverLocalUser.postNoteCreated.runOn
+			: 'immediate';
+		this.logger.info(`postNoteCreatedCaller: ${runOnName}`);
 	}
 
 	@bindThis
@@ -394,10 +438,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 		const note = await this.insertNote(user, data, tags, emojis, mentionedUsers);
 
-		setImmediate('post created', { signal: this.#shutdownController.signal }).then(
-			() => this.postNoteCreated(note, user, data, silent, tags!, mentionedUsers!),
-			() => { /* aborted, ignore this */ },
-		);
+		this.postNoteCreatedCaller({ note, user, data, silent, tags, mentionedUsers });
 
 		return note;
 	}
@@ -500,13 +541,13 @@ export class NoteCreateService implements OnApplicationShutdown {
 		}
 	}
 
+	/**
+	 * Queueから呼ぶためにpublicにしているが、通常は直接呼ばないこと
+	 */
 	@bindThis
-	private async postNoteCreated(note: MiNote, user: {
-		id: MiUser['id'];
-		username: MiUser['username'];
-		host: MiUser['host'];
-		isBot: MiUser['isBot'];
-	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
+	public async postNoteCreated(params: PostNoteCreateData) {
+		const { note, user, data, silent, tags, mentionedUsers } = params;
+
 		this.notesChart.update(note, true);
 		if (note.visibility !== 'specified' && (this.meta.enableChartsForRemoteUser || (user.host == null))) {
 			this.perUserNotesChart.update(user, note, true);

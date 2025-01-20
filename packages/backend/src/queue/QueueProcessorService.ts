@@ -45,6 +45,7 @@ import { CleanProcessorService } from './processors/CleanProcessorService.js';
 import { AggregateRetentionProcessorService } from './processors/AggregateRetentionProcessorService.js';
 import { QueueLoggerService } from './QueueLoggerService.js';
 import { QUEUE, baseQueueOptions } from './const.js';
+import { LocalUserDeliverProcessorService } from './processors/LocalUserDeliverProcessorService.js';
 
 // ref. https://github.com/misskey-dev/misskey/pull/7635#issue-971097019
 function httpRelatedBackoff(attemptsMade: number) {
@@ -84,6 +85,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 	private relationshipQueueWorker: Bull.Worker;
 	private objectStorageQueueWorker: Bull.Worker;
 	private endedPollNotificationQueueWorker: Bull.Worker;
+	private localUserDeliverQueueWorker: Bull.Worker;
 
 	constructor(
 		@Inject(DI.config)
@@ -123,6 +125,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private bakeBufferedReactionsProcessorService: BakeBufferedReactionsProcessorService,
 		private checkModeratorsActivityProcessorService: CheckModeratorsActivityProcessorService,
 		private cleanProcessorService: CleanProcessorService,
+		private localUserDeliverProcessorService: LocalUserDeliverProcessorService,
 	) {
 		this.logger = this.queueLoggerService.logger;
 
@@ -517,6 +520,21 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			});
 		}
 		//#endregion
+
+		//#region LocalUser deliver
+		{
+			this.localUserDeliverQueueWorker = new Bull.Worker(QUEUE.LOCAL_USER_DELIVER, (job) => {
+				if (this.config.sentryForBackend) {
+					return Sentry.startSpan({ name: 'Queue: LocalUserDeliver' }, () => this.localUserDeliverProcessorService.process(job));
+				} else {
+					return this.localUserDeliverProcessorService.process(job);
+				}
+			}, {
+				...baseQueueOptions(this.config, QUEUE.LOCAL_USER_DELIVER),
+				autorun: false,
+			});
+		}
+		//#endregion
 	}
 
 	@bindThis
@@ -531,6 +549,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.run(),
 			this.objectStorageQueueWorker.run(),
 			this.endedPollNotificationQueueWorker.run(),
+			this.localUserDeliverQueueWorker.run(),
 		]);
 	}
 
@@ -546,6 +565,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.close(),
 			this.objectStorageQueueWorker.close(),
 			this.endedPollNotificationQueueWorker.close(),
+			this.localUserDeliverQueueWorker.close(),
 		]);
 	}
 

@@ -201,6 +201,12 @@ id: 'aidx'
 # deliverJobMaxAttempts: 12
 # inboxJobMaxAttempts: 8
 
+#deliverLocalUser:
+#  postNoteCreated:
+#    # Changes the way post-processing (notifications, sending webhooks, delivery to each timeline, delivery to ActivityPub) is called immediately after creating a note.
+#    # The configurable values are "immediate" and "worker" (the default is "immediate").
+#    runOn: 'immediate'
+
 # IP address family used for outgoing request (ipv4, ipv6 or dual)
 #outgoingAddressFamily: ipv4
 

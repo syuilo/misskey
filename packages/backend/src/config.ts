@@ -92,6 +92,12 @@ type Source = {
 	deliverJobMaxAttempts?: number;
 	inboxJobMaxAttempts?: number;
 
+	deliverLocalUser?: {
+		postNoteCreated?: {
+			runOn?: 'immediate' | 'worker';
+		}
+	}
+
 	mediaProxy?: string;
 	proxyRemoteFiles?: boolean;
 	videoThumbnailGenerator?: string;
@@ -162,6 +168,11 @@ export type Config = {
 	relationshipJobPerSec: number | undefined;
 	deliverJobMaxAttempts: number | undefined;
 	inboxJobMaxAttempts: number | undefined;
+	deliverLocalUser?: {
+		postNoteCreated?: {
+			runOn?: 'immediate' | 'worker';
+		}
+	};
 	proxyRemoteFiles: boolean | undefined;
 	signToActivityPubGet: boolean | undefined;
 	logging?: {
@@ -299,6 +310,7 @@ export function loadConfig(): Config {
 		relationshipJobPerSec: config.relationshipJobPerSec,
 		deliverJobMaxAttempts: config.deliverJobMaxAttempts,
 		inboxJobMaxAttempts: config.inboxJobMaxAttempts,
+		deliverLocalUser: config.deliverLocalUser,
 		proxyRemoteFiles: config.proxyRemoteFiles,
 		signToActivityPubGet: config.signToActivityPubGet ?? true,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,

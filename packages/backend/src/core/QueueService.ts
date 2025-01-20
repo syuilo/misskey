@@ -19,6 +19,7 @@ import { type UserWebhookPayload } from './UserWebhookService.js';
 import type {
 	DbJobData,
 	DeliverJobData,
+	LocalUserDeliverJobData,
 	RelationshipJobData,
 	SystemWebhookDeliverJobData,
 	ThinUser,
@@ -29,6 +30,7 @@ import type {
 	DeliverQueue,
 	EndedPollNotificationQueue,
 	InboxQueue,
+	LocalUserDeliverQueue,
 	ObjectStorageQueue,
 	RelationshipQueue,
 	SystemQueue,
@@ -53,6 +55,7 @@ export class QueueService {
 		@Inject('queue:objectStorage') public objectStorageQueue: ObjectStorageQueue,
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
 		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
+		@Inject('queue:localUserDeliver') public localUserDeliverQueue: LocalUserDeliverQueue,
 	) {
 		this.systemQueue.add('tickCharts', {
 		}, {
@@ -520,6 +523,21 @@ export class QueueService {
 
 		return this.systemWebhookDeliverQueue.add(webhook.id, data, {
 			attempts: opts?.attempts ?? 4,
+			backoff: {
+				type: 'custom',
+			},
+			removeOnComplete: true,
+			removeOnFail: true,
+		});
+	}
+
+	@bindThis
+	public localUserDeliver(
+		data: LocalUserDeliverJobData,
+		opts?: { attempts?: number },
+	) {
+		return this.localUserDeliverQueue.add('localUserDeliver-' + data.type, data, {
+			attempts: opts?.attempts ?? 1,
 			backoff: {
 				type: 'custom',
 			},

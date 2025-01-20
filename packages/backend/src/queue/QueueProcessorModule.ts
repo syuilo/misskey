@@ -4,6 +4,7 @@
  */
 
 import { Module } from '@nestjs/common';
+import { LocalUserDeliverProcessorService } from '@/queue/processors/LocalUserDeliverProcessorService.js';
 import { CoreModule } from '@/core/CoreModule.js';
 import { GlobalModule } from '@/GlobalModule.js';
 import { CheckModeratorsActivityProcessorService } from '@/queue/processors/CheckModeratorsActivityProcessorService.js';
@@ -83,6 +84,7 @@ import { RelationshipProcessorService } from './processors/RelationshipProcessor
 		AggregateRetentionProcessorService,
 		CheckExpiredMutingsProcessorService,
 		CheckModeratorsActivityProcessorService,
+		LocalUserDeliverProcessorService,
 		QueueProcessorService,
 	],
 	exports: [

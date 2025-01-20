@@ -287,6 +287,13 @@ id: 'aidx'
 #deliverJobMaxAttempts: 12
 #inboxJobMaxAttempts: 8
 
+# deliver for LocalUsers
+#deliverLocalUser:
+#  postNoteCreated:
+#    # Changes the way post-processing (notifications, sending webhooks, delivery to each timeline, delivery to ActivityPub) is called immediately after creating a note.
+#    # The configurable values are "immediate" and "worker" (the default is "immediate").
+#    runOn: 'immediate'
+
 # Local address used for outgoing requests
 #outgoingAddress: 127.0.0.1
 
