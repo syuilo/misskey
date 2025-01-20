@@ -3,13 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FindOneOptions, InsertQueryBuilder, ObjectLiteral, Repository, SelectQueryBuilder, TypeORMError } from 'typeorm';
-import { DriverUtils } from 'typeorm/driver/DriverUtils.js';
+import { FindOneOptions, InsertQueryBuilder, ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm';
 import { RelationCountLoader } from 'typeorm/query-builder/relation-count/RelationCountLoader.js';
 import { RelationIdLoader } from 'typeorm/query-builder/relation-id/RelationIdLoader.js';
 import { RawSqlResultsToEntityTransformer } from 'typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js';
-import { ObjectUtils } from 'typeorm/util/ObjectUtils.js';
-import { OrmUtils } from 'typeorm/util/OrmUtils.js';
 import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAbuseReportNotificationRecipient } from '@/models/AbuseReportNotificationRecipient.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
@@ -23,6 +20,7 @@ import { MiAuthSession } from '@/models/AuthSession.js';
 import { MiBlocking } from '@/models/Blocking.js';
 import { MiChannelFollowing } from '@/models/ChannelFollowing.js';
 import { MiChannelFavorite } from '@/models/ChannelFavorite.js';
+import { MiChannelMuting } from "@/models/ChannelMuting.js";
 import { MiClip } from '@/models/Clip.js';
 import { MiClipNote } from '@/models/ClipNote.js';
 import { MiClipFavorite } from '@/models/ClipFavorite.js';
@@ -138,6 +136,7 @@ export {
 	MiBlocking,
 	MiChannelFollowing,
 	MiChannelFavorite,
+	MiChannelMuting,
 	MiClip,
 	MiClipNote,
 	MiClipFavorite,
@@ -209,6 +208,7 @@ export type AuthSessionsRepository = Repository<MiAuthSession> & MiRepository<Mi
 export type BlockingsRepository = Repository<MiBlocking> & MiRepository<MiBlocking>;
 export type ChannelFollowingsRepository = Repository<MiChannelFollowing> & MiRepository<MiChannelFollowing>;
 export type ChannelFavoritesRepository = Repository<MiChannelFavorite> & MiRepository<MiChannelFavorite>;
+export type ChannelMutingRepository = Repository<MiChannelMuting> & MiRepository<MiChannelMuting>;
 export type ClipsRepository = Repository<MiClip> & MiRepository<MiClip>;
 export type ClipNotesRepository = Repository<MiClipNote> & MiRepository<MiClipNote>;
 export type ClipFavoritesRepository = Repository<MiClipFavorite> & MiRepository<MiClipFavorite>;

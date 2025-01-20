@@ -1141,6 +1141,33 @@ export type paths = {
      */
     post: operations['channels___search'];
   };
+  '/channels/mute/create': {
+    /**
+     * channels/mute/create
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:channels*
+     */
+    post: operations['channels___mute___create'];
+  };
+  '/channels/mute/delete': {
+    /**
+     * channels/mute/delete
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:channels*
+     */
+    post: operations['channels___mute___delete'];
+  };
+  '/channels/mute/list': {
+    /**
+     * channels/mute/list
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:channels*
+     */
+    post: operations['channels___mute___list'];
+  };
   '/charts/active-users': {
     /**
      * charts/active-users
@@ -4618,6 +4645,7 @@ export type components = {
       allowRenoteToExternal: boolean;
       isFollowing?: boolean;
       isFavorited?: boolean;
+      isMuting?: boolean;
       pinnedNotes?: components['schemas']['Note'][];
     };
     QueueCount: {
@@ -12657,6 +12685,158 @@ export type operations = {
         };
       };
     };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['Channel'][];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * channels/mute/create
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:channels*
+   */
+  channels___mute___create: {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          channelId: string;
+          /** @description A Unix Epoch timestamp that must lie in the future. `null` means an indefinite mute. */
+          expiresAt?: number | null;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * channels/mute/delete
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:channels*
+   */
+  channels___mute___delete: {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          channelId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * channels/mute/list
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:channels*
+   */
+  channels___mute___list: {
     responses: {
       /** @description OK (with results) */
       200: {

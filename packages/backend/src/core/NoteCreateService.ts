@@ -438,6 +438,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			replyUserHost: data.reply ? data.reply.userHost : null,
 			renoteUserId: data.renote ? data.renote.userId : null,
 			renoteUserHost: data.renote ? data.renote.userHost : null,
+			renoteChannelId: data.renote ? data.renote.channelId : null,
 			userHost: user.host,
 		});
 

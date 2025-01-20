@@ -123,22 +123,25 @@ const featuredPagination = computed(() => ({
 }));
 
 watch(() => props.channelId, async () => {
-	channel.value = await misskeyApi('channels/show', {
+	const _channel = await misskeyApi('channels/show', {
 		channelId: props.channelId,
 	});
-	favorited.value = channel.value.isFavorited ?? false;
-	if (favorited.value || channel.value.isFollowing) {
+
+	favorited.value = _channel.isFavorited ?? false;
+	if (favorited.value || _channel.isFollowing) {
 		tab.value = 'timeline';
 	}
 
-	if ((favorited.value || channel.value.isFollowing) && channel.value.lastNotedAt) {
-		const lastReadedAt: number = miLocalStorage.getItemAsJson(`channelLastReadedAt:${channel.value.id}`) ?? 0;
-		const lastNotedAt = Date.parse(channel.value.lastNotedAt);
+	if ((favorited.value || _channel.isFollowing) && _channel.lastNotedAt) {
+		const lastReadedAt: number = miLocalStorage.getItemAsJson(`channelLastReadedAt:${_channel.id}`) ?? 0;
+		const lastNotedAt = Date.parse(_channel.lastNotedAt);
 
 		if (lastNotedAt > lastReadedAt) {
-			miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.value.id}`, lastNotedAt);
+			miLocalStorage.setItemAsJson(`channelLastReadedAt:${_channel.id}`, lastNotedAt);
 		}
 	}
+
+	channel.value = _channel;
 }, { immediate: true });
 
 function edit() {
@@ -175,6 +178,53 @@ async function unfavorite() {
 	}).then(() => {
 		favorited.value = false;
 		favoritedChannelsCache.delete();
+	});
+}
+
+async function mute() {
+	if (!channel.value) return;
+	const _channel = channel.value;
+
+	const { canceled, result: period } = await os.select({
+		title: i18n.ts.mutePeriod,
+		items: [{
+			value: 'indefinitely', text: i18n.ts.indefinitely,
+		}, {
+			value: 'tenMinutes', text: i18n.ts.tenMinutes,
+		}, {
+			value: 'oneHour', text: i18n.ts.oneHour,
+		}, {
+			value: 'oneDay', text: i18n.ts.oneDay,
+		}, {
+			value: 'oneWeek', text: i18n.ts.oneWeek,
+		}],
+		default: 'indefinitely',
+	});
+	if (canceled) return;
+
+	const expiresAt = period === 'indefinitely' ? null
+		: period === 'tenMinutes' ? Date.now() + (1000 * 60 * 10)
+		: period === 'oneHour' ? Date.now() + (1000 * 60 * 60)
+		: period === 'oneDay' ? Date.now() + (1000 * 60 * 60 * 24)
+		: period === 'oneWeek' ? Date.now() + (1000 * 60 * 60 * 24 * 7)
+		: null;
+
+	os.apiWithDialog('channels/mute/create', {
+		channelId: _channel.id,
+		expiresAt,
+	}).then(() => {
+		_channel.isMuting = true;
+	});
+}
+
+async function unmute() {
+	if (!channel.value) return;
+	const _channel = channel.value;
+
+	os.apiWithDialog('channels/mute/delete', {
+		channelId: _channel.id,
+	}).then(() => {
+		_channel.isMuting = false;
 	});
 }
 
@@ -229,6 +279,24 @@ const headerActions = computed(() => {
 						text: channel.value.description ?? undefined,
 						url: `${url}/channels/${channel.value.id}`,
 					});
+				},
+			});
+		}
+
+		if (!channel.value.isMuting) {
+			headerItems.push({
+				icon: 'ti ti-volume',
+				text: i18n.ts.mute,
+				handler: async (): Promise<void> => {
+					await mute();
+				},
+			});
+		} else {
+			headerItems.push({
+				icon: 'ti ti-volume-off',
+				text: i18n.ts.unmute,
+				handler: async (): Promise<void> => {
+					await unmute();
 				},
 			});
 		}

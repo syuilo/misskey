@@ -180,6 +180,9 @@ import type {
 	ChannelsMyFavoritesResponse,
 	ChannelsSearchRequest,
 	ChannelsSearchResponse,
+	ChannelsMuteCreateRequest,
+	ChannelsMuteDeleteRequest,
+	ChannelsMuteListResponse,
 	ChartsActiveUsersRequest,
 	ChartsActiveUsersResponse,
 	ChartsApRequestRequest,
@@ -710,6 +713,9 @@ export type Endpoints = {
 	'channels/unfavorite': { req: ChannelsUnfavoriteRequest; res: EmptyResponse };
 	'channels/my-favorites': { req: EmptyRequest; res: ChannelsMyFavoritesResponse };
 	'channels/search': { req: ChannelsSearchRequest; res: ChannelsSearchResponse };
+	'channels/mute/create': { req: ChannelsMuteCreateRequest; res: EmptyResponse };
+	'channels/mute/delete': { req: ChannelsMuteDeleteRequest; res: EmptyResponse };
+	'channels/mute/list': { req: EmptyRequest; res: ChannelsMuteListResponse };
 	'charts/active-users': { req: ChartsActiveUsersRequest; res: ChartsActiveUsersResponse };
 	'charts/ap-request': { req: ChartsApRequestRequest; res: ChartsApRequestResponse };
 	'charts/drive': { req: ChartsDriveRequest; res: ChartsDriveResponse };

@@ -229,6 +229,13 @@ export class MiNote {
 		comment: '[Denormalized]',
 	})
 	public renoteUserHost: string | null;
+
+	@Column({
+		...id(),
+		nullable: true,
+		comment: '[Denormalized]',
+	})
+	public renoteChannelId: MiChannel['id'] | null;
 	//#endregion
 
 	constructor(data: Partial<MiNote>) {

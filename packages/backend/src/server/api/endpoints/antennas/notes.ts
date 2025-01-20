@@ -5,6 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import * as Redis from 'ioredis';
+import { Brackets } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { NotesRepository, AntennasRepository } from '@/models/_.js';
 import { QueryService } from '@/core/QueryService.js';
@@ -15,6 +16,7 @@ import { IdService } from '@/core/IdService.js';
 import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { trackPromise } from '@/misc/promise-tracker.js';
+import { ChannelMutingService } from '@/core/ChannelMutingService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -74,6 +76,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private noteReadService: NoteReadService,
 		private fanoutTimelineService: FanoutTimelineService,
 		private globalEventService: GlobalEventService,
+		private channelMutingService: ChannelMutingService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const untilId = ps.untilId ?? (ps.untilDate ? this.idService.gen(ps.untilDate!) : null);
@@ -112,6 +115,21 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('note.renote', 'renote')
 				.leftJoinAndSelect('reply.user', 'replyUser')
 				.leftJoinAndSelect('renote.user', 'renoteUser');
+
+			// -- ミュートされたチャンネル対策
+			const mutingChannelIds = await this.channelMutingService
+				.list({ requestUserId: me.id }, { idOnly: true })
+				.then(x => x.map(x => x.id));
+			if (mutingChannelIds.length > 0) {
+				query.andWhere(new Brackets(qb => {
+					qb.orWhere('note.channelId IS NULL');
+					qb.orWhere('note.channelId NOT IN (:...mutingChannelIds)', { mutingChannelIds });
+				}));
+				query.andWhere(new Brackets(qb => {
+					qb.orWhere('note.renoteChannelId IS NULL');
+					qb.orWhere('note.renoteChannelId NOT IN (:...mutingChannelIds)', { mutingChannelIds });
+				}));
+			}
 
 			this.queryService.generateVisibilityQuery(query, me);
 			this.queryService.generateMutedUserQuery(query, me);

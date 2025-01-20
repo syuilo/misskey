@@ -244,6 +244,8 @@ export interface InternalEventTypes {
 	metaUpdated: { before?: MiMeta; after: MiMeta; };
 	followChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
 	unfollowChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
+	muteChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
+	unmuteChannel: { userId: MiUser['id']; channelId: MiChannel['id']; };
 	updateUserProfile: MiUserProfile;
 	mute: { muterId: MiUser['id']; muteeId: MiUser['id']; };
 	unmute: { muterId: MiUser['id']; muteeId: MiUser['id']; };

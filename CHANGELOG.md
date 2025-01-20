@@ -7,6 +7,8 @@
   - 詳細は #14730 および `.config/example.yml` または `.config/docker_example.yml`の'Fulltext search configuration'をご参照願います.
 
 ### General
+- Feat: チャンネルミュート機能の実装 #10649
+	- チャンネルの概要画面の右上からミュートできます（リンクコピー、共有、設定と同列）
 - Feat: カスタム絵文字管理画面をリニューアル #10996
 	* β版として公開のため、旧画面も引き続き利用可能です
 
