@@ -1,0 +1,31 @@
+name: Check PR can be modified by maintainer
+
+on:
+  pull_request_target:
+    branches:
+      - master
+      - develop
+
+jobs:
+  check-pr-maintainer:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Send Message
+        if: github.event.pull_request.maintainer_can_modify != 'true'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: check-pr-maintainer
+          message: |
+            Please allow maintainers to modify this Pull Request so that we can help you with your changes.
+            You can do this by checking the box "Allow edits and access to secrets by maintainers" in the Pull Request settings.
+      - name: Send Message
+        if: github.event.pull_request.maintainer_can_modify == 'true'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: check-pr-maintainer
+          mode: delete
+          message: |
+            Thank you!
+          create_if_not_exists: false
