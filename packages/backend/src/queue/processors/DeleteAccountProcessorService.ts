@@ -6,14 +6,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MoreThan } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { DriveFilesRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { DriveFilesRepository, NoteReactionsRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { DriveService } from '@/core/DriveService.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiNote } from '@/models/Note.js';
+import type { MiNoteReaction } from '@/models/NoteReaction.js';
 import { EmailService } from '@/core/EmailService.js';
 import { bindThis } from '@/decorators.js';
 import { SearchService } from '@/core/SearchService.js';
+import { ReactionService } from '@/core/ReactionService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbUserDeleteJobData } from '../types.js';
@@ -32,6 +34,9 @@ export class DeleteAccountProcessorService {
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
+		@Inject(DI.noteReactionsRepository)
+		private noteReactionsRepository: NoteReactionsRepository,
+
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
@@ -39,6 +44,7 @@ export class DeleteAccountProcessorService {
 		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
 		private searchService: SearchService,
+		private reactionService: ReactionService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-account');
 	}
@@ -81,6 +87,37 @@ export class DeleteAccountProcessorService {
 			}
 
 			this.logger.succ('All of notes deleted');
+		}
+
+		{ // Delete reactions
+			let cursor: MiNoteReaction['id'] | null = null;
+
+			while (true) {
+				const reactions = await this.noteReactionsRepository.find({
+					where: {
+						userId: user.id,
+						...(cursor ? { id: MoreThan(cursor) } : {}),
+					},
+					take: 100,
+					order: {
+						id: 1,
+					},
+				}) as MiNoteReaction[];
+
+				if (reactions.length === 0) {
+					break;
+				}
+
+				cursor = reactions.at(-1)?.id ?? null;
+
+				for (const reaction of reactions) {
+					const note = await this.notesRepository.findOneBy({ id: reaction.noteId });
+
+					if (note) await this.reactionService.delete(user, note);
+				}
+			}
+
+			this.logger.succ('All reactions have been deleted');
 		}
 
 		{ // Delete files
