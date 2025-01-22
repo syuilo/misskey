@@ -14,7 +14,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #header><i class="ti ti-pencil"></i> Notes</template>
 			<XNotes :user="user"/>
 		</MkFoldableSection>
-		<MkFoldableSection class="item">
+		<MkFoldableSection
+			v-if="isFollowersVisibleForMe(user) && isFollowingVisibleForMe(user)"
+			class="item"
+		>
 			<template #header><i class="ti ti-users"></i> Following</template>
 			<XFollowing :user="user"/>
 		</MkFoldableSection>
@@ -33,9 +36,10 @@ import XNotes from './activity.notes.vue';
 import XFollowing from './activity.following.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkHeatmap from '@/components/MkHeatmap.vue';
+import { isFollowersVisibleForMe, isFollowingVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 
 const props = defineProps<{
-	user: Misskey.entities.User;
+	user: Misskey.entities.UserDetailed;
 }>();
 
 </script>
