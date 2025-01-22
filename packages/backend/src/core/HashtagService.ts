@@ -12,6 +12,7 @@ import { IdService } from '@/core/IdService.js';
 import type { MiHashtag } from '@/models/Hashtag.js';
 import type { HashtagsRepository, MiMeta } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
+import { RoleService } from '@/core/RoleService.js';
 import { bindThis } from '@/decorators.js';
 import { FeaturedService } from '@/core/FeaturedService.js';
 import { UtilityService } from '@/core/UtilityService.js';
@@ -29,6 +30,7 @@ export class HashtagService {
 		private hashtagsRepository: HashtagsRepository,
 
 		private userEntityService: UserEntityService,
+		private roleService: RoleService,
 		private featuredService: FeaturedService,
 		private idService: IdService,
 		private utilityService: UtilityService,
@@ -172,6 +174,9 @@ export class HashtagService {
 
 		const exist = await this.redisClient.sismember(`hashtagUsers:${hashtag}`, userId);
 		if (exist === 1) return;
+
+		const isSilenced = !(await this.roleService.getUserPolicies(userId)).canPublicNote;
+		if (isSilenced) return;
 
 		this.featuredService.updateHashtagsRanking(hashtag, 1);
 
