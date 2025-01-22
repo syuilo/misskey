@@ -483,6 +483,7 @@ export type PagePushRequest = operations['page-push']['requestBody']['content'][
 export type PagesCreateRequest = operations['pages___create']['requestBody']['content']['application/json'];
 export type PagesCreateResponse = operations['pages___create']['responses']['200']['content']['application/json'];
 export type PagesDeleteRequest = operations['pages___delete']['requestBody']['content']['application/json'];
+export type PagesFeaturedRequest = operations['pages___featured']['requestBody']['content']['application/json'];
 export type PagesFeaturedResponse = operations['pages___featured']['responses']['200']['content']['application/json'];
 export type PagesLikeRequest = operations['pages___like']['requestBody']['content']['application/json'];
 export type PagesShowRequest = operations['pages___show']['requestBody']['content']['application/json'];

@@ -9,7 +9,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { PagesRepository, DriveFilesRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { DI } from '@/di-symbols.js';
-import { ApiError } from '../../error.js';
+import { ApiError } from '@/server/api/error.js';
+import { MAX_PAGE_CONTENT_BYTES } from '@/const.js';
+import { pageNameSchema } from '@/models/Page.js';
+import { PageService } from '@/core/PageService.js';
 
 export const meta = {
 	tags: ['pages'],
@@ -48,6 +51,16 @@ export const meta = {
 			code: 'NAME_ALREADY_EXISTS',
 			id: '2298a392-d4a1-44c5-9ebb-ac1aeaa5a9ab',
 		},
+		contentTooLarge: {
+			message: 'Content is too large.',
+			code: 'CONTENT_TOO_LARGE',
+			id: '2a93fcc9-4cd7-4885-9e5b-be56ed8f4d4f',
+		},
+		invalidParam: {
+			message: 'Invalid param.',
+			code: 'INVALID_PARAM',
+			id: '3d81ceae-475f-4600-b2a8-2bc116157532',
+		},
 	},
 } as const;
 
@@ -56,9 +69,10 @@ export const paramDef = {
 	properties: {
 		pageId: { type: 'string', format: 'misskey:id' },
 		title: { type: 'string' },
-		name: { type: 'string', minLength: 1 },
+		name: { ...pageNameSchema, minLength: 1 },
 		summary: { type: 'string', nullable: true },
 		content: { type: 'array', items: {
+			// misskey-jsの型生成に対応していないスキーマを使用しているため別途バリデーションする
 			type: 'object', additionalProperties: true,
 		} },
 		variables: { type: 'array', items: {
@@ -81,6 +95,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
+
+		private pageService: PageService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const page = await this.pagesRepository.findOneBy({ id: ps.pageId });
@@ -89,6 +105,21 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 			if (page.userId !== me.id) {
 				throw new ApiError(meta.errors.accessDenied);
+			}
+
+			if (ps.content != null) {
+				if (new Blob([JSON.stringify(ps.content)]).size > MAX_PAGE_CONTENT_BYTES) {
+					throw new ApiError(meta.errors.contentTooLarge);
+				}
+
+				const validateResult = this.pageService.validatePageContent(ps.content);
+				if (!validateResult.valid) {
+					const errors = validateResult.errors!;
+					throw new ApiError(meta.errors.invalidParam, {
+						param: errors[0].schemaPath,
+						reason: errors[0].message,
+					});
+				}
 			}
 
 			if (ps.eyeCatchingImageId != null) {
@@ -120,8 +151,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				name: ps.name,
 				summary: ps.summary === undefined ? page.summary : ps.summary,
 				content: ps.content,
-				variables: ps.variables,
-				script: ps.script,
+				//variables: ps.variables,  もう使用されていない（動的ページ）
+				//script: ps.script,        もう使用されていない（動的ページ）
 				alignCenter: ps.alignCenter,
 				hideTitleWhenPinned: ps.hideTitleWhenPinned,
 				font: ps.font,

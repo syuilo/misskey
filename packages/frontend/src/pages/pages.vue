@@ -53,7 +53,8 @@ const tab = ref('featured');
 
 const featuredPagesPagination = {
 	endpoint: 'pages/featured' as const,
-	noPaging: true,
+	limit: 5,
+	offsetMode: true,
 };
 const myPagesPagination = {
 	endpoint: 'i/pages' as const,

@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl">
+<div ref="rootEl" :class="$style.root">
 	<div ref="headerEl" :class="$style.header">
 		<slot name="header"></slot>
 	</div>
@@ -84,8 +84,16 @@ defineExpose({
 </script>
 
 <style lang='scss' module>
+.root {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
 .body {
 	position: relative;
+	flex-grow: 1;
 	z-index: 0;
 	--MI-stickyTop: v-bind("childStickyTop + 'px'");
 	--MI-stickyBottom: v-bind("childStickyBottom + 'px'");
@@ -93,12 +101,14 @@ defineExpose({
 
 .header {
 	position: sticky;
+	flex-shrink: 0;
 	top: var(--MI-stickyTop, 0);
 	z-index: 1;
 }
 
 .footer {
 	position: sticky;
+	flex-shrink: 0;
 	bottom: var(--MI-stickyBottom, 0);
 	z-index: 1;
 }

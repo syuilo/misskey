@@ -5,7 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
-<XContainer :draggable="true" @remove="() => emit('remove')">
+<XContainer
+	:draggable="true"
+	:blockId="modelValue.id"
+	@remove="() => emit('remove')"
+	@move="(direction) => emit('move', direction)"
+>
 	<template #header><i class="ti ti-note"></i> {{ i18n.ts._pages.blocks.note }}</template>
 
 	<section style="padding: 16px;" class="_gaps_s">
@@ -15,8 +20,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkInput>
 		<MkSwitch v-model="props.modelValue.detailed"><span>{{ i18n.ts._pages.blocks._note.detailed }}</span></MkSwitch>
 
-		<MkNote v-if="note && !props.modelValue.detailed" :key="note.id + ':normal'" v-model:note="note" style="margin-bottom: 16px;"/>
-		<MkNoteDetailed v-if="note && props.modelValue.detailed" :key="note.id + ':detail'" v-model:note="note" style="margin-bottom: 16px;"/>
+		<MkNote v-if="note && !props.modelValue.detailed" :key="note.id + ':normal'" v-model:note="note" :class="$style.note"/>
+		<MkNoteDetailed v-if="note && props.modelValue.detailed" :key="note.id + ':detail'" v-model:note="note" :class="$style.note"/>
 	</section>
 </XContainer>
 </template>
@@ -39,6 +44,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', value: Misskey.entities.PageBlock & { type: 'note' }): void;
+	(ev: 'remove'): void;
+	(ev: 'move', direction: 'up' | 'down'): void;
 }>();
 
 const id = ref(props.modelValue.note);
@@ -63,3 +70,11 @@ watch(id, async () => {
 	immediate: true,
 });
 </script>
+
+<style module>
+.note {
+	border-radius: var(--MI-radius);
+	border: 1px solid var(--MI_THEME-divider);
+	margin-bottom: 16px;
+}
+</style>

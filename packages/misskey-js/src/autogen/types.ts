@@ -4584,6 +4584,12 @@ export type components = {
     }, {
       id: string;
       /** @enum {string} */
+      type: 'heading';
+      level: number;
+      text: string;
+    }, {
+      id: string;
+      /** @enum {string} */
       type: 'image';
       fileId: string | null;
     }, {
@@ -24307,10 +24313,10 @@ export type operations = {
           content: {
               [key: string]: unknown;
             }[];
-          variables: {
+          variables?: {
               [key: string]: unknown;
             }[];
-          script: string;
+          script?: string;
           /** Format: misskey:id */
           eyeCatchingImageId?: string | null;
           /**
@@ -24429,6 +24435,16 @@ export type operations = {
    * **Credential required**: *No*
    */
   pages___featured: {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @default 0 */
+          offset?: number;
+          /** @default 10 */
+          limit?: number;
+        };
+      };
+    };
     responses: {
       /** @description OK (with results) */
       200: {

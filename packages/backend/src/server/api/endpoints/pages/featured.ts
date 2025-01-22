@@ -3,11 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable } from '@nestjs/common';
-import type { PagesRepository } from '@/models/_.js';
+import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
+import { PageService } from '@/core/PageService.js';
 import { PageEntityService } from '@/core/entities/PageEntityService.js';
-import { DI } from '@/di-symbols.js';
 
 export const meta = {
 	tags: ['pages'],
@@ -27,27 +26,25 @@ export const meta = {
 
 export const paramDef = {
 	type: 'object',
-	properties: {},
+	properties: {
+		offset: { type: 'integer', minimum: 0, default: 0 },
+		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
+	},
 	required: [],
 } as const;
 
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.pagesRepository)
-		private pagesRepository: PagesRepository,
-
+		private pageService: PageService,
 		private pageEntityService: PageEntityService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const query = this.pagesRepository.createQueryBuilder('page')
-				.where('page.visibility = \'public\'')
-				.andWhere('page.likedCount > 0')
-				.orderBy('page.likedCount', 'DESC');
-
-			const pages = await query.limit(10).getMany();
-
-			return await this.pageEntityService.packMany(pages, me);
+			const result = await this.pageService.featured({
+				offset: ps.offset,
+				limit: ps.limit,
+			});
+			return await this.pageEntityService.packMany(result, me);
 		});
 	}
 }

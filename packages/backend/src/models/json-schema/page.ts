@@ -3,7 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-const blockBaseSchema = {
+/**
+ * ページブロックのスキーマを変更したら、併せてpageBlockSchemaも更新すること
+ * （そっちは入力バリデーション用の定義なので以下の定義とは若干異なる）
+ *
+ * packages/backend/src/models/Page.ts
+ */
+
+const packedBlockBaseSchema = {
 	type: 'object',
 	properties: {
 		id: {
@@ -17,10 +24,10 @@ const blockBaseSchema = {
 	},
 } as const;
 
-const textBlockSchema = {
+const packedTextBlockSchema = {
 	type: 'object',
 	properties: {
-		...blockBaseSchema.properties,
+		...packedBlockBaseSchema.properties,
 		type: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -33,10 +40,31 @@ const textBlockSchema = {
 	},
 } as const;
 
-const sectionBlockSchema = {
+const packedHeadingBlockSchema = {
 	type: 'object',
 	properties: {
-		...blockBaseSchema.properties,
+		...packedBlockBaseSchema.properties,
+		type: {
+			type: 'string',
+			optional: false, nullable: false,
+			enum: ['heading'],
+		},
+		level: {
+			type: 'number',
+			optional: false, nullable: false,
+		},
+		text: {
+			type: 'string',
+			optional: false, nullable: false,
+		},
+	},
+} as const;
+
+/** @deprecated 要素を入れ子にする必要が（一旦）なくなったので非推奨。headingBlockを使用すること */
+const packedSectionBlockSchema = {
+	type: 'object',
+	properties: {
+		...packedBlockBaseSchema.properties,
 		type: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -59,10 +87,10 @@ const sectionBlockSchema = {
 	},
 } as const;
 
-const imageBlockSchema = {
+const packedImageBlockSchema = {
 	type: 'object',
 	properties: {
-		...blockBaseSchema.properties,
+		...packedBlockBaseSchema.properties,
 		type: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -75,10 +103,10 @@ const imageBlockSchema = {
 	},
 } as const;
 
-const noteBlockSchema = {
+const packedNoteBlockSchema = {
 	type: 'object',
 	properties: {
-		...blockBaseSchema.properties,
+		...packedBlockBaseSchema.properties,
 		type: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -98,10 +126,11 @@ const noteBlockSchema = {
 export const packedPageBlockSchema = {
 	type: 'object',
 	oneOf: [
-		textBlockSchema,
-		sectionBlockSchema,
-		imageBlockSchema,
-		noteBlockSchema,
+		packedTextBlockSchema,
+		packedSectionBlockSchema,
+		packedHeadingBlockSchema,
+		packedImageBlockSchema,
+		packedNoteBlockSchema,
 	],
 } as const;
 

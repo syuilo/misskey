@@ -118,3 +118,118 @@ export class MiPage {
 		}
 	}
 }
+
+export const pageNameSchema = { type: 'string', pattern: /^[a-zA-Z0-9_-]{1,256}$/.source } as const;
+
+//#region ページブロックのスキーマ（バリデーション用）
+
+/**
+ * 併せてpackedPageBlockSchemaも更新すること
+ * （そっちはAPIの戻り型の定義なので以下の定義とは若干異なる）
+ *
+ * packages/backend/src/models/json-schema/page.ts
+ */
+
+const blockBaseSchema = {
+	type: 'object',
+	properties: {
+		id: { type: 'string', nullable: false },
+		type: { type: 'string', nullable: false },
+	},
+	required: ['id', 'type'],
+} as const;
+
+const textBlockSchema = {
+	type: 'object',
+	properties: {
+		...blockBaseSchema.properties,
+		type: { type: 'string', nullable: false, enum: ['text'] },
+		text: { type: 'string', nullable: false },
+	},
+	required: [
+		...blockBaseSchema.required,
+		'text',
+	],
+} as const;
+
+const headingBlockSchema = {
+	type: 'object',
+	properties: {
+		...blockBaseSchema.properties,
+		type: { type: 'string', nullable: false, enum: ['heading'] },
+		level: { type: 'number', nullable: false },
+		text: { type: 'string', nullable: false },
+	},
+	required: [
+		...blockBaseSchema.required,
+		'level',
+		'text',
+	],
+} as const;
+
+const imageBlockSchema = {
+	type: 'object',
+	properties: {
+		...blockBaseSchema.properties,
+		type: { type: 'string', nullable: false, enum: ['image'] },
+		fileId: { type: 'string', nullable: true },
+	},
+	required: [
+		...blockBaseSchema.required,
+		'fileId',
+	],
+} as const;
+
+const noteBlockSchema = {
+	type: 'object',
+	properties: {
+		...blockBaseSchema.properties,
+		type: { type: 'string', nullable: false, enum: ['note']},
+		detailed: { type: 'boolean', nullable: true },
+		note: { type: 'string', format: 'misskey:id', nullable: false },
+	},
+	required: [
+		...blockBaseSchema.required,
+		'note',
+	],
+} as const;
+
+/** @deprecated 要素を入れ子にする必要が（一旦）なくなったので非推奨。headingBlockを使用すること */
+const sectionBlockSchema = {
+	type: 'object',
+	properties: {
+		...blockBaseSchema.properties,
+		type: { type: 'string', nullable: false, enum: ['section'] },
+		title: { type: 'string', nullable: false },
+		children: {
+			type: 'array', nullable: false,
+			items: {
+				oneOf: [
+					textBlockSchema,
+					{ $ref: '#' },
+					headingBlockSchema,
+					imageBlockSchema,
+					noteBlockSchema,
+				],
+			},
+		},
+	},
+	required: [
+		...blockBaseSchema.required,
+		'title',
+		'children',
+	],
+} as const;
+
+export const pageBlockSchema = {
+	type: 'object',
+	oneOf: [
+		textBlockSchema,
+		sectionBlockSchema,
+		headingBlockSchema,
+		imageBlockSchema,
+		noteBlockSchema,
+	],
+} as const;
+
+//#endregion
