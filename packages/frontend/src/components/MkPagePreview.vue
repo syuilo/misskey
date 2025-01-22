@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<p v-if="page.summary" :title="page.summary">{{ page.summary.length > 85 ? page.summary.slice(0, 85) + '…' : page.summary }}</p>
 		<footer>
 			<img v-if="page.user.avatarUrl" class="icon" :src="page.user.avatarUrl"/>
-			<p>{{ userName(page.user) }}</p>
+			<MkUserName class="name" :user="page.user"/>
 		</footer>
 	</article>
 </MkA>
@@ -30,7 +30,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { } from 'vue';
 import * as Misskey from 'misskey-js';
-import { userName } from '@/filters/user.js';
 import MediaImage from '@/components/MkMediaImage.vue';
 
 const props = defineProps<{
@@ -112,7 +111,7 @@ const props = defineProps<{
 				vertical-align: top;
 			}
 
-			> p {
+			> .name {
 				display: inline-block;
 				margin: 0;
 				font-size: 0.8em;

@@ -237,6 +237,7 @@
 - Fix: ファイルの詳細ページのファイルの説明で改行が正しく表示されない問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/commit/bde6bb0bd2e8b0d027e724d2acdb8ae0585a8110)
 - Fix: 一部画面のページネーションが動作しにくくなっていたのを修正 ( #12766 , #11449 )
+- Fix: MFMが機能すべき箇所で機能していないところがある問題を修正
 
 ### Server
 - Feat: Misskey® Reactions Boost Technology™ (RBT)により、リアクションの作成負荷を低減することが可能に

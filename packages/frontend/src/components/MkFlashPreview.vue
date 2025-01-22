@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</p>
 		<footer>
 			<img class="icon" :src="flash.user.avatarUrl"/>
-			<p>{{ userName(flash.user) }}</p>
+			<MkUserName class="name" :user="flash.user"/>
 		</footer>
 	</article>
 </MkA>
@@ -23,7 +23,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { } from 'vue';
 import * as Misskey from 'misskey-js';
-import { userName } from '@/filters/user.js';
 
 const props = defineProps<{
 	flash: Misskey.entities.Flash;
@@ -80,7 +79,7 @@ const props = defineProps<{
 				vertical-align: top;
 			}
 
-			> p {
+			> .name {
 				display: inline-block;
 				margin: 0;
 				font-size: 0.8em;

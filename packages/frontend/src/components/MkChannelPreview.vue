@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<article v-if="channel.description">
-			<p :title="channel.description">{{ channel.description.length > 85 ? channel.description.slice(0, 85) + '…' : channel.description }}</p>
+			<Mfm :text="channel.description.length > 85 ? channel.description.slice(0, 85) + '…' : channel.description" :plain="true"/>
 		</article>
 		<footer>
 			<span v-if="channel.lastNotedAt">
