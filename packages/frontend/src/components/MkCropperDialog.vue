@@ -55,7 +55,7 @@ const props = defineProps<{
 	uploadFolder?: string | null;
 }>();
 
-const imgUrl = getProxiedImageUrl(props.file.url, undefined, true);
+const imgUrl = getProxiedImageUrl(props.file.url, undefined, true).replace(/^https?:\/\/[^/]+/, location.origin);
 const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
 const imgEl = shallowRef<HTMLImageElement>();
 let cropper: Cropper | null = null;
