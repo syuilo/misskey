@@ -31,6 +31,7 @@ import { HealthServerService } from './HealthServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
 import { OpenApiServerService } from './api/openapi/OpenApiServerService.js';
 import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
+import { makeHstsHook } from './hsts.js';
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -81,12 +82,10 @@ export class ServerService implements OnApplicationShutdown {
 		this.#fastify = fastify;
 
 		// HSTS
-		// 6months (15552000sec)
 		if (this.config.url.startsWith('https') && !this.config.disableHsts) {
-			fastify.addHook('onRequest', (request, reply, done) => {
-				reply.header('strict-transport-security', 'max-age=15552000; preload');
-				done();
-			});
+			const preload = this.config.hstsPreload;
+			const host = new URL(this.config.url).host;
+			fastify.addHook('onRequest', makeHstsHook(host, preload));
 		}
 
 		// Register raw-body parser for ActivityPub HTTP signature validation.

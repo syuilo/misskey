@@ -268,6 +268,12 @@ id: 'aidx'
 # Whether disable HSTS
 #disableHsts: true
 
+# Whether to enable HSTS preload
+# Read these before enabling:
+#   - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#preloading_strict_transport_security
+#   - https://hstspreload.org/
+#hstsPreload: false
+
 # Number of worker processes
 #clusterLimit: 1
 

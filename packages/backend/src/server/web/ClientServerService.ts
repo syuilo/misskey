@@ -66,6 +66,7 @@ import { FeedService } from './FeedService.js';
 import { UrlPreviewService } from './UrlPreviewService.js';
 import { ClientLoggerService } from './ClientLoggerService.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifyReply } from 'fastify';
+import { makeHstsHook } from '../hsts.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -225,6 +226,13 @@ export class ClientServerService {
 
 		//#region Bull Dashboard
 		const bullBoardPath = '/queue';
+
+		// HSTS
+		if (this.config.url.startsWith('https') && !this.config.disableHsts) {
+			const preload = this.config.hstsPreload;
+			const host = new URL(this.config.url).host;
+			fastify.addHook('onRequest', makeHstsHook(host, preload));
+		}
 
 		// Authenticate
 		fastify.addHook('onRequest', async (request, reply) => {

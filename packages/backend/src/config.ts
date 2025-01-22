@@ -28,6 +28,7 @@ type Source = {
 	socket?: string;
 	chmodSocket?: string;
 	disableHsts?: boolean;
+	hstsPreload?: boolean;
 	db: {
 		host: string;
 		port: number;
@@ -117,6 +118,7 @@ export type Config = {
 	socket: string | undefined;
 	chmodSocket: string | undefined;
 	disableHsts: boolean | undefined;
+	hstsPreload: boolean | undefined;
 	db: {
 		host: string;
 		port: number;
@@ -262,6 +264,7 @@ export function loadConfig(): Config {
 		socket: config.socket,
 		chmodSocket: config.chmodSocket,
 		disableHsts: config.disableHsts,
+		hstsPreload: config.hstsPreload ?? false,
 		host,
 		hostname,
 		scheme,
