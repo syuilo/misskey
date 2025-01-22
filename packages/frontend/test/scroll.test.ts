@@ -18,7 +18,7 @@ describe('Scroll', () => {
 			document.body.append(div);
 
 			let called = false;
-			onScrollTop(div as any as HTMLElement, () => called = true);
+			onScrollTop(div as unknown as HTMLElement, () => called = true);
 
 			assert.ok(called);
 		});
@@ -30,7 +30,7 @@ describe('Scroll', () => {
 			assert.strictEqual(div.scrollTop, 0);
 
 			let called = false;
-			onScrollTop(div as any as HTMLElement, () => called = true);
+			onScrollTop(div as unknown as HTMLElement, () => called = true);
 
 			assert.ok(!called);
 		});
@@ -46,7 +46,7 @@ describe('Scroll', () => {
 			document.body.append(div);
 
 			let called = false;
-			onScrollBottom(div as any as HTMLElement, () => called = true);
+			onScrollBottom(div as unknown as HTMLElement, () => called = true);
 
 			assert.ok(called);
 		});
@@ -58,7 +58,7 @@ describe('Scroll', () => {
 			assert.strictEqual(div.scrollTop, 0);
 
 			let called = false;
-			onScrollBottom(div as any as HTMLElement, () => called = true);
+			onScrollBottom(div as unknown as HTMLElement, () => called = true);
 
 			assert.ok(!called);
 		});

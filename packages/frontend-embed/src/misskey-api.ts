@@ -17,7 +17,7 @@ export function misskeyApi<
 	_ResT = ResT extends void ? Misskey.api.SwitchCaseResponseType<E, P> : ResT,
 >(
 	endpoint: E,
-	data: P = {} as any,
+	data: P = {} as P,
 	signal?: AbortSignal,
 ): Promise<_ResT> {
 	if (endpoint.includes('://')) throw new Error('invalid endpoint');
@@ -64,7 +64,7 @@ export function misskeyApiGet<
 	_ResT = ResT extends void ? Misskey.api.SwitchCaseResponseType<E, P> : ResT,
 >(
 	endpoint: E,
-	data: P = {} as any,
+	data: P = {} as P,
 ): Promise<_ResT> {
 	pendingApiRequestsCount.value++;
 
@@ -72,7 +72,7 @@ export function misskeyApiGet<
 		pendingApiRequestsCount.value--;
 	};
 
-	const query = new URLSearchParams(data as any);
+	const query = new URLSearchParams(data);
 
 	const promise = new Promise<_ResT>((resolve, reject) => {
 		// Send request

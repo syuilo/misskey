@@ -153,7 +153,7 @@ export class NotificationService implements OnApplicationShutdown {
 				notifierId,
 			} : {}),
 			...data,
-		} as any as FilterUnionByProperty<MiNotification, 'type', T>;
+		} as unknown as FilterUnionByProperty<MiNotification, 'type', T>;
 
 		const redisIdPromise = this.redisClient.xadd(
 			`notificationTimeline:${notifieeId}`,

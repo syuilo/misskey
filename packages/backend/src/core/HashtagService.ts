@@ -68,7 +68,7 @@ export class HashtagService {
 			const q = this.hashtagsRepository.createQueryBuilder('tag').update()
 				.where('name = :name', { name: tag });
 
-			const set = {} as any;
+			const set = {} as Record<string, () => string>;
 
 			if (isUserAttached) {
 				if (inc) {

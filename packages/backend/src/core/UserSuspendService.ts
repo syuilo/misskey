@@ -133,7 +133,7 @@ export class UserSuspendService {
 			}
 
 			for (const inbox of queue) {
-				this.queueService.deliver(user as any, content, inbox, true);
+				this.queueService.deliver(user, content, inbox, true);
 			}
 		}
 	}

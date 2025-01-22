@@ -6,7 +6,7 @@
 import { URL } from 'node:url';
 import { Inject, Injectable } from '@nestjs/common';
 import * as parse5 from 'parse5';
-import { Window, XMLSerializer } from 'happy-dom';
+import { HTMLElement, Text, Window, XMLSerializer } from 'happy-dom';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { intersperse } from '@/misc/prelude/array.js';
@@ -278,9 +278,9 @@ export class MfmService {
 
 		const body = doc.createElement('p');
 
-		function appendChildren(children: mfm.MfmNode[], targetElement: any): void {
+		function appendChildren(children: mfm.MfmNode[], targetElement: HTMLElement): void {
 			if (children) {
-				for (const child of children.map(x => (handlers as any)[x.type](x))) targetElement.appendChild(child);
+				for (const child of children.map(x => (handlers[x.type] as (node: mfm.NodeType<typeof x.type>) => HTMLElement | Text)(x))) targetElement.appendChild(child);
 			}
 		}
 
@@ -290,7 +290,7 @@ export class MfmService {
 			return el;
 		}
 
-		const handlers: { [K in mfm.MfmNode['type']]: (node: mfm.NodeType<K>) => any } = {
+		const handlers: { [K in mfm.MfmNode['type']]: (node: mfm.NodeType<K>) => HTMLElement | Text} = {
 			bold: (node) => {
 				const el = doc.createElement('b');
 				appendChildren(node.children, el);

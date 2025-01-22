@@ -647,7 +647,7 @@ describe('クリップ', () => {
 				...request,
 			}, {
 				status: 204,
-			}) as any as void;
+			}) as unknown as void;
 		};
 
 		const removeNote = async (parameters: Misskey.entities.ClipsRemoveNoteRequest, request: Partial<ApiRequest<'clips/remove-note'>> = {}): Promise<void> => {
@@ -658,7 +658,7 @@ describe('クリップ', () => {
 				...request,
 			}, {
 				status: 204,
-			}) as any as void;
+			}) as unknown as void;
 		};
 
 		const notes = async (parameters: Misskey.entities.ClipsNotesRequest, request: Partial<ApiRequest<'clips/notes'>> = {}): Promise<Misskey.entities.Note[]> => {

@@ -57,6 +57,7 @@ import { trackPromise } from '@/misc/promise-tracker.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { CollapsedQueue } from '@/misc/collapsed-queue.js';
 import { CacheService } from '@/core/CacheService.js';
+import { noteVisibilities } from '@/types.js';
 
 type NotificationType = 'reply' | 'renote' | 'quote' | 'mention';
 
@@ -134,7 +135,7 @@ type Option = {
 	localOnly?: boolean | null;
 	reactionAcceptance?: MiNote['reactionAcceptance'];
 	cw?: string | null;
-	visibility?: string;
+	visibility?: typeof noteVisibilities[number];
 	visibleUsers?: MinimumUser[] | null;
 	channel?: MiChannel | null;
 	apMentions?: MinimumUser[] | null;
@@ -424,7 +425,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			userId: user.id,
 			localOnly: data.localOnly!,
 			reactionAcceptance: data.reactionAcceptance,
-			visibility: data.visibility as any,
+			visibility: data.visibility,
 			visibleUserIds: data.visibility === 'specified'
 				? data.visibleUsers
 					? data.visibleUsers.map(u => u.id)
@@ -832,7 +833,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			i === self.findIndex(u2 => u.id === u2.id),
 		);
 
-		return mentionedUsers;
+		return mentionedUsers.filter(mentionedUser => !!mentionedUser) as MiUser[];
 	}
 
 	@bindThis

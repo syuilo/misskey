@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Brackets, In } from 'typeorm';
+import { Brackets, FindOptionsWhere, In } from 'typeorm';
 import { Injectable, Inject } from '@nestjs/common';
 import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
 import type { MiNote, IMentionedRemoteUsers } from '@/models/Note.js';
@@ -165,7 +165,7 @@ export class NoteDeleteService {
 
 	@bindThis
 	private async getMentionedRemoteUsers(note: MiNote) {
-		const where = [] as any[];
+		const where = [] as FindOptionsWhere<MiUser>[];
 
 		// mention / reply / dm
 		const uris = (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri);

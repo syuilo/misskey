@@ -29,7 +29,7 @@ export function misskeyApi<
 	_ResT = ResT extends void ? Response<E, P> : ResT,
 >(
 	endpoint: E,
-	data: P & { i?: string | null; } = {} as any,
+	data: P & { i?: string | null; } = {} as P,
 	token?: string | null | undefined,
 	signal?: AbortSignal,
 ): Promise<_ResT> {
@@ -81,7 +81,7 @@ export function misskeyApiGet<
 	_ResT = ResT extends void ? Misskey.api.SwitchCaseResponseType<E, P> : ResT,
 >(
 	endpoint: E,
-	data: P = {} as any,
+	data: P = {} as P,
 ): Promise<_ResT> {
 	pendingApiRequestsCount.value++;
 
@@ -89,7 +89,7 @@ export function misskeyApiGet<
 		pendingApiRequestsCount.value--;
 	};
 
-	const query = new URLSearchParams(data as any);
+	const query = new URLSearchParams(data);
 
 	const promise = new Promise<_ResT>((resolve, reject) => {
 		// Send request

@@ -16,6 +16,7 @@ import type { MiMeta, UserProfilesRepository } from '@/models/_.js';
 import { LoggerService } from '@/core/LoggerService.js';
 import { bindThis } from '@/decorators.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
+import SMTPPool from 'nodemailer/lib/smtp-pool/index.js';
 
 @Injectable()
 export class EmailService {
@@ -48,6 +49,7 @@ export class EmailService {
 		const enableAuth = this.meta.smtpUser != null && this.meta.smtpUser !== '';
 
 		const transporter = nodemailer.createTransport({
+			pool: true,
 			host: this.meta.smtpHost,
 			port: this.meta.smtpPort,
 			secure: this.meta.smtpSecure,
@@ -57,7 +59,7 @@ export class EmailService {
 				user: this.meta.smtpUser,
 				pass: this.meta.smtpPass,
 			} : undefined,
-		} as any);
+		} as SMTPPool.Options);
 
 		const htmlContent = `<!doctype html>
 <html>

@@ -123,7 +123,7 @@ describe('MkUrlPreview', () => {
 				url: 'https://example.local/player',
 				width: null,
 				height: null,
-				allow: undefined as any,
+				allow: undefined as unknown as string[],
 			},
 		});
 		assert.exists(iframe, 'iframe should exist');

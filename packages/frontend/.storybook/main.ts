@@ -43,7 +43,7 @@ const config = {
 			plugins: [
 				{
 					// XXX: https://github.com/IanVS/vite-plugin-turbosnap/issues/8
-					...(turbosnap as any as typeof turbosnap['default'])({
+					...(turbosnap as unknown as typeof turbosnap['default'])({
 						rootDir: config.root ?? process.cwd(),
 					}),
 					name: 'fake-turbosnap',
