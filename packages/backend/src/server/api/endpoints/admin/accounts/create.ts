@@ -15,18 +15,21 @@ import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { ApiError } from '@/server/api/error.js';
 import { Packed } from '@/misc/json-schema.js';
+import { RoleService } from '@/core/RoleService.js';
 
 export const meta = {
 	tags: ['admin'],
 
 	errors: {
 		accessDenied: {
+			httpStatusCode: 403,
 			message: 'Access denied.',
 			code: 'ACCESS_DENIED',
 			id: '1fb7cb09-d46a-4fff-b8df-057708cce513',
 		},
 
 		wrongInitialPassword: {
+			httpStatusCode: 401,
 			message: 'Initial password is incorrect.',
 			code: 'INCORRECT_INITIAL_PASSWORD',
 			id: '97147c55-1ae1-4f6f-91d6-e1c3e0e76d62',
@@ -65,6 +68,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
 
+		private roleService: RoleService,
 		private userEntityService: UserEntityService,
 		private signupService: SignupService,
 		private instanceActorService: InstanceActorService,
@@ -85,8 +89,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					// 初期パスワードが設定されていないのに初期パスワードが入力された場合
 					throw new ApiError(meta.errors.wrongInitialPassword);
 				}
-			} else if ((realUsers && !me?.isRoot) || token !== null) {
-				// 初回セットアップではなく、管理者でない場合 or 外部トークンを使用している場合
+			} else if (!(me?.isRoot) && !await this.roleService.isAdministrator(me)) {
+				// 管理者でない場合
+				throw new ApiError(meta.errors.accessDenied);
+			} else if (token && !token?.permission.includes('write:admin:create-account')) {
+				// access token を使うときは write:admin:create-account 権限が必要
 				throw new ApiError(meta.errors.accessDenied);
 			}
 

@@ -2126,6 +2126,7 @@ _permissions:
   "read:flash-likes": "View list of liked Plays"
   "write:flash-likes": "Edit list of liked Plays"
   "read:admin:abuse-user-reports": "View user reports"
+  "write:admin:create-account": "Create user account"
   "write:admin:delete-account": "Delete user account"
   "write:admin:delete-all-files-of-a-user": "Delete all files of a user"
   "read:admin:index-stats": "View database index stats"

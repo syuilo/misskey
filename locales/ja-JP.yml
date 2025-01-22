@@ -2174,6 +2174,7 @@ _permissions:
   "read:flash-likes": "Playのいいねを見る"
   "write:flash-likes": "Playのいいねを操作する"
   "read:admin:abuse-user-reports": "ユーザーからの通報を見る"
+  "write:admin:create-account": "ユーザーアカウントを作成する"
   "write:admin:delete-account": "ユーザーアカウントを削除する"
   "write:admin:delete-all-files-of-a-user": "ユーザーのすべてのファイルを削除する"
   "read:admin:index-stats": "データベースインデックスに関する情報を見る"
