@@ -208,12 +208,71 @@ export function note(id = 'somenoteid'): entities.Note {
 	};
 }
 
+export function remoteNote(id = 'somenoteId') {
+	return {
+		...note(),
+		user: {
+			...userLite(id, "remoteUser", "Remote Server"),
+		},
+		text: "this is remote note text",
+	}
+}
+
+export function renotedNote(id = 'somenoteId'): entities.Note {
+	return {
+		...note(id),
+		renote: {...note()},
+		text: null,
+	}
+}
+
+export function quotedNote(id = 'somenoteId'): entities.Note {
+	return {
+		...note(id),
+		renote: {...note()},
+		text: "quote note"
+	}
+}
+
+export function channelNote(id = 'somenoteId'): entities.Note {
+	return {
+		...note(id),
+		channel: channel(),
+	}
+}
+
+// チャンネルからのRenoteは renote に channnelNoteを入れる
+export function renotedFromChannelnote(id = "somenoteId") {
+	return {
+		...note(id),
+		renote: channelNote(),
+		text: null,
+	}
+}
+
+// チャンネルへRenoteされたTLのNoteは renoteにnoteを入れる ベースはchannelNoteである
+export function renotedToChannel(id = "somenoteId") {
+	return {
+		...channelNote(),
+		renote: note(),
+		text: null,
+	}
+}
+export function renotedToChannelFromChannel(id = "somenoteId") {
+	return {
+		...channelNote(),
+		renote: channelNote(),
+		text: null,
+	}
+}
+
 export function userLite(id = 'someuserid', username = 'miskist', host: entities.UserDetailed['host'] = 'misskey-hub.net', name: entities.UserDetailed['name'] = 'Misskey User'): entities.UserLite {
 	return {
 		id,
 		username,
 		host,
 		name,
+		instance: host !== 'misskey-hub.net' ? federationInstance() : null,
 		onlineStatus: 'unknown',
 		avatarUrl: 'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/about-icon.png?raw=true',
 		avatarBlurhash: 'eQFRshof5NWBRi},juayfPju53WB?0ofs;s*a{ofjuay^SoMEJR%ay',
