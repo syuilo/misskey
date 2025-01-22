@@ -10054,6 +10054,14 @@ export interface Locale extends ILocale {
          * ギャラリーの投稿を削除
          */
         "deleteGalleryPost": string;
+        /**
+         * ジョブキューをクリア
+         */
+        "clearQueue": string;
+        /**
+         * ジョブキューを再試行
+         */
+        "promoteQueue": string;
     };
     "_fileViewer": {
         /**

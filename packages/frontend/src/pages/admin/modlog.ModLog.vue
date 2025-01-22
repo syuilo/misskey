@@ -170,6 +170,66 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<CodeDiff :context="5" :hideHeader="true" :oldString="log.info.before ?? ''" :newString="log.info.after ?? ''" maxHeight="300px"/>
 			</div>
 		</template>
+		<template v-if="log.type === 'createGlobalAnnouncement'">
+			<div>{{ i18n.ts.title }}: {{ log.info.announcement.title }}</div>
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.display }}: {{ i18n.ts[log.info.announcement.display] }}</div>
+				<div><Mfm :text="log.info.announcement.text"/></div>
+			</div>
+		</template>
+		<template v-if="log.type === 'createUserAnnouncement'">
+			<div>{{ i18n.ts.title }}: {{ log.info.announcement.title }}</div>
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.display }}: {{ i18n.ts[log.info.announcement.display] }}</div>
+				<div>{{ i18n.ts.user }}: <MkA :to="`/admin/user/${log.info.userId}`" class="_link">@{{ log.info.userUsername }}{{ log.info.userHost ? log.info.userHost : '' }}</MkA></div>
+				<div><Mfm :text="log.info.announcement.text"/></div>
+			</div>
+		</template>
+		<template v-if="log.type === 'deleteGlobalAnnouncement'">
+			<div>{{ i18n.ts.title }}: {{ log.info.announcement.title }}</div>
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.display }}: {{ i18n.ts[log.info.announcement.display] }}</div>
+				<div><Mfm :text="log.info.announcement.text"/></div>
+			</div>
+		</template>
+		<template v-if="log.type === 'deleteUserAnnouncement'">
+			<div>{{ i18n.ts.title }}: {{ log.info.announcement.title }}</div>
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.display }}: {{ i18n.ts[log.info.announcement.display] }}</div>
+				<div>{{ i18n.ts.user }}: <MkA :to="`/admin/user/${log.info.userId}`" class="_link">@{{ log.info.userUsername }}{{ log.info.userHost ? log.info.userHost : '' }}</MkA></div>
+				<div><Mfm :text="log.info.announcement.text"/></div>
+			</div>
+		</template>
+		<template v-if="log.type === 'createRole'">
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.role }} : {{ log.info.role.name }}</div>
+				<div>{{ i18n.ts._role.assignTarget }} : {{ i18n.ts._role[log.info.role.target] }}</div>
+				<div>{{ i18n.ts.public }} : {{ log.info.role.isPublic ? i18n.ts.yes : i18n.ts.no }}</div>
+				<div>{{ i18n.ts.administrator }} : {{ log.info.role.isAdministrator ? i18n.ts.yes : i18n.ts.no }}</div>
+				<div>{{ i18n.ts.moderator }} : {{ log.info.role.isModerator ? i18n.ts.yes : i18n.ts.no }}</div>
+			</div>
+		</template>
+		<template v-if="log.type === 'deleteRole'">
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.role }} : {{ log.info.role.name }}</div>
+				<div>{{ i18n.ts._role.assignTarget }} : {{ i18n.ts._role[log.info.role.target] }}</div>
+				<div>{{ i18n.ts.public }} : {{ log.info.role.isPublic ? i18n.ts.yes : i18n.ts.no }}</div>
+				<div>{{ i18n.ts.administrator }} : {{ log.info.role.isAdministrator ? i18n.ts.yes : i18n.ts.no }}</div>
+				<div>{{ i18n.ts.moderator }} : {{ log.info.role.isModerator ? i18n.ts.yes : i18n.ts.no }}</div>
+			</div>
+		</template>
+		<template v-if="log.type === 'addCustomEmoji'">
+			<div class="_gaps_s">
+				<div>{{ i18n.ts.emoji }} : {{ log.info.emoji.name }}</div>
+				<div>{{ i18n.ts.customEmoji }} : <img :src="log.info.emoji.publicUrl" style="width: 24px; height: 24px; object-fit: contain; line-height: 1;"/></div>
+				<div>{{ i18n.ts.emojiUrl }} : {{ log.info.emoji.url }}</div>
+				<div>{{ i18n.ts.aliases }} : {{ log.info.emoji.aliases.join(' ') }}</div>
+				<div>{{ i18n.ts.license }} : {{ log.info.emoji.license }}</div>
+				<div>{{ i18n.ts.category }} : {{ log.info.emoji.category }}</div>
+				<div>{{ i18n.ts.localOnly }} : {{ log.info.emoji.localOnly }}</div>
+				<div>{{ i18n.ts.isSensitive }} : {{ log.info.emoji.isSensitive }}</div>
+			</div>
+		</template>
 
 		<details>
 			<summary>raw</summary>

@@ -2663,6 +2663,8 @@ _moderationLogTypes:
   deletePage: "ページを削除"
   deleteFlash: "Playを削除"
   deleteGalleryPost: "ギャラリーの投稿を削除"
+  clearQueue: "ジョブキューをクリア"
+  promoteQueue: "ジョブキューを再試行"
 
 _fileViewer:
   title: "ファイルの詳細"
