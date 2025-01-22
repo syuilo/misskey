@@ -6,9 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <time :title="absolute" :class="{ [$style.old1]: colored && (ago > 60 * 60 * 24 * 90), [$style.old2]: colored && (ago > 60 * 60 * 24 * 180) }">
 	<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>
-	<template v-else-if="mode === 'relative'">{{ relative }}</template>
-	<template v-else-if="mode === 'absolute'">{{ absolute }}</template>
-	<template v-else-if="mode === 'detail'">{{ absolute }} ({{ relative }})</template>
+	<template v-else-if="_mode === 'relative'">{{ relative }}</template>
+	<template v-else-if="_mode === 'absolute'">{{ absolute }}</template>
+	<template v-else-if="_mode === 'detail'">{{ absolute }} ({{ relative }})</template>
 </time>
 </template>
 
@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import isChromatic from 'chromatic/isChromatic';
 import { onMounted, onUnmounted, ref, computed } from 'vue';
 import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
 import { dateTimeFormat } from '@@/js/intl-const.js';
 
 const props = withDefaults(defineProps<{
@@ -23,9 +24,21 @@ const props = withDefaults(defineProps<{
 	origin?: Date | null;
 	mode?: 'relative' | 'absolute' | 'detail';
 	colored?: boolean;
+	allowOverrideByUser?: boolean;
 }>(), {
 	origin: isChromatic() ? () => new Date('2023-04-01T00:00:00Z') : null,
 	mode: 'relative',
+	allowOverrideByUser: true,
+});
+
+const _mode = computed(() => {
+	if (props.mode === 'detail') return 'detail';
+
+	if (props.allowOverrideByUser && defaultStore.state.alwaysUseAbsoluteTime) {
+		return 'absolute';
+	} else {
+		return props.mode;
+	}
 });
 
 function getDateSafe(n: Date | string | number) {
@@ -51,7 +64,7 @@ const now = ref(props.origin?.getTime() ?? Date.now());
 const ago = computed(() => (now.value - _time) / 1000/*ms*/);
 
 const relative = computed<string>(() => {
-	if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
+	if (_mode.value === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
 
 	return (
@@ -87,7 +100,7 @@ function tick() {
 	}
 }
 
-if (!invalid && props.origin === null && (props.mode === 'relative' || props.mode === 'detail')) {
+if (!invalid && props.origin === null && (_mode.value === 'relative' || _mode.value === 'detail')) {
 	onMounted(() => {
 		tick();
 	});

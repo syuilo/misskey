@@ -5254,6 +5254,10 @@ export interface Locale extends ILocale {
      * このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。
      */
     "federationDisabled": string;
+    /**
+     * 常に絶対時刻で表示する
+     */
+    "alwaysUseAbsoluteTime": string;
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする

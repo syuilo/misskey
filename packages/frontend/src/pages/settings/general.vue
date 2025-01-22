@@ -170,6 +170,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableHorizontalSwipe">{{ i18n.ts.enableHorizontalSwipe }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
 				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
+				<MkSwitch v-model="alwaysUseAbsoluteTime">{{ i18n.ts.alwaysUseAbsoluteTime }}</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -320,6 +321,7 @@ const enableHorizontalSwipe = computed(defaultStore.makeGetterSetter('enableHori
 const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
+const alwaysUseAbsoluteTime = computed(defaultStore.makeGetterSetter('alwaysUseAbsoluteTime'));
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 
 watch(lang, () => {
@@ -364,6 +366,7 @@ watch([
 	enableSeasonalScreenEffect,
 	alwaysConfirmFollow,
 	confirmWhenRevealingSensitiveMedia,
+	alwaysUseAbsoluteTime,
 	contextMenu,
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
