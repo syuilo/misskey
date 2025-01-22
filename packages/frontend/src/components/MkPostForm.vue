@@ -65,7 +65,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
+	<div v-show="useCw" style="display: flex">
+		<input
+			ref="cwInputEl"
+			v-model="cw"
+			:class="$style.cw"
+			:placeholder="i18n.ts.annotation"
+			@keydown="onKeydown"
+			@compositionend="onCompositionEnd"
+		/>
+		<button class="_button" :class="$style.cwSwapButton" @click="swapCwText">
+			<i class="ti ti-switch-vertical"></i>
+		</button>
+	</div>
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw }]">
 		<div v-if="channel" :class="$style.colorBar" :style="{ background: channel.color }"></div>
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @keyup="onKeyup" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
@@ -385,6 +397,15 @@ function addMissingMention() {
 				pushVisibleUser(user);
 			});
 		}
+	}
+}
+
+function swapCwText() {
+	if (useCw.value) {
+		// textの一行目を取り出す
+		const temp = text.value.split(/\r?\n/).join(" ");
+		text.value = cw.value ?? "";
+		cw.value = temp;
 	}
 }
 
@@ -1193,6 +1214,15 @@ defineExpose({
 	}
 }
 //#endregion
+
+.cwSwapButton {
+	margin-left: 8px;
+	padding: 8px;
+	border-radius: 6px;
+	&:hover {
+		background: var(--X4);
+	}
+}
 
 .preview {
 	padding: 16px 20px 0 20px;
