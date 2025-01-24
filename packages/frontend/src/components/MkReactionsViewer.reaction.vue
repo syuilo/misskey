@@ -90,6 +90,15 @@ async function toggleReaction() {
 			}
 		});
 	} else {
+		if (defaultStore.state.confirmOnReact) {
+			const confirm = await os.confirm({
+				type: 'question',
+				text: i18n.tsx.reactAreYouSure({ emoji: props.reaction }),
+			});
+
+			if (confirm.canceled) return;
+		}
+
 		sound.playMisskeySfx('reaction');
 
 		if (mock) {

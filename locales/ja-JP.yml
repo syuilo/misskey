@@ -1309,6 +1309,8 @@ availableRoles: "利用可能なロール"
 acknowledgeNotesAndEnable: "注意事項を理解した上でオンにします。"
 federationSpecified: "このサーバーはホワイトリスト連合で運用されています。管理者が指定したサーバー以外とやり取りすることはできません。"
 federationDisabled: "このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。"
+confirmOnReact: "リアクションする際に確認する"
+reactAreYouSure: "\" {emoji} \" をリアクションしますか？"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"

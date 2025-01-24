@@ -487,7 +487,16 @@ function react(): void {
 		}
 	} else {
 		blur();
-		reactionPicker.show(reactButton.value ?? null, note.value, reaction => {
+		reactionPicker.show(reactButton.value ?? null, note.value, async (reaction) => {
+			if (defaultStore.state.confirmOnReact) {
+				const confirm = await os.confirm({
+					type: 'question',
+					text: i18n.tsx.reactAreYouSure({ emoji: reaction }),
+				});
+
+				if (confirm.canceled) return;
+			}
+
 			sound.playMisskeySfx('reaction');
 
 			if (props.mock) {
