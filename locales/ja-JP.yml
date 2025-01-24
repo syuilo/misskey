@@ -2930,3 +2930,12 @@ _captcha:
     _unknown:
       title: "CAPTCHAエラー"
       text: "想定外のエラーが発生しました。"
+
+_search:
+  searchScopeAll: "全て"
+  searchScopeLocal: "ローカル"
+  searchScopeServer: "サーバー指定"
+  searchScopeUser: "ユーザー指定"
+  pleaseEnterServerHost: "サーバーのホストを入力してください"
+  pleaseSelectUser: "ユーザーを選択してください"
+  serverHostPlaceholder: "例: misskey.example.com"

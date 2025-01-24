@@ -22,6 +22,8 @@
   (Based on https://github.com/Otaku-Social/maniakey/pull/14)
 - Enhance: AiScriptの拡張API関数において引数の型チェックをより厳格に
 - Enhance: クエリパラメータでuiを一時的に変更できるように #15240
+- Enhance: ノート検索ページのデザイン調整  
+  (Cherry-picked from https://github.com/taiyme/misskey/pull/273)
 - Fix: 画面サイズが変わった際にナビゲーションバーが自動で折りたたまれない問題を修正
 - Fix: サーバー情報メニューに区切り線が不足していたのを修正
 - Fix: ノートがログインしているユーザーしか見れない場合にログインダイアログを閉じるとその後の動線がなくなる問題を修正
