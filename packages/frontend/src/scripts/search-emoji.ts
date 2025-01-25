@@ -104,3 +104,33 @@ export function searchEmoji(query: string | null, emojiDb: EmojiDef[], max = 30)
 		.slice(0, max)
 		.map(it => it.emoji);
 }
+
+export function searchEmojiExact(query: string | null, emojiDb: EmojiDef[], max = 30): EmojiDef[] {
+	if (!query) {
+		return [];
+	}
+
+	const matched = new Map<string, EmojiScore>();
+	// 完全一致（エイリアスなし）
+	emojiDb.some(x => {
+		if (x.name === query && !x.aliasOf) {
+			matched.set(x.name, { emoji: x, score: query.length + 3 });
+		}
+		return matched.size === max;
+	});
+
+	// 完全一致（エイリアス込み）
+	if (matched.size < max) {
+		emojiDb.some(x => {
+			if (x.name === query && !matched.has(x.aliasOf ?? x.name)) {
+				matched.set(x.aliasOf ?? x.name, { emoji: x, score: query.length + 2 });
+			}
+			return matched.size === max;
+		});
+	}
+
+	return [...matched.values()]
+		.sort((x, y) => y.score - x.score)
+		.slice(0, max)
+		.map(it => it.emoji);
+}
