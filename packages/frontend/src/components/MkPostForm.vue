@@ -100,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed, type ShallowRef } from 'vue';
+import { inject, watch, nextTick, onMounted, onBeforeUnmount, defineAsyncComponent, provide, shallowRef, ref, computed, type ShallowRef } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -127,6 +127,7 @@ import { uploadFile } from '@/scripts/upload.js';
 import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
+import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
@@ -913,20 +914,20 @@ async function insertEmoji(ev: MouseEvent) {
 
 	let pos = textareaEl.value?.selectionStart ?? 0;
 	let posEnd = textareaEl.value?.selectionEnd ?? text.value.length;
-	emojiPicker.show(
-		target as HTMLElement,
-		emoji => {
+	emojiPicker.show({
+		src: target as HTMLElement,
+		onChosen: emoji => {
 			const textBefore = text.value.substring(0, pos);
 			const textAfter = text.value.substring(posEnd);
 			text.value = textBefore + emoji + textAfter;
 			pos += emoji.length;
 			posEnd += emoji.length;
 		},
-		() => {
+		onClosed: () => {
 			textAreaReadOnly.value = false;
 			nextTick(() => focus());
 		},
-	);
+	});
 }
 
 async function insertMfmFunction(ev: MouseEvent) {
@@ -1039,6 +1040,12 @@ onMounted(() => {
 
 		nextTick(() => watchForDraft());
 	});
+});
+
+onBeforeUnmount(() => {
+	// MkPostFormDialogでも発火しているが、Dialogではない場合は呼ばれないためこちらでも呼ぶ必要がある
+	// なのでDialogの場合は2回発火されるが、ウィンドウを閉じる指示のため悪影響はない
+	globalEvents.emit('requestCloseEmojiPickerWindow');
 });
 
 defineExpose({
