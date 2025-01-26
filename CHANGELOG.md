@@ -23,6 +23,7 @@
   (Based on https://github.com/Otaku-Social/maniakey/pull/14)
 - Enhance: AiScriptの拡張API関数において引数の型チェックをより厳格に
 - Enhance: クエリパラメータでuiを一時的に変更できるように #15240
+- Enhance: CWの注釈で入力済みの文字数を表示
 - Fix: 画面サイズが変わった際にナビゲーションバーが自動で折りたたまれない問題を修正
 - Fix: サーバー情報メニューに区切り線が不足していたのを修正
 - Fix: ノートがログインしているユーザーしか見れない場合にログインダイアログを閉じるとその後の動線がなくなる問題を修正
@@ -47,6 +48,7 @@
 - Fix: 非ログイン時のサーバー概要画面のメニューボタンが押せないことがあるのを修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/656)
 - Fix: URLにはじめから`#pswp`が含まれている場合に画像ビューワーがブラウザの戻るボタンで閉じられない問題を修正
+- Fix: CWの注釈が100文字を超えている場合、ノート投稿ボタンを非アクティブに
 
 ### Server
 - Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
