@@ -214,9 +214,10 @@ export function pageWindow(path: string) {
 	});
 }
 
-export function toast(message: string) {
+export function toast(message: string, duration?: number) {
 	const { dispose } = popup(MkToast, {
 		message,
+    duration,
 	}, {
 		closed: () => dispose(),
 	});

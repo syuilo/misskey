@@ -6,9 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps_m rsljpzjq">
 	<div v-adaptive-border class="rfqxtzch _panel">
-		<div class="toggle">
+		<div
+			class="toggle"
+			:class="{ disabled: syncDeviceDarkMode }"
+		>
 			<div class="toggleWrapper">
-				<input id="dn" v-model="darkMode" type="checkbox" class="dn"/>
+				<input id="dn" v-model="darkMode" type="checkbox" class="dn" :disabled="syncDeviceDarkMode"/>
 				<label for="dn" class="toggle">
 					<span class="before">{{ i18n.ts.light }}</span>
 					<span class="after">{{ i18n.ts.dark }}</span>
@@ -181,13 +184,19 @@ definePageMetadata(() => ({
 		position: relative;
 		padding: 26px 0;
 		text-align: center;
+		overflow: clip;
 
-		&.disabled {
-			opacity: 0.7;
-
-			&, * {
-				cursor: not-allowed !important;
-			}
+		&.disabled::after {
+			position: absolute;
+			z-index: 3;
+			content: '';
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: var(--panel);
+			opacity: .5;
+			cursor: not-allowed;
 		}
 
 		> .toggleWrapper {

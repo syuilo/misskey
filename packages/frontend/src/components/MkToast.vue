@@ -26,9 +26,12 @@ import { onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 
-defineProps<{
+const props = withDefaults(defineProps<{
 	message: string;
-}>();
+	duration?: number;
+}>(), {
+	duration: 4000,
+});
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -40,7 +43,7 @@ const showing = ref(true);
 onMounted(() => {
 	window.setTimeout(() => {
 		showing.value = false;
-	}, 4000);
+	}, props.duration);
 });
 </script>
 
