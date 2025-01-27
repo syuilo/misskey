@@ -97,4 +97,11 @@ export default [
 			'vue/attribute-hyphenation': ['error', 'never'],
 		},
 	},
+	{
+		ignores: [
+			// TODO: Error while loading rule '@typescript-eslint/naming-convention': Cannot use 'in' operator to search for 'type' in undefined のため一時的に無効化
+			// See https://github.com/misskey-dev/misskey/pull/15311
+			'js/i18n.ts',
+		],
+	},
 ];

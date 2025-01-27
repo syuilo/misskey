@@ -47,6 +47,8 @@ export default [
 			'@typescript-eslint/no-empty-interface': ['error', {
 				allowSingleExtends: true,
 			}],
+			// defineExposeが誤検知されてしまう
+			'@typescript-eslint/no-unused-expressions': 'off',
 			// window の禁止理由: グローバルスコープと衝突し、予期せぬ結果を招くため
 			// e の禁止理由: error や event など、複数のキーワードの頭文字であり分かりにくいため
 			'id-denylist': ['error', 'window', 'e'],

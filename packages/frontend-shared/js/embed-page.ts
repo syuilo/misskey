@@ -6,7 +6,7 @@
 //#region Embed関連の定義
 
 /** 埋め込みの対象となるエンティティ（/embed/xxx の xxx の部分と対応させる） */
-const embeddableEntities = [
+export const embeddableEntities = [
 	'notes',
 	'user-timeline',
 	'clips',

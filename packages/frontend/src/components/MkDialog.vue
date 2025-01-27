@@ -142,6 +142,7 @@ const okButtonDisabledReason = computed<null | 'charactersExceeded' | 'character
 // overload function を使いたいので lint エラーを無視する
 function done(canceled: true): void;
 function done(canceled: false, result: Result): void; // eslint-disable-line no-redeclare
+
 function done(canceled: boolean, result?: Result): void { // eslint-disable-line no-redeclare
 	emit('done', { canceled, result } as { canceled: true } | { canceled: false, result: Result });
 	modal.value?.close();

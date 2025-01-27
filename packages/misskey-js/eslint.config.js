@@ -26,4 +26,10 @@ export default [
 			},
 		},
 	},
+	{
+		files: ['src/autogen/**/*.ts', 'src/autogen/**/*.tsx'],
+		rules: {
+			'@stylistic/indent': 'off',
+		},
+	},
 ];

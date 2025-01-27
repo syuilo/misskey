@@ -7,7 +7,7 @@
  * {@link KeyboardEvent.code} の値を表す文字列。不足分は適宜追加する
  * @see https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_code_values
  */
-export type KeyCode =
+export type KeyCode = (
 	| 'Backspace'
 	| 'Tab'
 	| 'Enter'
@@ -94,32 +94,32 @@ export type KeyCode =
 	| 'Quote'
 	| 'Meta'
 	| 'AltGraph'
-	;
+);
 
 /**
  * 修飾キーを表す文字列。不足分は適宜追加する。
  */
-export type KeyModifier =
+export type KeyModifier = (
 	| 'Shift'
 	| 'Control'
 	| 'Alt'
 	| 'Meta'
-	;
+);
 
 /**
  * 押下されたキー以外の状態を表す文字列。不足分は適宜追加する。
  */
-export type KeyState =
+export type KeyState = (
 	| 'composing'
 	| 'repeat'
-	;
+);
 
 export type KeyEventHandler = {
 	modifiers?: KeyModifier[];
 	states?: KeyState[];
 	code: KeyCode | 'any';
 	handler: (event: KeyboardEvent) => void;
-}
+};
 
 export function handleKeyEvent(event: KeyboardEvent, handlers: KeyEventHandler[]) {
 	function checkModifier(ev: KeyboardEvent, modifiers? : KeyModifier[]) {

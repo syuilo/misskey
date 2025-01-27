@@ -6,7 +6,7 @@
 import * as Misskey from 'misskey-js';
 import { ComputedRef, Ref } from 'vue';
 
-interface MenuRadioOptionsDef extends Record<string, any> { }
+type MenuRadioOptionsDef = Record<string, any>;
 
 export type MenuAction = (ev: MouseEvent) => void;
 

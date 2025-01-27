@@ -24,13 +24,13 @@ describe('MfmService', () => {
 	describe('toHtml', () => {
 		test('br', () => {
 			const input = 'foo\nbar\nbaz';
-			const output = '<p><span>foo<br>bar<br>baz</span></p>';
+			const output = '<p><span>foo<br />bar<br />baz</span></p>';
 			assert.equal(mfmService.toHtml(mfm.parse(input)), output);
 		});
 
 		test('br alt', () => {
 			const input = 'foo\r\nbar\rbaz';
-			const output = '<p><span>foo<br>bar<br>baz</span></p>';
+			const output = '<p><span>foo<br />bar<br />baz</span></p>';
 			assert.equal(mfmService.toHtml(mfm.parse(input)), output);
 		});
 

@@ -2,6 +2,7 @@
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
 import type { ILocale, ParameterizedString } from '../../../locales/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

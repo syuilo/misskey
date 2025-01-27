@@ -15,7 +15,7 @@ import { QueueService } from '@/core/QueueService.js';
 import type { OnApplicationShutdown } from '@nestjs/common';
 
 export type UserWebhookPayload<T extends WebhookEventTypes> =
-	T extends 'note' | 'reply' | 'renote' |'mention' ? {
+	T extends 'note' | 'reply' | 'renote' | 'mention' ? {
 		note: Packed<'Note'>,
 	} :
 	T extends 'follow' | 'unfollow' ? {

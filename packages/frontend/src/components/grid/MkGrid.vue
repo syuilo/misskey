@@ -74,7 +74,7 @@ type RowHolder = {
 	row: GridRow,
 	cells: GridCell[],
 	origin: DataSource,
-}
+};
 
 const emit = defineEmits<{
 	(ev: 'event', event: GridEvent, context: GridContext): void;

@@ -14,4 +14,10 @@ export default [
 			},
 		},
 	},
+	{
+		files: ['built/autogen/**.ts'],
+		rules: {
+			'@stylistic/indent': 'off',
+		},
+	},
 ];

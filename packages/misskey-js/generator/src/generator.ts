@@ -150,7 +150,7 @@ async function generateEndpoints(
 	endpointOutputLine.push(
 		...endpoints.map(it => '\t' + it.toLine()),
 	);
-	endpointOutputLine.push('}');
+	endpointOutputLine.push('};');
 	endpointOutputLine.push('');
 
 	function generateEndpointReqMediaTypesType() {

@@ -15,7 +15,7 @@ export type CellValue = string | boolean | number | undefined | null | Array<unk
 export type CellAddress = {
 	row: number;
 	col: number;
-}
+};
 
 export const CELL_ADDRESS_NONE: CellAddress = {
 	row: -1,
@@ -32,13 +32,13 @@ export type GridCell = {
 	contentSize: Size;
 	setting: GridCellSetting;
 	violation: ValidateViolation;
-}
+};
 
 export type GridCellContextMenuFactory = (col: GridColumn, row: GridRow, value: CellValue, context: GridContext) => MenuItem[];
 
 export type GridCellSetting = {
 	contextMenuFactory?: GridCellContextMenuFactory;
-}
+};
 
 export function createCell(
 	column: GridColumn,

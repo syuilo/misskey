@@ -211,7 +211,7 @@ type SerializedAll<T> = {
 
 type UndefinedAsNullAll<T> = {
 	[K in keyof T]: T[K] extends undefined ? null : T[K];
-}
+};
 
 export interface InternalEventTypes {
 	userChangeSuspendedState: { id: MiUser['id']; isSuspended: MiUser['isSuspended']; };

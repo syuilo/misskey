@@ -27,7 +27,7 @@ export type GridRowStyleRuleConditionParams = {
 export type GridRowStyleRule = {
 	condition: (params: GridRowStyleRuleConditionParams) => boolean;
 	applyStyle: AdditionalStyle;
-}
+};
 
 export type GridRowContextMenuFactory = (row: GridRow, context: GridContext) => MenuItem[];
 
@@ -40,7 +40,7 @@ export type GridRowSetting = {
 	events?: {
 		delete?: (rows: GridRow[]) => void;
 	}
-}
+};
 
 export type GridRow = {
 	index: number;
@@ -48,7 +48,7 @@ export type GridRow = {
 	using: boolean;
 	setting: GridRowSetting;
 	additionalStyles: AdditionalStyle[];
-}
+};
 
 export function createRow(index: number, using: boolean, setting: GridRowSetting): GridRow {
 	return {

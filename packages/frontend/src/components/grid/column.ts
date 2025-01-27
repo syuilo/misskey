@@ -40,7 +40,7 @@ export type GridColumn = {
 	setting: GridColumnSetting;
 	width: string;
 	contentSize: Size;
-}
+};
 
 export function createColumn(setting: GridColumnSetting, index: number): GridColumn {
 	return {

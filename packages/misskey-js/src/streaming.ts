@@ -197,9 +197,9 @@ export default class Stream extends EventEmitter<StreamEvents> implements IStrea
 	 * Send a message to connection
 	 * ! ストリーム上のやり取りはすべてJSONで行われます !
 	 */
-	public send(typeOrPayload: string): void
-	public send(typeOrPayload: string, payload: unknown): void
-	public send(typeOrPayload: Record<string, unknown> | unknown[]): void
+	public send(typeOrPayload: string): void;
+	public send(typeOrPayload: string, payload: unknown): void;
+	public send(typeOrPayload: Record<string, unknown> | unknown[]): void;
 	public send(typeOrPayload: string | Record<string, unknown> | unknown[], payload?: unknown): void {
 		if (typeof typeOrPayload === 'string') {
 			this.stream.send(JSON.stringify({

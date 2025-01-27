@@ -43,7 +43,7 @@ export type CaptchaSetting = {
 		siteKey: string | null;
 		secretKey: string | null;
 	}
-}
+};
 
 export class CaptchaError extends Error {
 	public readonly code: CaptchaErrorCode;
@@ -59,11 +59,11 @@ export class CaptchaError extends Error {
 
 export type CaptchaSaveSuccess = {
 	success: true;
-}
+};
 export type CaptchaSaveFailure = {
 	success: false;
 	error: CaptchaError;
-}
+};
 export type CaptchaSaveResult = CaptchaSaveSuccess | CaptchaSaveFailure;
 
 type CaptchaResponse = {

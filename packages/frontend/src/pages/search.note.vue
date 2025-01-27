@@ -93,7 +93,7 @@ const noteSearchableScope = instance.noteSearchableScope ?? 'local';
 
 const hostSelect = ref<'all' | 'local' | 'specified'>('all');
 
-const setHostSelectWithInput = (after:string|undefined|null, before:string|undefined|null) => {
+const setHostSelectWithInput = (after: string | undefined | null, before: string | undefined | null) => {
 	if (before === after) return;
 	if (after === '') hostSelect.value = 'all';
 	else hostSelect.value = 'specified';

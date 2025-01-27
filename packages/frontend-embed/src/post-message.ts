@@ -21,7 +21,7 @@ export type MiPostMessageEvent<T extends PostMessageEventType = PostMessageEvent
 	type: T;
 	iframeId?: string;
 	payload?: PostMessageEventPayload[T];
-}
+};
 
 let defaultIframeId: string | null = null;
 

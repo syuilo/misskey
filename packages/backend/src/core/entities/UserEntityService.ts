@@ -57,12 +57,14 @@ const ajv = new Ajv();
 
 function isLocalUser(user: MiUser): user is MiLocalUser;
 function isLocalUser<T extends { host: MiUser['host'] }>(user: T): user is (T & { host: null; });
+
 function isLocalUser(user: MiUser | { host: MiUser['host'] }): boolean {
 	return user.host == null;
 }
 
 function isRemoteUser(user: MiUser): user is MiRemoteUser;
 function isRemoteUser<T extends { host: MiUser['host'] }>(user: T): user is (T & { host: string; });
+
 function isRemoteUser(user: MiUser | { host: MiUser['host'] }): boolean {
 	return !isLocalUser(user);
 }
@@ -78,7 +80,7 @@ export type UserRelation = {
 	isBlocked: boolean
 	isMuted: boolean
 	isRenoteMuted: boolean
-}
+};
 
 @Injectable()
 export class UserEntityService implements OnModuleInit {

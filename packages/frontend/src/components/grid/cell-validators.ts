@@ -18,25 +18,25 @@ export type ValidatorParams = {
 export type ValidatorResult = {
 	valid: boolean;
 	message?: string;
-}
+};
 
 export type GridCellValidator = {
 	name?: string;
 	ignoreViolation?: boolean;
 	validate: (params: ValidatorParams) => ValidatorResult;
-}
+};
 
 export type ValidateViolation = {
 	valid: boolean;
 	params: ValidatorParams;
 	violations: ValidateViolationItem[];
-}
+};
 
 export type ValidateViolationItem = {
 	valid: boolean;
 	validator: GridCellValidator;
 	result: ValidatorResult;
-}
+};
 
 export function cellValidation(allCells: GridCell[], cell: GridCell, newValue: CellValue): ValidateViolation {
 	const { column, row } = cell;

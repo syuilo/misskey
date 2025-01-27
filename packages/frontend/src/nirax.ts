@@ -64,7 +64,7 @@ export type RouterEvent = {
 		key: string;
 	}) => void;
 	same: () => void;
-}
+};
 
 export type Resolved = {
 	route: RouteDef;

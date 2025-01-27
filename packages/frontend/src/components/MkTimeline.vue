@@ -57,15 +57,15 @@ provide('tl_withSensitive', computed(() => props.withSensitive));
 provide('inChannel', computed(() => props.src === 'channel'));
 
 type TimelineQueryType = {
-  antennaId?: string,
-  withRenotes?: boolean,
-  withReplies?: boolean,
-  withFiles?: boolean,
-  visibility?: string,
-  listId?: string,
-  channelId?: string,
-  roleId?: string
-}
+	antennaId?: string,
+	withRenotes?: boolean,
+	withReplies?: boolean,
+	withFiles?: boolean,
+	visibility?: string,
+	listId?: string,
+	channelId?: string,
+	roleId?: string
+};
 
 const prComponent = shallowRef<InstanceType<typeof MkPullToRefresh>>();
 const tlComponent = shallowRef<InstanceType<typeof MkNotes>>();

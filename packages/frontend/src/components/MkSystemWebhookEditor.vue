@@ -114,7 +114,7 @@ type EventType = {
 	userCreated: boolean;
 	inactiveModeratorsWarning: boolean;
 	inactiveModeratorsInvitationOnlyChanged: boolean;
-}
+};
 
 const emit = defineEmits<{
 	(ev: 'submitted', result: MkSystemWebhookResult): void;

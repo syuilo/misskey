@@ -62,7 +62,7 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRadios from '@/components/MkRadios.vue';
 
-type AdminAnnouncementType = Misskey.entities.AdminAnnouncementsCreateRequest & { id: string; }
+type AdminAnnouncementType = Misskey.entities.AdminAnnouncementsCreateRequest & { id: string; };
 
 const props = defineProps<{
 	user: Misskey.entities.User,

@@ -15,7 +15,7 @@ export type DroppedDirectory = {
 	isFile: false;
 	path: string;
 	children: DroppedItem[];
-}
+};
 
 export async function extractDroppedItems(ev: DragEvent): Promise<DroppedItem[]> {
 	const dropItems = ev.dataTransfer?.items;

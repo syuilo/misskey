@@ -22,7 +22,7 @@ export type LoginUser = SigninResponse & {
 	client: Misskey.api.APIClient;
 	username: string;
 	password: string;
-}
+};
 
 /** used for avoiding overload and some endpoints */
 export type Request = <

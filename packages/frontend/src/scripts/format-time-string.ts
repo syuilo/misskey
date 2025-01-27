@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-const defaultLocaleStringFormats: {[index: string]: string} = {
+const defaultLocaleStringFormats: { [index: string]: string } = {
 	'weekday': 'narrow',
 	'era': 'narrow',
 	'year': 'numeric',

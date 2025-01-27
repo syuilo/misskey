@@ -10,13 +10,13 @@ import { channel, clip, cookie, galleryPost, page, play, post, signup, simpleGet
 import type { SimpleGetResponse } from '../utils.js';
 import type * as misskey from 'misskey-js';
 
-// Request Accept
+// Request Accept in lowercase
 const ONLY_AP = 'application/activity+json';
 const PREFER_AP = 'application/activity+json, */*';
 const PREFER_HTML = 'text/html, */*';
 const UNSPECIFIED = '*/*';
 
-// Response Content-Type
+// Response Content-Type in lowercase
 const AP = 'application/activity+json; charset=utf-8';
 const HTML = 'text/html; charset=utf-8';
 const JSON_UTF8 = 'application/json; charset=utf-8';
@@ -44,7 +44,8 @@ describe('Webリソース', () => {
 		const { path, accept, cookie, type } = param;
 		const res = await simpleGet(path, accept, cookie);
 		assert.strictEqual(res.status, 200);
-		assert.strictEqual(res.type, type ?? HTML);
+		// Header values are case-insensitive
+		assert.strictEqual(res.type?.toLowerCase(), (type ?? HTML).toLowerCase());
 		return res;
 	};
 
@@ -95,8 +96,7 @@ describe('Webリソース', () => {
 	describe.each([
 		{ path: '/', type: HTML },
 		{ path: '/docs/ja-JP/about', type: HTML }, // "指定されたURLに該当するページはありませんでした。"
-		// fastify-static gives charset=UTF-8 instead of utf-8 and that's okay
-		{ path: '/api-doc', type: 'text/html; charset=UTF-8' },
+		{ path: '/api-doc', type: HTML },
 		{ path: '/api.json', type: JSON_UTF8 },
 		{ path: '/api-console', type: HTML },
 		{ path: '/_info_card_', type: HTML },

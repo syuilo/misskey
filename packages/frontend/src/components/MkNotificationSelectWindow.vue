@@ -38,7 +38,7 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import { notificationTypes } from '@@/js/const.js';
 import { i18n } from '@/i18n.js';
 
-type TypesMap = Record<typeof notificationTypes[number], Ref<boolean>>
+type TypesMap = Record<typeof notificationTypes[number], Ref<boolean>>;
 
 const emit = defineEmits<{
 	(ev: 'done', v: { excludeTypes: string[] }): void,
