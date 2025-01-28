@@ -15,9 +15,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@focusin.passive.stop="() => {}"
 >
 	<div
-		ref="itemsEl"
-		v-hotkey="keymap"
-		tabindex="0"
 		class="_popup _shadow"
 		:class="$style.menu"
 		:style="{
@@ -27,147 +24,156 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@keydown.stop="() => {}"
 		@contextmenu.self.prevent="() => {}"
 	>
-		<template v-for="item in (items2 ?? [])">
-			<div v-if="item.type === 'divider'" role="separator" tabindex="-1" :class="$style.divider"></div>
-			<span v-else-if="item.type === 'label'" role="menuitem" tabindex="-1" :class="[$style.label, $style.item]">
-				<span style="opacity: 0.7;">{{ item.text }}</span>
+		<slot name="header"></slot>
+		<div
+			ref="itemsEl"
+			v-hotkey="keymap"
+			tabindex="0"
+			:class="$style.menuItems"
+		>
+			<template v-for="item in (items2 ?? [])">
+				<div v-if="item.type === 'divider'" role="separator" tabindex="-1" :class="$style.divider"></div>
+				<span v-else-if="item.type === 'label'" role="menuitem" tabindex="-1" :class="[$style.label, $style.item]">
+					<span style="opacity: 0.7;">{{ item.text }}</span>
+				</span>
+				<span v-else-if="item.type === 'pending'" role="menuitem" tabindex="0" :class="[$style.pending, $style.item]">
+					<span><MkEllipsis/></span>
+				</span>
+				<MkA
+					v-else-if="item.type === 'link'"
+					role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item]"
+					:to="item.to"
+					@click.passive="close(true)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
+					<MkAvatar v-if="item.avatar" :user="item.avatar" :class="$style.avatar"/>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text">{{ item.text }}</span>
+						<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
+					</div>
+				</MkA>
+				<a
+					v-else-if="item.type === 'a'"
+					role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item]"
+					:href="item.href"
+					:target="item.target"
+					:rel="item.target === '_blank' ? 'noopener noreferrer' : undefined"
+					:download="item.download"
+					@click.passive="close(true)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text">{{ item.text }}</span>
+						<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
+					</div>
+				</a>
+				<button
+					v-else-if="item.type === 'user'"
+					role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item, { [$style.active]: item.active }]"
+					@click.prevent="item.active ? close(false) : clicked(item.action, $event)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<MkAvatar :user="item.user" :class="$style.avatar"/><MkUserName :user="item.user"/>
+					<div v-if="item.indicate" :class="$style.item_content">
+						<span :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
+					</div>
+				</button>
+				<button
+					v-else-if="item.type === 'switch'"
+					role="menuitemcheckbox"
+					tabindex="0"
+					:class="['_button', $style.item]"
+					:disabled="unref(item.disabled)"
+					@click.prevent="switchItem(item)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
+					<MkSwitchButton v-else :class="$style.switchButton" :checked="item.ref" :disabled="item.disabled" @toggle="switchItem(item)"/>
+					<div :class="$style.item_content">
+						<span :class="[$style.item_content_text, { [$style.switchText]: !item.icon }]">{{ item.text }}</span>
+						<MkSwitchButton v-if="item.icon" :class="[$style.switchButton, $style.caret]" :checked="item.ref" :disabled="item.disabled" @toggle="switchItem(item)"/>
+					</div>
+				</button>
+				<button
+					v-else-if="item.type === 'radio'"
+					role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item, $style.parent, { [$style.active]: childShowingItem === item }]"
+					:disabled="unref(item.disabled)"
+					@mouseenter.prevent="preferClick ? null : showRadioOptions(item, $event)"
+					@keydown.enter.prevent="preferClick ? null : showRadioOptions(item, $event)"
+					@click.prevent="!preferClick ? null : showRadioOptions(item, $event)"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]" style="pointer-events: none;"></i>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text" style="pointer-events: none;">{{ item.text }}</span>
+						<span :class="$style.caret" style="pointer-events: none;"><i class="ti ti-chevron-right ti-fw"></i></span>
+					</div>
+				</button>
+				<button
+					v-else-if="item.type === 'radioOption'"
+					role="menuitemradio"
+					tabindex="0"
+					:class="['_button', $style.item, $style.radio, { [$style.active]: unref(item.active) }]"
+					@click.prevent="unref(item.active) ? null : clicked(item.action, $event, false)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<div :class="$style.icon">
+						<span :class="[$style.radioIcon, { [$style.radioChecked]: unref(item.active) }]"></span>
+					</div>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text">{{ item.text }}</span>
+					</div>
+				</button>
+				<button
+					v-else-if="item.type === 'parent'"
+					role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item, $style.parent, { [$style.active]: childShowingItem === item }]"
+					@mouseenter.prevent="preferClick ? null : showChildren(item, $event)"
+					@keydown.enter.prevent="preferClick ? null : showChildren(item, $event)"
+					@click.prevent="!preferClick ? null : showChildren(item, $event)"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]" style="pointer-events: none;"></i>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text" style="pointer-events: none;">{{ item.text }}</span>
+						<span :class="$style.caret" style="pointer-events: none;"><i class="ti ti-chevron-right ti-fw"></i></span>
+					</div>
+				</button>
+				<button
+					v-else role="menuitem"
+					tabindex="0"
+					:class="['_button', $style.item, { [$style.danger]: item.danger, [$style.active]: unref(item.active) }]"
+					@click.prevent="unref(item.active) ? close(false) : clicked(item.action, $event)"
+					@mouseenter.passive="onItemMouseEnter"
+					@mouseleave.passive="onItemMouseLeave"
+				>
+					<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
+					<MkAvatar v-if="item.avatar" :user="item.avatar" :class="$style.avatar"/>
+					<div :class="$style.item_content">
+						<span :class="$style.item_content_text">{{ item.text }}</span>
+						<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
+					</div>
+				</button>
+			</template>
+			<span v-if="items2 == null || items2.length === 0" tabindex="-1" :class="[$style.none, $style.item]">
+				<span>{{ i18n.ts.none }}</span>
 			</span>
-			<span v-else-if="item.type === 'pending'" role="menuitem" tabindex="0" :class="[$style.pending, $style.item]">
-				<span><MkEllipsis/></span>
-			</span>
-			<MkA
-				v-else-if="item.type === 'link'"
-				role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item]"
-				:to="item.to"
-				@click.passive="close(true)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" :class="$style.avatar"/>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text">{{ item.text }}</span>
-					<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
-				</div>
-			</MkA>
-			<a
-				v-else-if="item.type === 'a'"
-				role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item]"
-				:href="item.href"
-				:target="item.target"
-				:rel="item.target === '_blank' ? 'noopener noreferrer' : undefined"
-				:download="item.download"
-				@click.passive="close(true)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text">{{ item.text }}</span>
-					<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
-				</div>
-			</a>
-			<button
-				v-else-if="item.type === 'user'"
-				role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item, { [$style.active]: item.active }]"
-				@click.prevent="item.active ? close(false) : clicked(item.action, $event)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<MkAvatar :user="item.user" :class="$style.avatar"/><MkUserName :user="item.user"/>
-				<div v-if="item.indicate" :class="$style.item_content">
-					<span :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
-				</div>
-			</button>
-			<button
-				v-else-if="item.type === 'switch'"
-				role="menuitemcheckbox"
-				tabindex="0"
-				:class="['_button', $style.item]"
-				:disabled="unref(item.disabled)"
-				@click.prevent="switchItem(item)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
-				<MkSwitchButton v-else :class="$style.switchButton" :checked="item.ref" :disabled="item.disabled" @toggle="switchItem(item)"/>
-				<div :class="$style.item_content">
-					<span :class="[$style.item_content_text, { [$style.switchText]: !item.icon }]">{{ item.text }}</span>
-					<MkSwitchButton v-if="item.icon" :class="[$style.switchButton, $style.caret]" :checked="item.ref" :disabled="item.disabled" @toggle="switchItem(item)"/>
-				</div>
-			</button>
-			<button
-				v-else-if="item.type === 'radio'"
-				role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item, $style.parent, { [$style.active]: childShowingItem === item }]"
-				:disabled="unref(item.disabled)"
-				@mouseenter.prevent="preferClick ? null : showRadioOptions(item, $event)"
-				@keydown.enter.prevent="preferClick ? null : showRadioOptions(item, $event)"
-				@click.prevent="!preferClick ? null : showRadioOptions(item, $event)"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]" style="pointer-events: none;"></i>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text" style="pointer-events: none;">{{ item.text }}</span>
-					<span :class="$style.caret" style="pointer-events: none;"><i class="ti ti-chevron-right ti-fw"></i></span>
-				</div>
-			</button>
-			<button
-				v-else-if="item.type === 'radioOption'"
-				role="menuitemradio"
-				tabindex="0"
-				:class="['_button', $style.item, $style.radio, { [$style.active]: unref(item.active) }]"
-				@click.prevent="unref(item.active) ? null : clicked(item.action, $event, false)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<div :class="$style.icon">
-					<span :class="[$style.radioIcon, { [$style.radioChecked]: unref(item.active) }]"></span>
-				</div>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text">{{ item.text }}</span>
-				</div>
-			</button>
-			<button
-				v-else-if="item.type === 'parent'"
-				role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item, $style.parent, { [$style.active]: childShowingItem === item }]"
-				@mouseenter.prevent="preferClick ? null : showChildren(item, $event)"
-				@keydown.enter.prevent="preferClick ? null : showChildren(item, $event)"
-				@click.prevent="!preferClick ? null : showChildren(item, $event)"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]" style="pointer-events: none;"></i>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text" style="pointer-events: none;">{{ item.text }}</span>
-					<span :class="$style.caret" style="pointer-events: none;"><i class="ti ti-chevron-right ti-fw"></i></span>
-				</div>
-			</button>
-			<button
-				v-else role="menuitem"
-				tabindex="0"
-				:class="['_button', $style.item, { [$style.danger]: item.danger, [$style.active]: unref(item.active) }]"
-				@click.prevent="unref(item.active) ? close(false) : clicked(item.action, $event)"
-				@mouseenter.passive="onItemMouseEnter"
-				@mouseleave.passive="onItemMouseLeave"
-			>
-				<i v-if="item.icon" class="ti-fw" :class="[$style.icon, item.icon]"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" :class="$style.avatar"/>
-				<div :class="$style.item_content">
-					<span :class="$style.item_content_text">{{ item.text }}</span>
-					<span v-if="item.indicate" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
-				</div>
-			</button>
-		</template>
-		<span v-if="items2 == null || items2.length === 0" tabindex="-1" :class="[$style.none, $style.item]">
-			<span>{{ i18n.ts.none }}</span>
-		</span>
+		</div>
+		<slot name="footer"></slot>
 	</div>
 	<div v-if="childMenu">
 		<XChild ref="child" :items="childMenu" :targetElement="childTarget!" :rootElement="itemsEl!" @actioned="childActioned" @closed="closeChild"/>
@@ -429,7 +435,7 @@ onBeforeUnmount(() => {
 .root {
 	&.center {
 		> .menu {
-			> .item {
+			.item {
 				text-align: center;
 			}
 		}
@@ -439,7 +445,7 @@ onBeforeUnmount(() => {
 		> .menu {
 			min-width: 230px;
 
-			> .item {
+			.item {
 				padding: 6px 20px;
 				font-size: 0.95em;
 				line-height: 24px;
@@ -452,36 +458,38 @@ onBeforeUnmount(() => {
 		margin: auto;
 
 		> .menu {
-			padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
 			width: 100%;
 			border-radius: 24px;
 			border-bottom-right-radius: 0;
 			border-bottom-left-radius: 0;
 
-			> .item {
-				font-size: 1em;
-				padding: 12px 24px;
+			> .menuItems {
+				padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
 
-				&::before {
-					width: calc(100% - 24px);
-					border-radius: 12px;
+				> .item {
+					font-size: 1em;
+					padding: 12px 24px;
+
+					&::before {
+						width: calc(100% - 24px);
+						border-radius: 12px;
+					}
+
+					> .icon {
+						margin-right: 14px;
+						width: 24px;
+					}
 				}
 
-				> .icon {
-					margin-right: 14px;
-					width: 24px;
+				> .divider {
+					margin: 12px 0;
 				}
-			}
-
-			> .divider {
-				margin: 12px 0;
 			}
 		}
 	}
 }
 
 .menu {
-	padding: 8px 0;
 	box-sizing: border-box;
 	max-width: 100vw;
 	min-width: 200px;
@@ -491,6 +499,11 @@ onBeforeUnmount(() => {
 	&:focus-visible {
 		outline: none;
 	}
+}
+
+.menuItems {
+	padding: 8px 0;
+	box-sizing: border-box;
 }
 
 .item {

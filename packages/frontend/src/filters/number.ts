@@ -5,4 +5,4 @@
 
 import { numberFormat } from '@@/js/intl-const.js';
 
-export default n => n == null ? 'N/A' : numberFormat.format(n);
+export default (n?: number) => n == null ? 'N/A' : numberFormat.format(n);
