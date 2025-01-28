@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { UtilityService } from '@/core/UtilityService.js';
+
 process.env.NODE_ENV = 'test';
 
 import { jest } from '@jest/globals';
@@ -40,6 +42,7 @@ describe('RelayService', () => {
 				ApRendererService,
 				RelayService,
 				UserEntityService,
+				UtilityService,
 			],
 		})
 			.useMocker((token) => {
