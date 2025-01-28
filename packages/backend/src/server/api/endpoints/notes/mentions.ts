@@ -74,7 +74,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('renote.user', 'renoteUser');
 
 			this.queryService.generateVisibilityQuery(query, me);
-			this.queryService.generateMutedUserQuery(query, me);
+			this.queryService.generateMutedUserQuery(query, me, undefined, false); // 通知系ではメンションを確認しないようにする
 			this.queryService.generateMutedNoteThreadQuery(query, me);
 			this.queryService.generateBlockedUserQuery(query, me);
 

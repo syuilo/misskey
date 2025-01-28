@@ -127,13 +127,18 @@ export class QueryService {
 	}
 
 	@bindThis
-	public generateMutedUserQuery(q: SelectQueryBuilder<any>, me: { id: MiUser['id'] }, exclude?: { id: MiUser['id'] }): void {
+	public generateMutedUserQuery(q: SelectQueryBuilder<any>, me: { id: MiUser['id'] }, exclude?: { id: MiUser['id'] }, checkMentions = true): void {
 		const mutingQuery = this.mutingsRepository.createQueryBuilder('muting')
 			.select('muting.muteeId')
 			.where('muting.muterId = :muterId', { muterId: me.id });
 
+		const mutingArrayQuery = this.mutingsRepository.createQueryBuilder('muting')
+			.select('array_agg(muting.muteeId)', 'muting.muteeIdArray')
+			.where('muting.muterId = :muterId', { muterId: me.id });
+
 		if (exclude) {
 			mutingQuery.andWhere('muting.muteeId != :excludeId', { excludeId: exclude.id });
+			mutingArrayQuery.andWhere('muting.muteeId != :excludeId', { excludeId: exclude.id });
 		}
 
 		const mutingInstanceQuery = this.userProfilesRepository.createQueryBuilder('user_profile')
@@ -172,7 +177,18 @@ export class QueryService {
 					.orWhere(`NOT ((${ mutingInstanceQuery.getQuery() })::jsonb ? note.renoteUserHost)`);
 			}));
 
+		// 投稿に含まれるメンションの相手をミュートしていない
+		if (checkMentions) {
+			q.andWhere(new Brackets(qb => {
+				qb
+					.where('note.mentions IS NULL')
+					.orWhere(`NOT EXISTS (${ mutingQuery.getQuery() })`)
+					.orWhere(`NOT (note.mentions && (${ mutingArrayQuery.getQuery() }))`);
+			}));
+		}
+
 		q.setParameters(mutingQuery.getParameters());
+		q.setParameters(mutingArrayQuery.getParameters());
 		q.setParameters(mutingInstanceQuery.getParameters());
 	}
 

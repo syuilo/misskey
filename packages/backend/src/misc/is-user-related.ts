@@ -12,6 +12,10 @@ export function isUserRelated(note: any, userIds: Set<string>, ignoreAuthor = fa
 		return true;
 	}
 
+	if (note.mentions != null && note.mentions.filter((userId: string) => userId !== note.userId && userIds.has(userId)).length > 0) {
+		return true;
+	}
+
 	if (note.reply != null && note.reply.userId !== note.userId && userIds.has(note.reply.userId)) {
 		return true;
 	}
