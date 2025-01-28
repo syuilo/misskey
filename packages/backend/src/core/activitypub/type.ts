@@ -103,14 +103,14 @@ export interface IActivity extends IObject {
 
 export interface ICollection extends IObject {
 	type: 'Collection';
-	totalItems: number;
+	totalItems?: number;
 	first?: IObject | string;
 	items?: ApObject;
 }
 
 export interface IOrderedCollection extends IObject {
 	type: 'OrderedCollection';
-	totalItems: number;
+	totalItems?: number;
 	first?: IObject | string;
 	orderedItems?: ApObject;
 }
@@ -190,6 +190,7 @@ export interface IActor extends IObject {
 	following?: string | ICollection | IOrderedCollection;
 	featured?: string | IOrderedCollection;
 	outbox: string | IOrderedCollection;
+	liked?: string | ICollection | IOrderedCollection;
 	endpoints?: {
 		sharedInbox?: string;
 	};

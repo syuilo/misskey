@@ -353,6 +353,98 @@ export class ActivityPubServerService {
 	}
 
 	@bindThis
+	private async liked(
+		request: FastifyRequest<{ Params: { user: string; }; Querystring: { cursor?: string; page?: string; }; }>,
+		reply: FastifyReply,
+	) {
+		const userId = request.params.user;
+
+		const cursor = request.query.cursor;
+		if (cursor != null && typeof cursor !== 'string') {
+			reply.code(400);
+			return;
+		}
+
+		const page = request.query.page === 'true';
+
+		const user = await this.usersRepository.findOneBy({
+			id: userId,
+			host: IsNull(),
+		});
+
+		if (user == null) {
+			reply.code(404);
+			return;
+		}
+
+		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
+
+		if (!profile.publicReactions) {
+			reply.code(403);
+			reply.header('Cache-Control', 'public, max-age=30');
+			return;
+		}
+
+		const limit = 10;
+		const partOf = `${this.config.url}/users/${userId}/liked`;
+
+		if (page) {
+			const query = this.noteReactionsRepository.createQueryBuilder('reaction')
+				.andWhere('reaction.userId = :userId', { userId: user.id });
+
+			// カーソルが指定されている場合
+			if (cursor) {
+				query.andWhere('reaction.id < :id', { id: cursor });
+			}
+
+			const reactions = await query
+				.limit(limit + 1)
+				.orderBy('reaction.id', 'DESC')
+				.innerJoinAndSelect('reaction.note', 'note')
+				.leftJoinAndSelect('note.user', 'noteUser')
+				.andWhere(new Brackets(qb => {
+					qb
+						.where('note.visibility = \'public\'')
+						.orWhere('note.visibility = \'home\'');
+				}))
+				.andWhere('note.localOnly = FALSE')
+				.andWhere('noteUser.isSuspended = FALSE')
+				.getMany();
+
+			// 「次のページ」があるかどうか
+			const inStock = reactions.length === limit + 1;
+			if (inStock) reactions.pop();
+
+			const reactedNotes = await Promise.all(reactions.map(({ note }) => note!.uri || this.apRendererService.renderNote(note!, false)));
+			const rendered = this.apRendererService.renderOrderedCollectionPage(
+				`${partOf}?${url.query({
+					page: 'true',
+					cursor,
+				})}`,
+				undefined, reactedNotes, partOf,
+				undefined,
+				inStock ? `${partOf}?${url.query({
+					page: 'true',
+					cursor: reactions.at(-1)!.id,
+				})}` : undefined,
+			);
+
+			this.setResponseType(request, reply);
+			return (this.apRendererService.addContext(rendered));
+		} else {
+			// index page
+			const rendered = this.apRendererService.renderOrderedCollection(
+				partOf,
+				undefined,
+				`${partOf}?page=true`,
+			);
+			reply.header('Cache-Control', 'public, max-age=180');
+			this.setResponseType(request, reply);
+			return (this.apRendererService.addContext(rendered));
+		}
+	}
+
+	@bindThis
 	private async featured(request: FastifyRequest<{ Params: { user: string; }; }>, reply: FastifyReply) {
 		const userId = request.params.user;
 
@@ -628,6 +720,12 @@ export class ActivityPubServerService {
 			Params: { user: string; };
 			Querystring: { cursor?: string; page?: string; };
 		}>('/users/:user/following', async (request, reply) => await this.following(request, reply));
+
+		// liked
+		fastify.get<{
+			Params: { user: string; };
+			Querystring: { cursor?: string; page?: string; };
+		}>('/users/:user/liked', async (request, reply) => await this.liked(request, reply));
 
 		// featured
 		fastify.get<{ Params: { user: string; }; }>('/users/:user/collections/featured', async (request, reply) => await this.featured(request, reply));
