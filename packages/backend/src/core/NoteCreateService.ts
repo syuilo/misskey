@@ -621,6 +621,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			await this.createMentionedEvents(mentionedUsers, note, nm);
 
 			// If has in reply to note
+			let isOnThreadMutedTree = false;
 			if (data.reply) {
 				// 通知
 				if (data.reply.userHost === null) {
@@ -630,6 +631,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 							threadId: data.reply.threadId ?? data.reply.id,
 						},
 					});
+					isOnThreadMutedTree = isThreadMuted;
 
 					if (!isThreadMuted) {
 						nm.push(data.reply.userId, 'reply');
@@ -645,13 +647,23 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 				// Notify
 				if (data.renote.userHost === null) {
-					nm.push(data.renote.userId, type);
-				}
+					const isThreadMuted = await this.noteThreadMutingsRepository.exists({
+						where: {
+							userId: data.renote.userId,
+							threadId: data.renote.threadId ?? data.renote.id,
+						},
+					});
 
-				// Publish event
-				if ((user.id !== data.renote.userId) && data.renote.userHost === null) {
-					this.globalEventService.publishMainStream(data.renote.userId, 'renote', noteObj);
-					this.webhookService.enqueueUserWebhook(data.renote.userId, 'renote', { note: noteObj });
+					// If the quoted note is not thread muted but the quoting note is on thread muted tree, need to mute it.
+					if (!isThreadMuted && !isOnThreadMutedTree) {
+						nm.push(data.renote.userId, type);
+
+						// Publish event
+						if (user.id !== data.renote.userId) {
+							this.globalEventService.publishMainStream(data.renote.userId, 'renote', noteObj);
+							this.webhookService.enqueueUserWebhook(data.renote.userId, 'renote', { note: noteObj });
+						}
+					}
 				}
 			}
 
