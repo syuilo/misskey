@@ -70,6 +70,8 @@
 - Enhance: チャート更新時にDBに同時接続しないように  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/830)
 - Enhance: config(default.yml)からSQLログ全文を出力するか否かを設定可能に ( #15266 )
+- Enhance: フォローしているユーザーならフォロワー限定投稿のノートでもアンテナで検知できるように  
+	(Cherry-picked from https://github.com/yojo-art/cherrypick/pull/568 and https://github.com/team-shahu/misskey/pull/38)
 - Fix: ユーザーのプロフィール画面をアドレス入力などで直接表示した際に概要タブの描画に失敗する問題の修正( #15032 )
 - Fix: 起動前の疎通チェックが機能しなくなっていた問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)
