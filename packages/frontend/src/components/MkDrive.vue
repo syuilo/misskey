@@ -608,13 +608,30 @@ function fetchMoreFiles() {
 	const max = 30;
 
 	// ファイル一覧取得
-	misskeyApi('drive/files', {
+	let fetchMoreFilesData = {
 		folderId: folder.value ? folder.value.id : null,
 		type: props.type,
-		untilId: files.value.at(-1)?.id,
 		limit: max + 1,
 		sort: sortModeSelect.value,
-	}).then(files => {
+		untilId: files.value.at(-1)?.id,
+		sinceId: files.value.at(-1)?.id,
+	};
+	if (sortModeSelect.value.startsWith('+')) {
+		fetchMoreFilesData = {
+			...fetchMoreFilesData,
+			untilId: files.value.at(-1)?.id,
+			sinceId: undefined,
+		};
+	} else if (sortModeSelect.value.startsWith('-')) {
+		fetchMoreFilesData = {
+			...fetchMoreFilesData,
+			untilId: undefined,
+			sinceId: files.value.at(-1)?.id,
+		};
+	}
+
+	// ファイル一覧取得
+	misskeyApi('drive/files', fetchMoreFilesData).then(files => {
 		if (files.length === max + 1) {
 			moreFiles.value = true;
 			files.pop();
@@ -663,26 +680,6 @@ function getMenu() {
 			icon: 'ti ti-sort-ascending-letters',
 			action: () => { sortModeSelect.value = '-createdAt'; },
 			active: sortModeSelect.value === '-createdAt',
-		}, {
-			text: `${i18n.ts.size} (${i18n.ts.descendingOrder})`,
-			icon: 'ti ti-sort-descending-letters',
-			action: () => { sortModeSelect.value = '+size'; },
-			active: sortModeSelect.value === '+size',
-		}, {
-			text: `${i18n.ts.size} (${i18n.ts.ascendingOrder})`,
-			icon: 'ti ti-sort-ascending-letters',
-			action: () => { sortModeSelect.value = '-size'; },
-			active: sortModeSelect.value === '-size',
-		}, {
-			text: `${i18n.ts.name} (${i18n.ts.descendingOrder})`,
-			icon: 'ti ti-sort-descending-letters',
-			action: () => { sortModeSelect.value = '+name'; },
-			active: sortModeSelect.value === '+name',
-		}, {
-			text: `${i18n.ts.name} (${i18n.ts.ascendingOrder})`,
-			icon: 'ti ti-sort-ascending-letters',
-			action: () => { sortModeSelect.value = '-name'; },
-			active: sortModeSelect.value === '-name',
 		}],
 	});
 

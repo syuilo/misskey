@@ -50,6 +50,7 @@
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/656)
 - Fix: URLにはじめから`#pswp`が含まれている場合に画像ビューワーがブラウザの戻るボタンで閉じられない問題を修正
 - Fix: ロール作成画面で設定できるアイコンデコレーションの最大取付個数を16に制限
+- Fix: ドライブ画面でデフォルト以外のソートである場合、ページング結果が正しくない問題を修正 ( #15270 )
 
 ### Server
 - Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
