@@ -7,12 +7,14 @@ import { URL } from 'node:url';
 import { Inject, Injectable } from '@nestjs/common';
 import * as parse5 from 'parse5';
 import { Window, XMLSerializer } from 'happy-dom';
+import twemojiRegex from '@twemoji/parser/dist/lib/regex.js';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { intersperse } from '@/misc/prelude/array.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { bindThis } from '@/decorators.js';
+import { splitSegments } from '@/misc/split-segments.js';
 import type { DefaultTreeAdapterMap } from 'parse5';
 import type * as mfm from 'mfm-js';
 
@@ -70,7 +72,7 @@ export class MfmService {
 
 		function analyze(node: Node) {
 			if (treeAdapter.isTextNode(node)) {
-				text += node.value;
+				text += MfmService.escapeMFM(node.value);
 				return;
 			}
 
@@ -121,10 +123,11 @@ export class MfmService {
 									return `<${href.value}>`;
 								}
 							}
+							// TODO: inline style in link text are not proceed correctly
 							if (href.value.match(urlRegex) && !href.value.match(urlRegexFull)) {
-								return `[${txt}](<${href.value}>)`;	// #6846
+								return `[${MfmService.escapeMFM(txt)}](<${href.value}>)`;	// #6846
 							} else {
-								return `[${txt}](${href.value})`;
+								return `[${MfmService.escapeMFM(txt)}](${href.value})`;
 							}
 						};
 
@@ -227,8 +230,8 @@ export class MfmService {
 				case 'blockquote': {
 					const t = getText(node);
 					if (t) {
-						text += '\n> ';
-						text += t.split('\n').join('\n> ');
+						// TODO: HTML in blockquote are not proceed correctly
+						text += MfmService.escapeMFM(t).split('\n').map(l => `\n> ${l}`).join('');
 					}
 					break;
 				}
@@ -264,6 +267,28 @@ export class MfmService {
 				}
 			}
 		}
+	}
+
+	/**
+	 * HTMLのプレーンテキストをMFMにならないようにエスケープする。
+	 * ただし、:emoji:と unicode emoji についてはエスケープしない。
+	 */
+	public static escapeMFM(text: string): string {
+		function escapeSegment(text: string): string {
+			if (/[<>*~@#:]|[$?]\[|(検索|search$)/.test(text)) {
+				// the text possibly contains some MFM so escape with <plain>
+				return `<plain>${text}</plain>`;
+			} else {
+				// otherwise, we don't need to escape
+				return text;
+			}
+		}
+
+		const emojiCodeRegex = /(?<![a-z0-9]):[a-z0-9_]+:(?![a-z0-9])/i;
+
+		return splitSegments(text, [twemojiRegex.default, emojiCodeRegex])
+			.map(([regexIdx, segment]) => regexIdx === -1 ? escapeSegment(segment) : segment)
+			.join('');
 	}
 
 	@bindThis

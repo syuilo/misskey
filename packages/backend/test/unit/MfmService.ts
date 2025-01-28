@@ -133,5 +133,25 @@ describe('MfmService', () => {
 		test('hashtag', () => {
 			assert.deepStrictEqual(mfmService.fromHtml('<p>a <a href="https://example.com/tags/a">#a</a> d</p>', ['#a']), 'a #a d');
 		});
+
+		test('hashtag non-normalized', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <a href="https://example.com/tags/1">#１</a> d</p>', ['#1']), 'a #１ d');
+		});
+
+		test('MFM in HTML plaintext', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a**b**cd~~e~~f</p>'), '<plain>a**b**cd~~e~~f</plain>');
+		});
+
+		test('MFM in HTML plaintext with unicode emoji', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a**b**c♥d~~e~~f</p>'), '<plain>a**b**c</plain>♥<plain>d~~e~~f</plain>');
+		});
+
+		test('MFM in HTML plaintext with code emoji', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a **b** c:not-emoji: just : :emoji: rest text with ~~MFM~~</p>'), '<plain>a **b** c:not-emoji: just : </plain>:emoji:<plain> rest text with ~~MFM~~</plain>');
+		});
+
+		test('Complex MFM in HTML plaintext and html style', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>plain <b>bold</b> plain **nonbold** :emoji: plain ♥ plain</p>'), 'plain **bold**<plain> plain **nonbold** </plain>:emoji: plain ♥ plain');
+		});
 	});
 });
