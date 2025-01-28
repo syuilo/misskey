@@ -258,6 +258,12 @@ Misskey uses Vue(v3) as its front-end framework.
 - **When creating a new component, please use the Composition API (with [setup sugar](https://v3.vuejs.org/api/sfc-script-setup.html) and [ref sugar](https://github.com/vuejs/rfcs/discussions/369)) instead of the Options API.**
 	- Some of the existing components are implemented in the Options API, but it is an old implementation. Refactors that migrate those components to the Composition API are also welcome.
 
+## Tabler Icons
+アイコンは、Production Build時に使用されていないものが削除されるようになっています。
+
+**アイコンを動的に設定する際には、 `ti-${someVal}` のような、アイコン名のみを動的に変化させる実装を行わないでください。**
+必ず `ti-xxx` のような完全なクラス名を含めるようにしてください。
+
 ## nirax
 niraxは、Misskeyで使用しているオリジナルのフロントエンドルーティングシステムです。
 **vue-routerから影響を多大に受けているので、まずはvue-routerについて学ぶことをお勧めします。**

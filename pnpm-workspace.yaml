@@ -3,6 +3,7 @@ packages:
  - 'packages/frontend-shared'
  - 'packages/frontend'
  - 'packages/frontend-embed'
+ - 'packages/icons-subsetter'
  - 'packages/sw'
  - 'packages/misskey-js'
  - 'packages/misskey-js/generator'

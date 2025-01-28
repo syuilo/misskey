@@ -32,6 +32,12 @@ await Promise.all([
 		stdout: process.stdout,
 		stderr: process.stderr,
 	}),
+	// icons-subsetterは開発段階では使用されないが、型エラーを抑制するためにはじめの一度だけビルドする
+	execa('pnpm', ['--filter', 'icons-subsetter', 'build'], {
+		cwd: _dirname + '/../',
+		stdout: process.stdout,
+		stderr: process.stderr,
+	}),
 ]);
 
 execa('pnpm', ['build-pre', '--watch'], {

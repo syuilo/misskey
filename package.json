@@ -11,6 +11,7 @@
 		"packages/frontend-shared",
 		"packages/frontend",
 		"packages/frontend-embed",
+		"packages/icons-subsetter",
 		"packages/backend",
 		"packages/sw",
 		"packages/misskey-js",

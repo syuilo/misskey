@@ -4,7 +4,7 @@
 -
 
 ### Client
--
+- Enhance: UIのアイコンデータの読み込みを軽量化
 
 ### Server
 -
