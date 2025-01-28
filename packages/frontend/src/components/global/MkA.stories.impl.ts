@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { expect, userEvent, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkA from './MkA.vue';
 import { tick } from '@/scripts/test-utils.js';
 export const Default = {

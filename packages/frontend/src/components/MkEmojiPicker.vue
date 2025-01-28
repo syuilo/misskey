@@ -120,11 +120,13 @@ import * as Misskey from 'misskey-js';
 import {
 	emojilist,
 	emojiCharByCategory,
-	UnicodeEmojiDef,
 	unicodeEmojiCategories as categories,
 	getEmojiName,
-	CustomEmojiFolderTree,
 	getUnicodeEmoji,
+} from '@@/js/emojilist.js';
+import type {
+	UnicodeEmojiDef,
+	CustomEmojiFolderTree,
 } from '@@/js/emojilist.js';
 import XSection from '@/components/MkEmojiPicker.section.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';

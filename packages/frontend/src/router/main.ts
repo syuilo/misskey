@@ -4,7 +4,7 @@
  */
 
 import { EventEmitter } from 'eventemitter3';
-import { IRouter, Resolved, RouteDef, RouterEvent, RouterFlag } from '@/nirax.js';
+import type { IRouter, Resolved, RouteDef, RouterEvent, RouterFlag } from '@/nirax.js';
 
 import type { App, ShallowRef } from 'vue';
 

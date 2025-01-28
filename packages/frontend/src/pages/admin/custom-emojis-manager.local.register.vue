@@ -82,7 +82,6 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import {
 	emptyStrToEmptyArray,
 	emptyStrToNull,
-	RequestLogItem,
 	roleIdsParser,
 } from '@/pages/admin/custom-emojis-manager.impl.js';
 import MkGrid from '@/components/grid/MkGrid.vue';
@@ -96,12 +95,15 @@ import * as os from '@/os.js';
 import { validators } from '@/components/grid/cell-validators.js';
 import { chooseFileFromDrive, chooseFileFromPc } from '@/scripts/select-file.js';
 import { uploadFile } from '@/scripts/upload.js';
-import { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
-import { DroppedFile, extractDroppedItems, flattenDroppedFiles } from '@/scripts/file-drop.js';
+import { extractDroppedItems, flattenDroppedFiles } from '@/scripts/file-drop.js';
 import XRegisterLogs from '@/pages/admin/custom-emojis-manager.logs.vue';
-import { GridSetting } from '@/components/grid/grid.js';
 import { copyGridDataToClipboard } from '@/components/grid/grid-utils.js';
-import { GridRow } from '@/components/grid/row.js';
+
+import type { RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
+import type { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
+import type { DroppedFile } from '@/scripts/file-drop.js';
+import type { GridSetting } from '@/components/grid/grid.js';
+import type { GridRow } from '@/components/grid/row.js';
 
 const MAXIMUM_EMOJI_REGISTER_COUNT = 100;
 

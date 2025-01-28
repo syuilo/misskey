@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 export function useLeaveGuard(enabled: Ref<boolean>) {
 	/* TODO

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import userPreview from './user-preview.js';
 import getSize from './get-size.js';

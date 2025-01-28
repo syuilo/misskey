@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { CellAddress, CellValue, GridCell } from '@/components/grid/cell.js';
-import { GridState } from '@/components/grid/grid.js';
-import { ValidateViolation } from '@/components/grid/cell-validators.js';
-import { GridColumn } from '@/components/grid/column.js';
-import { GridRow } from '@/components/grid/row.js';
+import type { CellAddress, CellValue, GridCell } from '@/components/grid/cell.js';
+import type { GridState } from '@/components/grid/grid.js';
+import type { ValidateViolation } from '@/components/grid/cell-validators.js';
+import type { GridColumn } from '@/components/grid/column.js';
+import type { GridRow } from '@/components/grid/row.js';
 
 export type GridContext = {
 	selectedCell?: GridCell;

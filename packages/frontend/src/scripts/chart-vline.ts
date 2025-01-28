@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Plugin } from 'chart.js';
+import type { Plugin } from 'chart.js';
 
 export const chartVLine = (vLineColor: string) => ({
 	id: 'vLine',

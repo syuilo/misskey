@@ -5,7 +5,8 @@
 
 import JSON5 from 'json5';
 import { addTheme, getThemes } from '@/theme-store.js';
-import { Theme, applyTheme, validateTheme } from '@/scripts/theme.js';
+import { applyTheme, validateTheme } from '@/scripts/theme.js';
+import type { Theme } from '@/scripts/theme.js';
 
 export function parseThemeCode(code: string): Theme {
 	let theme;

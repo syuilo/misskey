@@ -40,7 +40,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, nextTick, ref, watch, computed, toRefs, VNode, useSlots, VNodeChild } from 'vue';
+import { onMounted, nextTick, ref, watch, computed, toRefs, useSlots } from 'vue';
+import type { VNode, VNodeChild } from 'vue';
 import { useInterval } from '@@/js/use-interval.js';
 import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';

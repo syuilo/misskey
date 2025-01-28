@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { type ComponentInternalInstance, getCurrentInstance } from 'vue';
+import { getCurrentInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 
 export function isDebuggerEnabled(id: number): boolean {
 	try {

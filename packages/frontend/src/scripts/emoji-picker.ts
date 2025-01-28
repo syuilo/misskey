@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { defineAsyncComponent, Ref, ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
+import type { Ref } from 'vue';
 import { popup } from '@/os.js';
 import { defaultStore } from '@/store.js';
 

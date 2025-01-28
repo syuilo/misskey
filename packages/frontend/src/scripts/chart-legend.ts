@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Plugin } from 'chart.js';
+import type { Plugin } from 'chart.js';
 import MkChartLegend from '@/components/MkChartLegend.vue';
 
 export const chartLegend = (legend: InstanceType<typeof MkChartLegend>) => ({

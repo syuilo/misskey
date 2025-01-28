@@ -32,8 +32,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, toRefs, watch } from 'vue';
-import { GridEventEmitter, Size } from '@/components/grid/grid.js';
-import { GridColumn } from '@/components/grid/column.js';
+import { GridEventEmitter } from '@/components/grid/grid.js';
+import type { Size } from '@/components/grid/grid.js';
+import type { GridColumn } from '@/components/grid/column.js';
 
 const emit = defineEmits<{
 	(ev: 'operation:beginWidthChange', sender: GridColumn): void;

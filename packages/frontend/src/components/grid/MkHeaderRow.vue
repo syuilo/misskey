@@ -29,11 +29,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { GridEventEmitter, Size } from '@/components/grid/grid.js';
+import { GridEventEmitter } from '@/components/grid/grid.js';
 import MkHeaderCell from '@/components/grid/MkHeaderCell.vue';
 import MkNumberCell from '@/components/grid/MkNumberCell.vue';
-import { GridColumn } from '@/components/grid/column.js';
-import { GridRowSetting } from '@/components/grid/row.js';
+import type { Size } from '@/components/grid/grid.js';
+import type { GridColumn } from '@/components/grid/column.js';
+import type { GridRowSetting } from '@/components/grid/row.js';
 
 const emit = defineEmits<{
 	(ev: 'operation:beginWidthChange', sender: GridColumn): void;

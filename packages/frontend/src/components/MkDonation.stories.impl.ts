@@ -4,7 +4,7 @@
  */
 
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import { onBeforeUnmount } from 'vue';
 import MkDonation from './MkDonation.vue';
 import { instance } from '@/instance.js';

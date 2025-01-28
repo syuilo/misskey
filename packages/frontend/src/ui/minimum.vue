@@ -16,7 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, provide, ref } from 'vue';
 import XCommon from './_common_/common.vue';
-import { PageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import type { PageMetadata } from '@/scripts/page-metadata.js';
 import { instanceName } from '@@/js/config.js';
 import { mainRouter } from '@/router/main.js';
 

@@ -20,7 +20,7 @@ import { host as localHost } from '@@/js/config.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
-import { MkABehavior } from '@/components/global/MkA.vue';
+import type { MkABehavior } from '@/components/global/MkA.vue';
 
 const props = defineProps<{
 	username: string;

@@ -45,7 +45,7 @@ export type SuperMenuDef = {
 		text: string;
 		danger?: boolean;
 		active?: boolean;
-		action: (ev: MouseEvent) => void;
+		action: (ev: MouseEvent) => void | Promise<void>;
 	} | {
 		type?: 'link';
 		to: string;

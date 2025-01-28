@@ -57,7 +57,8 @@ import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { customEmojis } from '@/custom-emojis.js';
 import { MFM_TAGS, MFM_PARAMS } from '@@/js/const.js';
-import { searchEmoji, EmojiDef } from '@/scripts/search-emoji.js';
+import { searchEmoji } from '@/scripts/search-emoji.js';
+import type { EmojiDef } from '@/scripts/search-emoji.js';
 
 const lib = emojilist.filter(x => x.category !== 'flags');
 

@@ -5,7 +5,7 @@
 
 import { reactive, watch } from 'vue';
 import { throttle } from 'throttle-debounce';
-import { Form, GetFormResultType } from '@/scripts/form.js';
+import type { Form, GetFormResultType } from '@/scripts/form.js';
 import * as os from '@/os.js';
 import { deepClone } from '@/scripts/clone.js';
 

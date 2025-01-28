@@ -4,37 +4,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<template v-for="file in note.files">
-		<div
-			v-if="(defaultStore.state.nsfw === 'force' || file.isSensitive) && defaultStore.state.nsfw !== 'ignore' && !showingFiles.has(file.id)"
-			:class="[$style.filePreview, { [$style.square]: square }]"
-			@click="showingFiles.add(file.id)"
-		>
-			<MkDriveFileThumbnail
-				:file="file"
-				fit="cover"
-				:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
-				:forceBlurhash="true"
-				:large="true"
-				:class="$style.file"
-			/>
-			<div :class="$style.sensitive">
-				<div>
-					<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
-					<div>{{ i18n.ts.clickToShow }}</div>
-				</div>
+<template v-for="file in note.files">
+	<div
+		v-if="(defaultStore.state.nsfw === 'force' || file.isSensitive) && defaultStore.state.nsfw !== 'ignore' && !showingFiles.has(file.id)"
+		:class="[$style.filePreview, { [$style.square]: square }]"
+		@click="showingFiles.add(file.id)"
+	>
+		<MkDriveFileThumbnail
+			:file="file"
+			fit="cover"
+			:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
+			:forceBlurhash="true"
+			:large="true"
+			:class="$style.file"
+		/>
+		<div :class="$style.sensitive">
+			<div>
+				<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
+				<div>{{ i18n.ts.clickToShow }}</div>
 			</div>
 		</div>
-		<MkA v-else :class="[$style.filePreview, { [$style.square]: square }]" :to="notePage(note)">
-			<MkDriveFileThumbnail
-				:file="file"
-				fit="cover"
-				:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
-				:large="true"
-				:class="$style.file"
-			/>
-		</MkA>
-	</template>
+	</div>
+	<MkA v-else :class="[$style.filePreview, { [$style.square]: square }]" :to="notePage(note)">
+		<MkDriveFileThumbnail
+			:file="file"
+			fit="cover"
+			:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
+			:large="true"
+			:class="$style.file"
+		/>
+	</MkA>
+</template>
 </template>
 
 <script lang="ts" setup>

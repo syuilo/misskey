@@ -47,7 +47,7 @@ import * as os from '@/os.js';
 import { isTouchUsing } from '@/scripts/touch.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
-import { type Keymap } from '@/scripts/hotkey.js';
+import type { Keymap } from '@/scripts/hotkey.js';
 import { focusTrap } from '@/scripts/focus-trap.js';
 import { focusParent } from '@/scripts/focus.js';
 

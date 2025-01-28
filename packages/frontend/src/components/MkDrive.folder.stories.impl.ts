@@ -4,7 +4,7 @@
  */
 
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import { http, HttpResponse } from 'msw';
 import * as Misskey from 'misskey-js';
 import MkDrive_folder from './MkDrive.folder.vue';

@@ -48,7 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, type StyleValue } from 'vue';
+import { computed, ref, watch } from 'vue';
+import type { StyleValue } from 'vue';
 import tinycolor from 'tinycolor2';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';

@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, ModelRef } from 'vue';
+import { computed } from 'vue';
 
 withDefaults(defineProps<{
 	buffer?: number;
@@ -28,8 +28,7 @@ const emit = defineEmits<{
 	(ev: 'dragEnded', value: number): void;
 }>();
 
-// eslint-disable-next-line no-undef
-const model = defineModel({ required: true }) as ModelRef<string | number>;
+const model = defineModel<string | number>({ required: true });
 const modelValue = computed({
 	get: () => typeof model.value === 'number' ? model.value : parseFloat(model.value),
 	set: v => { model.value = v; },

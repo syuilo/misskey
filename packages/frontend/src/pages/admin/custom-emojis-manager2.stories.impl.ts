@@ -4,7 +4,7 @@
  */
 
 import { delay, http, HttpResponse } from 'msw';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import { entities } from 'misskey-js';
 import { commonHandlers } from '../../../.storybook/mocks.js';
 import { emoji } from '../../../.storybook/fakes.js';

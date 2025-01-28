@@ -31,7 +31,7 @@ import { url as local } from '@@/js/config.js';
 import * as os from '@/os.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { isEnabledUrlPreview } from '@/instance.js';
-import { MkABehavior } from '@/components/global/MkA.vue';
+import type { MkABehavior } from '@/components/global/MkA.vue';
 
 function safeURIDecode(str: string): string {
 	try {

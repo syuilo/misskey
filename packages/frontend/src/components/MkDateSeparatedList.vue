@@ -4,14 +4,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <script lang="ts">
-import { defineComponent, h, PropType, TransitionGroup, useCssModule } from 'vue';
+import { defineComponent, h, TransitionGroup, useCssModule } from 'vue';
+import type { PropType } from 'vue';
 import MkAd from '@/components/global/MkAd.vue';
 import { isDebuggerEnabled, stackTraceInstances } from '@/debug.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
-import { MisskeyEntity } from '@/types/date-separated-list.js';
+import type { MisskeyEntity } from '@/types/date-separated-list.js';
 
 export default defineComponent({
 	props: {

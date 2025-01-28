@@ -4,7 +4,8 @@
  */
 
 import { inject } from 'vue';
-import { IRouter, Router } from '@/nirax.js';
+import { Router } from '@/nirax.js';
+import type { IRouter } from '@/nirax.js';
 import { mainRouter } from '@/router/main.js';
 
 /**

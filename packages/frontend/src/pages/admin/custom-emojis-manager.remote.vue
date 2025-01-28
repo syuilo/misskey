@@ -148,22 +148,19 @@ import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkGrid from '@/components/grid/MkGrid.vue';
-import {
-	emptyStrToUndefined,
-	GridSortOrderKey,
-	gridSortOrderKeys,
-	RequestLogItem,
-} from '@/pages/admin/custom-emojis-manager.impl.js';
-import { GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
+import { emptyStrToUndefined, gridSortOrderKeys } from '@/pages/admin/custom-emojis-manager.impl.js';
 import MkFolder from '@/components/MkFolder.vue';
 import XRegisterLogs from '@/pages/admin/custom-emojis-manager.logs.vue';
 import * as os from '@/os.js';
-import { GridSetting } from '@/components/grid/grid.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import MkPagingButtons from '@/components/MkPagingButtons.vue';
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
-import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
 import { useLoading } from '@/components/hook/useLoading.js';
+
+import type { GridSortOrderKey, RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
+import type { GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
+import type { GridSetting } from '@/components/grid/grid.js';
+import type { SortOrder } from '@/components/MkSortOrderEditor.define.js';
 
 type GridItem = {
 	checked: boolean;

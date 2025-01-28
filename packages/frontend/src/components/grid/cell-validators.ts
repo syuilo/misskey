@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { CellValue, GridCell } from '@/components/grid/cell.js';
-import { GridColumn } from '@/components/grid/column.js';
-import { GridRow } from '@/components/grid/row.js';
+import type { CellValue, GridCell } from '@/components/grid/cell.js';
+import type { GridColumn } from '@/components/grid/column.js';
+import type { GridRow } from '@/components/grid/row.js';
 import { i18n } from '@/i18n.js';
 
 export type ValidatorParams = {

@@ -35,9 +35,11 @@ import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import { signout, $i } from '@/account.js';
 import { clearCache } from '@/scripts/clear-cache.js';
 import { instance } from '@/instance.js';
-import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
 import * as os from '@/os.js';
 import { useRouter } from '@/router/supplier.js';
+import type { PageMetadata } from '@/scripts/page-metadata.js';
+import type { SuperMenuDef } from '@/components/MkSuperMenu.vue';
 
 const indexInfo = {
 	title: i18n.ts.settings,
@@ -60,7 +62,7 @@ const ro = new ResizeObserver((entries, observer) => {
 	narrow.value = entries[0].borderBoxSize[0].inlineSize < NARROW_THRESHOLD;
 });
 
-const menuDef = computed(() => [{
+const menuDef = computed<SuperMenuDef[]>(() => [{
 	title: i18n.ts.basicSettings,
 	items: [{
 		icon: 'ti ti-user',

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App } from 'vue';
+import type { App } from 'vue';
 
 import Mfm from './global/MkMfm.js';
 import MkA from './global/MkA.vue';

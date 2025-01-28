@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkUserSetupDialog_Privacy from './MkUserSetupDialog.Privacy.vue';
 export const Default = {
 	render(args) {

@@ -167,7 +167,7 @@ import { useForm } from '@/scripts/use-form.js';
 import MkFormFooter from '@/components/MkFormFooter.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { ApiWithDialogCustomErrors } from '@/os.js';
+import type { ApiWithDialogCustomErrors } from '@/os.js';
 
 const MkCaptcha = defineAsyncComponent(() => import('@/components/MkCaptcha.vue'));
 

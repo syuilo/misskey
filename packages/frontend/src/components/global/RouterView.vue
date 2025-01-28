@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { inject, onBeforeUnmount, provide, ref, shallowRef, computed, nextTick } from 'vue';
-import { IRouter, Resolved, RouteDef } from '@/nirax.js';
+import type { IRouter, Resolved, RouteDef } from '@/nirax.js';
 import { defaultStore } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import MkLoadingPage from '@/pages/_loading_.vue';

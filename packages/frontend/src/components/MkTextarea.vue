@@ -40,7 +40,8 @@ import { onMounted, onUnmounted, nextTick, ref, watch, computed, toRefs, shallow
 import { debounce } from 'throttle-debounce';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import { Autocomplete, SuggestionType } from '@/scripts/autocomplete.js';
+import { Autocomplete } from '@/scripts/autocomplete.js';
+import type { SuggestionType } from '@/scripts/autocomplete.js';
 
 const props = defineProps<{
 	modelValue: string | null;

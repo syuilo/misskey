@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { defineAsyncComponent, Directive, ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
+import type { Directive } from 'vue';
 import { popup } from '@/os.js';
 
 export class UserPreview {

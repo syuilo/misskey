@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkFlashPreview from './MkFlashPreview.vue';
 import { flash } from './../../.storybook/fakes.js';
 export const Public = {

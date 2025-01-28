@@ -4,8 +4,8 @@
  */
 
 import { generate } from 'astring';
-import * as estree from 'estree';
 import { walk } from '../node_modules/estree-walker/src/index.js';
+import type * as estree from 'estree';
 import type * as estreeWalker from 'estree-walker';
 import type { Plugin } from 'vite';
 

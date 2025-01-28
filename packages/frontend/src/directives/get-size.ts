@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Directive } from 'vue';
+import type { Directive } from 'vue';
 
 const mountings = new Map<Element, {
 	resize: ResizeObserver;

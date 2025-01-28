@@ -10,7 +10,7 @@ import type { BasicTimelineType } from '@/timelines.js';
 import { Storage } from '@/pizzax.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { deepClone } from '@/scripts/clone.js';
-import { SoundStore } from '@/store.js';
+import type { SoundStore } from '@/store.js';
 
 type ColumnWidget = {
 	name: string;

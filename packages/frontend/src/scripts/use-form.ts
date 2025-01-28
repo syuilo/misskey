@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { computed, Reactive, reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
+import type { Reactive } from 'vue';
 
 function copy<T>(v: T): T {
 	return JSON.parse(JSON.stringify(v));

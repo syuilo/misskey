@@ -4,7 +4,7 @@
  */
 
 import * as Misskey from 'misskey-js';
-import { ComputedRef, Ref } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 
 interface MenuRadioOptionsDef extends Record<string, any> { }
 

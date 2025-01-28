@@ -14,7 +14,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { shallowRef } from 'vue';
-import { Chart, LegendItem } from 'chart.js';
+import { Chart } from 'chart.js';
+import type { LegendItem } from 'chart.js';
 
 const chart = shallowRef<Chart>();
 const type = shallowRef<string>();

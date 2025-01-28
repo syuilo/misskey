@@ -87,7 +87,8 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
 import { $i } from '@/account.js';
-import { Theme, applyTheme } from '@/scripts/theme.js';
+import { applyTheme } from '@/scripts/theme.js';
+import type { Theme } from '@/scripts/theme.js';
 import { host } from '@@/js/config.js';
 import * as os from '@/os.js';
 import { ColdDeviceStorage, defaultStore } from '@/store.js';

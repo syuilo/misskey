@@ -2,8 +2,8 @@
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
- 
-import { StoryObj } from '@storybook/vue3';
+
+import type { StoryObj } from '@storybook/vue3';
 import { expect, within } from '@storybook/test';
 import MkMfm from './MkMfm.js';
 export const Default = {
