@@ -146,6 +146,12 @@ fulltextSearch:
 #  index: ''
 #  scope: local
 
+# For pgroonga settings
+# If you want to use multiple columns (cw and text) for pgroonga, it must be set.
+
+#pgroonga:
+#  target: 'cw_and_text'
+
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
 
