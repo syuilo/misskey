@@ -79,7 +79,7 @@ export class SearchService {
 	private readonly meilisearchIndexScope: 'local' | 'global' | string[] = 'local';
 	private readonly meilisearchNoteIndex: Index | null = null;
 	private readonly provider: FulltextSearchProvider;
-	private readonly pgRoongaTarget : 'text' | 'cw_and_text' = 'text';
+	private readonly pgroongaTarget : 'text' | 'cw_and_text' = 'text';
 
 	constructor(
 		@Inject(DI.config)
@@ -127,7 +127,7 @@ export class SearchService {
 		}
 
 		if (config.pgroonga?.target) {
-			this.pgRoongaTarget = config.pgroonga.target;
+			this.pgroongaTarget = config.pgroonga.target;
 		}
 
 		this.provider = config.fulltextSearch?.provider ?? 'sqlLike';
@@ -261,7 +261,7 @@ export class SearchService {
 			.leftJoinAndSelect('reply.user', 'replyUser')
 			.leftJoinAndSelect('renote.user', 'renoteUser');
 
-		if (this.pgRoongaTarget === 'cw_and_text' ) {
+		if (this.pgroongaTarget === 'cw_and_text' ) {
 			query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q: q.replaceAll('　', ' ') });
 		} else {
 			query.andWhere('note.text &@~ :q', { q: q.replaceAll('　', ' ') });
