@@ -145,6 +145,9 @@ export type Config = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	} | undefined;
+	pgroonga?: {
+		target?: 'text' | 'cw_and_text';
+	};
 	proxy: string | undefined;
 	proxySmtp: string | undefined;
 	proxyBypassHosts: string[] | undefined;

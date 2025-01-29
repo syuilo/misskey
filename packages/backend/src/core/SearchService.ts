@@ -79,6 +79,7 @@ export class SearchService {
 	private readonly meilisearchIndexScope: 'local' | 'global' | string[] = 'local';
 	private readonly meilisearchNoteIndex: Index | null = null;
 	private readonly provider: FulltextSearchProvider;
+	private readonly pgRoongaTarget : 'text' | 'cw_and_text' = 'text';
 
 	constructor(
 		@Inject(DI.config)
@@ -123,6 +124,10 @@ export class SearchService {
 
 		if (config.meilisearch?.scope) {
 			this.meilisearchIndexScope = config.meilisearch.scope;
+		}
+
+		if (config.pgroonga?.target) {
+			this.pgRoongaTarget = config.pgroonga.target;
 		}
 
 		this.provider = config.fulltextSearch?.provider ?? 'sqlLike';
@@ -181,8 +186,8 @@ export class SearchService {
 	): Promise<MiNote[]> {
 		switch (this.provider) {
 			case 'sqlLike':
-				return this.searchNoteByLike(q, me, opts, pagination);	
-			case 'sqlPgroonga': 
+				return this.searchNoteByLike(q, me, opts, pagination);
+			case 'sqlPgroonga':
 				return this.searchNoteByPgroonga(q, me, opts, pagination);
 			case 'meilisearch': {
 				return this.searchNoteByMeiliSearch(q, me, opts, pagination);
@@ -217,11 +222,7 @@ export class SearchService {
 			.leftJoinAndSelect('reply.user', 'replyUser')
 			.leftJoinAndSelect('renote.user', 'renoteUser');
 
-		if (this.config.fulltextSearch?.provider === 'sqlPgroonga') {
-			query.andWhere('note.text &@ :q', { q });
-		} else {
-			query.andWhere('LOWER(note.text) LIKE :q', { q: `%${ sqlLikeEscape(q.toLowerCase()) }%` });
-		}
+		query.andWhere('LOWER(note.text) LIKE :q', { q: `%${ sqlLikeEscape(q.toLowerCase()) }%` });
 
 		if (opts.host) {
 			if (opts.host === '.') {
@@ -240,7 +241,7 @@ export class SearchService {
 
 	@bindThis
 	private async searchNoteByPgroonga(
-		q: string, 
+		q: string,
 		me: MiUser | null,
 		opts: SearchOpts,
 		pagination: SearchPagination,
@@ -260,7 +261,11 @@ export class SearchService {
 			.leftJoinAndSelect('reply.user', 'replyUser')
 			.leftJoinAndSelect('renote.user', 'renoteUser');
 
-		query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q });
+		if (this.pgRoongaTarget === 'cw_and_text' ) {
+			query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q });
+		} else {
+			query.andWhere('note.text &@~ :q', { q });
+		}
 
 		if (opts.host) {
 			if (opts.host === '.') {
