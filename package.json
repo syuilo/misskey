@@ -76,6 +76,6 @@
 		"start-server-and-test": "2.0.8"
 	},
 	"optionalDependencies": {
-		"@tensorflow/tfjs-core": "4.4.0"
+		"@tensorflow/tfjs-core": "4.22.0"
 	}
 }
