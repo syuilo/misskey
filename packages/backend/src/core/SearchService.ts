@@ -262,9 +262,9 @@ export class SearchService {
 			.leftJoinAndSelect('renote.user', 'renoteUser');
 
 		if (this.pgRoongaTarget === 'cw_and_text' ) {
-			query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q });
+			query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q: q.replaceAll('　', ' ') });
 		} else {
-			query.andWhere('note.text &@~ :q', { q });
+			query.andWhere('note.text &@~ :q', { q: q.replaceAll('　', ' ') });
 		}
 
 		if (opts.host) {
