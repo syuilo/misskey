@@ -213,7 +213,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.avatarDecorationLimit, 'avatarDecorationLimit'])">
 							<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
 							<template #suffix>{{ policies.avatarDecorationLimit }}</template>
-							<MkInput v-model="policies.avatarDecorationLimit" type="number" :min="0">
+							<MkInput v-model="avatarDecorationLimit" type="number" :min="0" :max="16" @update:modelValue="updateAvatarDecorationLimit">
 							</MkInput>
 						</MkFolder>
 
@@ -305,6 +305,17 @@ const roles = await misskeyApi('admin/roles/list');
 const policies = reactive<Record<typeof ROLE_POLICIES[number], any>>({});
 for (const ROLE_POLICY of ROLE_POLICIES) {
 	policies[ROLE_POLICY] = instance.policies[ROLE_POLICY];
+}
+
+const avatarDecorationLimit = computed({
+	get: () => Math.min(16, Math.max(0, policies.avatarDecorationLimit)),
+	set: (value) => {
+		policies.avatarDecorationLimit = Math.min(Number(value), 16);
+	},
+});
+
+function updateAvatarDecorationLimit(value: string | number) {
+	avatarDecorationLimit.value = Number(value);
 }
 
 function matchQuery(keywords: string[]): boolean {

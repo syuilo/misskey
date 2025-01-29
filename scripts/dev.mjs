@@ -27,20 +27,7 @@ await Promise.all([
 		stdout: process.stdout,
 		stderr: process.stderr,
 	}),
-	execa('pnpm', ['--filter', 'misskey-js', 'build'], {
-		cwd: _dirname + '/../',
-		stdout: process.stdout,
-		stderr: process.stderr,
-	}),
-]);
-
-await Promise.all([
-	execa('pnpm', ['--filter', 'misskey-reversi', 'build'], {
-		cwd: _dirname + '/../',
-		stdout: process.stdout,
-		stderr: process.stderr,
-	}),
-	execa('pnpm', ['--filter', 'misskey-bubble-game', 'build'], {
+	execa('pnpm', ['--filter', 'backend...', 'build'], {
 		cwd: _dirname + '/../',
 		stdout: process.stdout,
 		stderr: process.stderr,
@@ -65,19 +52,19 @@ execa('pnpm', ['--filter', 'backend', 'dev'], {
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'frontend-shared', 'watch'], {
+execa('pnpm', ['--filter', 'frontend-shared', 'watch', '--no-clean'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'frontend', process.env.MK_DEV_PREFER === 'backend' ? 'watch' : 'dev'], {
+execa('pnpm', ['--filter', 'frontend', 'watch'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'frontend-embed', process.env.MK_DEV_PREFER === 'backend' ? 'watch' : 'dev'], {
+execa('pnpm', ['--filter', 'frontend-embed', 'watch'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
@@ -89,19 +76,19 @@ execa('pnpm', ['--filter', 'sw', 'watch'], {
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'misskey-js', 'watch'], {
+execa('pnpm', ['--filter', 'misskey-js', 'watch', '--no-clean'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'misskey-reversi', 'watch'], {
+execa('pnpm', ['--filter', 'misskey-reversi', 'watch', '--no-clean'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
 });
 
-execa('pnpm', ['--filter', 'misskey-bubble-game', 'watch'], {
+execa('pnpm', ['--filter', 'misskey-bubble-game', 'watch', '--no-clean'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,

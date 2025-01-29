@@ -86,7 +86,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (isDuplicate) throw new ApiError(meta.errors.duplicateName);
 
 			const addedEmoji = await this.customEmojiService.add({
-				driveFile,
+				originalUrl: driveFile.url,
+				publicUrl: driveFile.webpublicUrl ?? driveFile.url,
+				fileType: driveFile.webpublicType ?? driveFile.type,
 				name: emoji.name,
 				category: emoji.category,
 				aliases: emoji.aliases,

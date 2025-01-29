@@ -1,3 +1,15 @@
+## Unreleased
+
+### General
+-
+
+### Client
+-
+
+### Server
+-
+
+
 ## 2025.1.0
 
 ### Note
@@ -5,9 +17,11 @@
   - 新しい設定項目"fulltextSearch.provider"が追加されました. sqlLike, sqlPgroonga, meilisearchのいずれかを設定出来ます.
   - すでにMeilisearchをお使いの場合、 **"fulltextSearch.provider"を"meilisearch"に設定する必要** があります.
   - 詳細は #14730 および `.config/example.yml` または `.config/docker_example.yml`の'Fulltext search configuration'をご参照願います.
+- 【開発者向け】従来の開発モードでHMRが機能しない問題が修正されたため、バックエンド・フロントエンド分離型の開発モードが削除されました。開発環境においてconfigの変更が必要となる可能性があります。
 
 ### General
--
+- Feat: カスタム絵文字管理画面をリニューアル #10996
+	* β版として公開のため、旧画面も引き続き利用可能です
 
 ### Client
 - Enhance: PC画面でチャンネルが複数列で表示されるように  
@@ -20,6 +34,8 @@
 - Enhance: ノートの添付ファイルを一覧で遡れる「ファイル」タブを追加  
   (Based on https://github.com/Otaku-Social/maniakey/pull/14)
 - Enhance: AiScriptの拡張API関数において引数の型チェックをより厳格に
+- Enhance: クエリパラメータでuiを一時的に変更できるように #15240
+- Enhance: リモート絵文字のインポート時に詳細を確認できるように #15336
 - Fix: 画面サイズが変わった際にナビゲーションバーが自動で折りたたまれない問題を修正
 - Fix: サーバー情報メニューに区切り線が不足していたのを修正
 - Fix: ノートがログインしているユーザーしか見れない場合にログインダイアログを閉じるとその後の動線がなくなる問題を修正
@@ -34,6 +50,7 @@
   (Cherry-picked from https://github.com/TeamNijimiss/misskey/commit/800359623e41a662551d774de15b0437b6849bb4)
 - Fix: ノート作成画面でファイルの添付可能個数を超えてもノートボタンが押せていた問題を修正
 - Fix: 「アカウントを管理」画面で、ユーザー情報の取得に失敗したアカウント（削除されたアカウントなど）が表示されない問題を修正
+- Fix: MacOSでChrome系ブラウザを使用している場合に、Misskeyを閉じた際に他のタブのオーディオ機能と干渉する問題を修正
 - Fix: 言語データのキャッシュ状況によっては、埋め込みウィジェットが正しく起動しない問題を修正
 - Fix: 「削除して編集」でノートの引用を解除出来なかった問題を修正( #14476 )
 - Fix: RSSウィジェットが正しく表示されない問題を修正  
@@ -43,6 +60,9 @@
   (Cherry-picked from https://github.com/yojo-art/cherrypick/pull/153)
 - Fix: 非ログイン時のサーバー概要画面のメニューボタンが押せないことがあるのを修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/656)
+- Fix: URLにはじめから`#pswp`が含まれている場合に画像ビューワーがブラウザの戻るボタンで閉じられない問題を修正
+- Fix: ロール作成画面で設定できるアイコンデコレーションの最大取付個数を16に制限
+- Fix: Firefox Nightlyなどでアイコンが読み込めない問題を修正
 
 ### Server
 - Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
@@ -53,6 +73,7 @@
 - Fix: ユーザーのプロフィール画面をアドレス入力などで直接表示した際に概要タブの描画に失敗する問題の修正( #15032 )
 - Fix: 起動前の疎通チェックが機能しなくなっていた問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)
+- Fix: ノートの閲覧にログイン必須にしてもFeedでノートが表示されてしまう問題を修正
 - Fix: 絵文字の連合でライセンス欄を相互にやり取りするように ( #10859, #14109 )
 - Fix: ロックダウンされた期間指定のノートがStreaming経由でLTLに出現するのを修正 ( #15200 )
 - Fix: disableClustering設定時の初期化ロジックを調整( #15223 )

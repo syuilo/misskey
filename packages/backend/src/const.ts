@@ -26,6 +26,18 @@ export const DB_MAX_NOTE_TEXT_LENGTH = 8192;
 export const DB_MAX_IMAGE_COMMENT_LENGTH = 512;
 //#endregion
 
+export const FILE_TYPE_IMAGE = [
+	'image/png',
+	'image/gif',
+	'image/jpeg',
+	'image/webp',
+	'image/avif',
+	'image/apng',
+	'image/bmp',
+	'image/tiff',
+	'image/x-icon',
+];
+
 // ブラウザで直接表示することを許可するファイルの種類のリスト
 // ここに含まれないものは application/octet-stream としてレスポンスされる
 // SVGはXSSを生むので許可しない

@@ -493,7 +493,7 @@ noMessagesYet: "Noch keine Nachrichten vorhanden"
 newMessageExists: "Du hast eine neue Nachricht"
 onlyOneFileCanBeAttached: "Es kann pro Nachricht nur eine Datei angehängt werden"
 signinRequired: "Bitte registriere oder melde dich an, um fortzufahren"
-signinOrContinueOnRemote: "Zum Weitermachen, melde dich mit einem bestehenden Account an oder erstelle einen neuen Account."
+signinOrContinueOnRemote: "Um fortzufahren, gehe zu deiner Instanz oder registriere bzw. melde dich an dieser Instanz an. "
 invitations: "Einladungen"
 invitationCode: "Einladungscode"
 checking: "Wird überprüft …"
@@ -585,6 +585,7 @@ masterVolume: "Gesamtlautstärke"
 notUseSound: "Gebe kein Ton aus"
 useSoundOnlyWhenActive: "Gebe nur Ton aus, wenn Misskey aktiv ist"
 details: "Details"
+renoteDetails: "Renote Details"
 chooseEmoji: "Emoji auswählen"
 unableToProcess: "Der Vorgang konnte nicht abgeschlossen werden"
 recentUsed: "Vor kurzem verwendet"
@@ -682,8 +683,10 @@ smtpSecure: "Für SMTP-Verbindungen implizit SSL/TLS verwenden"
 smtpSecureInfo: "Schalte dies aus, falls du STARTTLS verwendest."
 testEmail: "Emailversand testen"
 wordMute: "Wortstummschaltung"
-wordMuteDescription: ""
-hardWordMute: "Harte Wort-Stummschaltung"
+wordMuteDescription: "Minimiert Notizen, die das angegebene Wort oder den angegebenen Ausdruck enthalten. Minimierte Notizen können angezeigt werden, indem du auf sie klickst."
+hardWordMute: "Harte Wortstummschaltung"
+showMutedWord: "Stummgeschaltete Wörter anzeigen"
+hardWordMuteDescription: "Blendet Notizen aus, die das angegebene Wort oder die angegebene Phrase enthalten. Im Gegensatz zur Wortstummschaltung wird die Notiz vollständig ausgeblendet."
 regexpError: "Fehler in einem regulären Ausdruck"
 regexpErrorDescription: "Im regulären Ausdruck deiner in Zeile {line} von {tab}en Wortstummschaltungen ist ein Fehler aufgetreten:"
 instanceMute: "Instanzstummschaltungen"
@@ -1231,7 +1234,7 @@ signupPendingError: "Beim Überprüfen der Mailadresse ist etwas schiefgelaufen.
 cwNotationRequired: "Ist \"Inhaltswarnung verwenden\" aktiviert, muss eine Beschreibung gegeben werden."
 doReaction: "Reagieren"
 code: "Code"
-reloadRequiredToApplySettings: "Ein Neustart ist erforderlich um die Einstellung zu übernehmen."
+reloadRequiredToApplySettings: "Eine Aktualisierung ist erforderlich, um die Einstellungen zu übernehmen."
 remainingN: "Verbleibend: {n}"
 overwriteContentConfirm: "Bist du sicher, dass du den aktuellen Inhalt überschreiben willst?"
 seasonalScreenEffect: "Saisonaler Bildschirmeffekt"
@@ -1294,10 +1297,12 @@ thisContentsAreMarkedAsSigninRequiredByAuthor: "Logge dich ein, um weitere Inhal
 lockdown: "Sperren"
 pleaseSelectAccount: "Bitte Konto auswählen"
 availableRoles: "Verfügbare Rollen"
+federationSpecified: "Dieser Server arbeitet mit Whitelist-Föderation. Er kann nicht mit anderen als den vom Administrator angegebenen Servern interagieren."
+federationDisabled: "Föderation ist auf diesem Server deaktiviert. Es ist nicht möglich, mit Benutzern auf anderen Servern zu interagieren."
 _accountSettings:
   requireSigninToViewContents: "Anmeldung erfordern, um Inhalte anzuzeigen"
   requireSigninToViewContentsDescription1: "Erfordere eine Anmeldung, um alle Notizen und andere Inhalte anzuzeigen, die du erstellt hast. Dadurch wird verhindert, dass Crawler deine Informationen sammeln."
-  requireSigninToViewContentsDescription2: ""
+  requireSigninToViewContentsDescription2: "Der Inhalt wird nicht in URL-Vorschauen (OGP), eingebettet in Webseiten oder auf Servern, die keine Zitate unterstützen, angezeigt."
   requireSigninToViewContentsDescription3: "Diese Einschränkungen gelten möglicherweise nicht für föderierte Inhalte von anderen Servern."
   makeNotesFollowersOnlyBefore: "Macht frühere Notizen nur für Follower sichtbar"
   makeNotesHiddenBefore: "Frühere Notizen privat machen"
@@ -1417,6 +1422,7 @@ _serverSettings:
   fanoutTimelineDescription: "Ist diese Option aktiviert, kann eine erhebliche Verbesserung im Abrufen von Chroniken und eine Reduzierung der Datenbankbelastung erzielt werden, im Gegenzug zu einer Steigerung in der Speichernutzung von Redis. Bei geringem Serverspeicher oder Serverinstabilität kann diese Option deaktiviert werden."
   fanoutTimelineDbFallback: "Auf die Datenbank zurückfallen"
   fanoutTimelineDbFallbackDescription: "Ist diese Option aktiviert, wird die Chronik auf zusätzliche Abfragen in der Datenbank zurückgreifen, wenn sich die Chronik nicht im Cache befindet. Eine Deaktivierung führt zu geringerer Serverlast, aber schränkt den Zeitraum der abrufbaren Chronik ein. "
+  openRegistrationWarning: "Das Aktivieren von Registrierungen ist riskant. Es wird empfohlen, sie nur dann zu aktivieren, wenn der Server ständig überwacht wird und im Falle eines Problems sofort reagiert werden kann."
   thisSettingWillAutomaticallyOffWhenModeratorsInactive: "Wenn über einen bestimmten Zeitraum keine Moderatorenaktivität festgestellt wird, wird diese Einstellung automatisch deaktiviert, um Spam zu verhindern."
 _accountMigration:
   moveFrom: "Von einem anderen Konto zu diesem migrieren"
@@ -1878,6 +1884,7 @@ _channel:
   notesCount: "{n} Notizen"
   nameAndDescription: "Name und Beschreibung"
   nameOnly: "Nur Name"
+  allowRenoteToExternal: "Renotes und Zitierungen außerhalb des Kanals erlauben"
 _menuDisplay:
   sideFull: "Seitlich"
   sideIcon: "Seitlich (Icons)"
@@ -1966,6 +1973,7 @@ _sfx:
   note: "Notizen"
   noteMy: "Meine Notizen"
   notification: "Benachrichtigungen"
+  reaction: "Auswählen einer Reaktion"
 _soundSettings:
   driveFile: "Audiodatei aus dem Drive verwenden"
   driveFileWarn: "Wähle eine Audiodatei aus dem Drive"
@@ -2064,12 +2072,22 @@ _permissions:
   "read:admin:server-info": "Serverinformationen anzeigen"
   "read:admin:show-moderation-log": "Moderationsprotokoll einsehen"
   "read:admin:show-user": "Private Benutzerinformationen einsehen"
+  "write:admin:roles": "Rollen verwalten"
+  "read:admin:roles": "Rollen anzeigen"
+  "write:admin:relays": "Relays verwalten"
+  "read:admin:relays": "Relays anzeigen"
   "write:admin:invite-codes": "Einladungscodes verwalten"
   "read:admin:invite-codes": "Einladungscodes anzeigen"
   "write:admin:announcements": "Ankündigungen verwalten"
   "read:admin:announcements": "Ankündigungen einsehen"
   "write:admin:avatar-decorations": "Kann Avatar-Dekorationen verwalten"
   "read:admin:avatar-decorations": "Avatar-Dekorationen ansehen"
+  "write:admin:account": "Benutzerkonten verwalten"
+  "read:admin:account": "Benutzerkonten anzeigen"
+  "write:admin:emoji": "Emojis verwalten"
+  "read:admin:emoji": "Emojis anzeigen"
+  "write:admin:queue": "Job-Warteschlange verwalten"
+  "read:admin:queue": "Job-Warteschlange anzeigen"
 _auth:
   shareAccessTitle: "Verteilung von App-Berechtigungen"
   shareAccess: "Möchtest du „{name}“ authorisieren, auf dieses Benutzerkonto zugreifen zu können?"
@@ -2187,6 +2205,8 @@ _profile:
   changeAvatar: "Profilbild ändern"
   changeBanner: "Banner ändern"
   verifiedLinkDescription: "Gibst du hier eine URL ein, die einen Link zu deinem Profile enthält, wird neben diesem Feld ein Icon zur Besitzbestätigung angezeigt."
+  avatarDecorationMax: "Du kannst bis zu {max} Dekorationen hinzufügen."
+  followedMessageDescription: "Du kannst eine kurze Nachricht festlegen, die dem Empfänger angezeigt wird, wenn er dir folgt."
 _exportOrImport:
   allNotes: "Alle Notizen"
   favoritedNotes: "Als Favorit markierte Notizen"
@@ -2319,6 +2339,7 @@ _notification:
   reactedBySomeUsers: "{n} Benutzer haben eine Reaktion geschickt"
   renotedBySomeUsers: "Renote von {n} Benutzern"
   followedBySomeUsers: "Von {n} Benutzern gefolgt"
+  login: "Neue Anmeldung erfolgt"
   _types:
     all: "Alle"
     note: "Neue Notizen"
@@ -2331,6 +2352,7 @@ _notification:
     pollEnded: "Ende von Umfragen"
     receiveFollowRequest: "Erhaltene Follow-Anfragen"
     followRequestAccepted: "Akzeptierte Follow-Anfragen"
+    roleAssigned: "Rolle zugewiesen"
     achievementEarned: "Errungenschaft freigeschaltet"
     login: "Anmelden"
     app: "Benachrichtigungen von Apps"
@@ -2382,6 +2404,7 @@ _webhookSettings:
   createWebhook: "Webhook erstellen"
   name: "Name"
   secret: "Secret"
+  trigger: "Auslöser"
   active: "Aktiviert"
   _events:
     follow: "Wenn du jemandem folgst"
@@ -2393,8 +2416,10 @@ _webhookSettings:
     mention: "Wenn du erwähnt wirst"
 _abuseReport:
   _notificationRecipient:
+    createRecipient: "Meldungsempfänger hinzufügen"
     _recipientType:
       mail: "Email"
+    keywords: "Schlüsselwort"
 _moderationLogTypes:
   createRole: "Rolle erstellt"
   deleteRole: "Rolle gelöscht"
@@ -2429,6 +2454,13 @@ _moderationLogTypes:
   createAvatarDecoration: "Profilbilddekoration erstellt"
   updateAvatarDecoration: "Profilbilddekoration aktualisiert"
   deleteAvatarDecoration: "Profilbilddekoration gelöscht"
+  unsetUserAvatar: "Profilbild zurückgesetzt"
+  unsetUserBanner: "Profilbanner zurückgesetzt"
+  createSystemWebhook: "System-Webhook erstellt"
+  updateSystemWebhook: "System-Webhook aktualisiert"
+  deleteSystemWebhook: "System-Webhook gelöscht"
+  deletePage: "Seite gelöscht"
+  deleteGalleryPost: "Galeriebeitrag gelöscht"
 _fileViewer:
   title: "Dateiinformationen"
   type: "Dateityp"
@@ -2478,6 +2510,10 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "Das Farbschema konnte nicht installiert werden"
       description: "Während der Installation des Farbschemas ist ein Problem aufgetreten. Bitte versuche es erneut. Detaillierte Fehlerinformationen können über die Javascript-Konsole abgerufen werden."
+_hemisphere:
+  N: "Nördliche Erdhalbkugel"
+  S: "Südliche Erdhalbkugel"
+  caption: "Wird in einigen Client-Einstellungen zur Bestimmung der Jahreszeit verwendet."
 _reversi:
   blackOrWhite: "Schwarz/Weiß"
   rules: "Regeln"
@@ -2485,17 +2521,26 @@ _reversi:
   white: "Weiß"
   total: "Gesamt"
 _offlineScreen:
+  title: "Offline - keine Verbindung zum Server möglich"
   header: "Verbindung zum Server nicht möglich"
 _urlPreviewSetting:
   title: "Einstellungen der URL-Vorschau"
   enable: "URL-Vorschau aktivieren"
   timeout: "Zeitüberschreitung beim Abrufen der Vorschau (ms)"
+  timeoutDescription: "Übersteigt die für die Vorschau benötigte Zeit diesen Wert, wird keine Vorschau generiert."
   maximumContentLength: "Maximale Content-Length (Bytes)"
+  maximumContentLengthDescription: "Wenn die Content-Length diesen Wert überschreitet, wird keine Vorschau erzeugt."
+  requireContentLength: "Vorschau nur generieren, wenn Content-Length verfügbar ist"
+  requireContentLengthDescription: "Wenn der Server keine Content-Length zurückgibt, wird keine Vorschau erzeugt."
+  userAgent: "User-Agent"
 _mediaControls:
   playbackRate: "Wiedergabegeschwindigkeit"
 _contextMenu:
   title: "Kontextmenü"
   app: "Anwendung"
+_gridComponent:
+  _error:
+    requiredValue: "Dieser Wert ist ein Pflichtfeld"
 _embedCodeGen:
   title: "Einbettungscode anpassen"
   header: "Kopfzeile anzeigen"
@@ -2513,5 +2558,12 @@ _selfXssPrevention:
   description1: "Wenn du hier etwas einfügst, könnte ein böswilliger Benutzer dein Konto übernehmen oder deine persönlichen Daten stehlen."
   description3: "Weitere Informationen findest du hier. {link}"
 _remoteLookupErrors:
+  _federationNotAllowed:
+    title: "Kommunikation mit diesem Server nicht möglich"
+    description: "Möglicherweise wurde die Kommunikation mit diesem Server deaktiviert oder dieser Server ist blockiert.\nWende dich bitte an den Serveradministrator."
+  _uriInvalid:
+    title: "URI ist fehlerhaft"
+    description: "Es gibt ein Problem mit der von dir eingegebenen URI. Bitte prüfe, ob du Zeichen eingegeben hast, die in der URI nicht verwendet werden können."
   _noSuchObject:
     title: "Nicht gefunden"
+    description: "Die angeforderte Ressource konnte nicht gefunden werden, bitte überprüfe die URI erneut."

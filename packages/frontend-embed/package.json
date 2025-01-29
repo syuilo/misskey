@@ -4,7 +4,6 @@
 	"type": "module",
 	"scripts": {
 		"watch": "vite",
-		"dev": "vite --config vite.config.local-dev.ts --debug hmr",
 		"build": "vite build",
 		"typecheck": "vue-tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.{ts,vue}\"",
@@ -15,7 +14,7 @@
 		"@rollup/plugin-json": "6.1.0",
 		"@rollup/plugin-replace": "5.0.7",
 		"@rollup/pluginutils": "5.1.3",
-		"@tabler/icons-webfont": "3.3.0",
+		"@tabler/icons-webfont": "https://github.com/misskey-dev/tabler-icons/archive/refs/tags/3.29.0-mi.1913+5921534bc.tar.gz",
 		"@twemoji/parser": "15.1.1",
 		"@vitejs/plugin-vue": "5.2.0",
 		"@vue/compiler-sfc": "3.5.12",

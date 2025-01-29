@@ -5,6 +5,7 @@ introMisskey: "ようこそ！Misskeyは、オープンソースの分散型マ�
 poweredByMisskeyDescription: "{name}は、オープンソースのプラットフォーム<b>Misskey</b>のサーバーのひとつです。"
 monthAndDay: "{month}月 {day}日"
 search: "検索"
+reset: "リセット"
 notifications: "通知"
 username: "ユーザー名"
 password: "パスワード"
@@ -2807,6 +2808,69 @@ _contextMenu:
   app: "アプリケーション"
   appWithShift: "Shiftキーでアプリケーション"
   native: "ブラウザのUI"
+
+_gridComponent:
+  _error:
+    requiredValue: "この値は必須項目です"
+    columnTypeNotSupport: "正規表現によるバリデーションはtype:textのカラムのみサポートします。"
+    patternNotMatch: "この値は{pattern}のパターンに一致しません"
+    notUnique: "この値は一意である必要があります"
+
+_roleSelectDialog:
+  notSelected: "選択されていません"
+
+_customEmojisManager:
+  _gridCommon:
+    copySelectionRows: "選択行をコピー"
+    copySelectionRanges: "選択範囲をコピー"
+    deleteSelectionRows: "選択行を削除"
+    deleteSelectionRanges: "選択範囲の値をクリア"
+    searchSettings: "検索設定"
+    searchSettingCaption: "検索条件を詳細に設定します。"
+    searchLimit: "表示件数"
+    sortOrder: "並び順"
+    registrationLogs: "登録ログ"
+    registrationLogsCaption: "絵文字更新・削除時のログが表示されます。更新・削除操作を行ったり、ページを遷移・リロードすると消えます。"
+    alertEmojisRegisterFailedDescription: "絵文字の更新・削除に失敗しました。詳細は登録ログをご確認ください。"
+  _logs:
+    showSuccessLogSwitch: "成功ログを表示"
+    failureLogNothing: "失敗ログはありません。"
+    logNothing: "ログはありません。"
+  _remote:
+    selectionRowDetail: "選択行の詳細"
+    importSelectionRows: "選択行をインポート"
+    importSelectionRangesRows: "選択範囲の行をインポート"
+    importEmojisButton: "チェックされた絵文字をインポート"
+    confirmImportEmojisTitle: "絵文字のインポート"
+    confirmImportEmojisDescription: "リモートから受信した{count}個の絵文字のインポートを行います。絵文字のライセンスに十分な注意を払ってください。実行しますか？"
+  _local:
+    tabTitleList: "登録済み絵文字一覧"
+    tabTitleRegister: "絵文字の登録"
+    _list:
+      emojisNothing: "登録された絵文字はありません。"
+      markAsDeleteTargetRows: "選択行を削除対象にする"
+      markAsDeleteTargetRanges: "選択範囲の行を削除対象にする"
+      alertUpdateEmojisNothingDescription: "変更された絵文字はありません。"
+      alertDeleteEmojisNothingDescription: "削除対象の絵文字はありません。"
+      confirmMovePage: "ページを移動しますか？"
+      confirmChangeView: "表示を変更しますか？"
+      confirmUpdateEmojisDescription: "{count}個の絵文字を更新します。実行しますか？"
+      confirmDeleteEmojisDescription: "チェックがつけられた{count}個の絵文字を削除します。実行しますか？"
+      confirmResetDescription: "今までに加えた変更がすべてリセットされます。"
+      confirmMovePageDesciption: "このページの絵文字に変更が加えられています。\n保存せずにこのままページを移動すると、このページで加えた変更はすべて破棄されます。"
+      dialogSelectRoleTitle: "絵文字に設定されたロールで検索"
+    _register:
+      uploadSettingTitle: "アップロード設定"
+      uploadSettingDescription: "この画面で絵文字アップロードを行う際の動作を設定できます。"
+      directoryToCategoryLabel: "ディレクトリ名を\"category\"に入力する"
+      directoryToCategoryCaption: "ディレクトリをドラッグ・ドロップした時に、ディレクトリ名を\"category\"に入力します。"
+      emojiInputAreaCaption: "いずれかの方法で登録する絵文字を選択してください。"
+      emojiInputAreaList1: "この枠に画像ファイルまたはディレクトリをドラッグ＆ドロップ"
+      emojiInputAreaList2: "このリンクをクリックしてPCから選択する"
+      emojiInputAreaList3: "このリンクをクリックしてドライブから選択する"
+      confirmRegisterEmojisDescription: "リストに表示されている絵文字を新たなカスタム絵文字として登録します。よろしいですか？（負荷を避けるため、一度の操作で登録可能な絵文字は{count}件までです）"
+      confirmClearEmojisDescription: "編集内容を破棄し、リストに表示されている絵文字をクリアします。よろしいですか？"
+      confirmUploadEmojisDescription: "ドラッグ＆ドロップされた{count}個のファイルをドライブにアップロードします。実行しますか？"
 
 _embedCodeGen:
   title: "埋め込みコードをカスタマイズ"

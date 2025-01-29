@@ -602,6 +602,27 @@ export async function selectDriveFolder(multiple: boolean): Promise<Misskey.enti
 	});
 }
 
+export async function selectRole(params: {
+	initialRoleIds?: string[],
+	title?: string,
+	infoMessage?: string,
+	publicOnly?: boolean,
+}): Promise<
+	{ canceled: true; result: undefined; } |
+	{ canceled: false; result: Misskey.entities.Role[] }
+> {
+	return new Promise((resolve) => {
+		popup(defineAsyncComponent(() => import('@/components/MkRoleSelectDialog.vue')), params, {
+			done: roles => {
+				resolve({ canceled: false, result: roles });
+			},
+			close: () => {
+				resolve({ canceled: true, result: undefined });
+			},
+		}, 'dispose');
+	});
+}
+
 export async function pickEmoji(src: HTMLElement, opts: ComponentProps<typeof MkEmojiPickerDialog>): Promise<string> {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkEmojiPickerDialog, {

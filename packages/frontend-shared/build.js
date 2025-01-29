@@ -23,10 +23,14 @@ const options = {
 	sourcemap: 'linked',
 };
 
-// js-built配下をすべて削除する
-fs.rmSync('./js-built', { recursive: true, force: true });
+const args = process.argv.slice(2).map(arg => arg.toLowerCase());
 
-if (process.argv.map(arg => arg.toLowerCase()).includes('--watch')) {
+// js-built配下をすべて削除する
+if (!args.includes('--no-clean')) {
+	fs.rmSync('./js-built', { recursive: true, force: true });
+}
+
+if (args.includes('--watch')) {
 	await watchSrc();
 } else {
 	await buildSrc();

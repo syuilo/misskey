@@ -275,6 +275,9 @@ const patronsWithIcon = [{
 }, {
 	name: '秋瀬カヲル',
 	icon: 'https://assets.misskey-hub.net/patrons/0f22aeb866484f4fa51db6721e3f9847.jpg',
+}, {
+	name: '新井　治',
+	icon: 'https://assets.misskey-hub.net/patrons/d160876f20394674a17963a0e609600a.jpg',
 }];
 
 const patrons = [

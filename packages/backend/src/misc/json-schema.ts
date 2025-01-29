@@ -33,7 +33,11 @@ import { packedClipSchema } from '@/models/json-schema/clip.js';
 import { packedFederationInstanceSchema } from '@/models/json-schema/federation-instance.js';
 import { packedQueueCountSchema } from '@/models/json-schema/queue.js';
 import { packedGalleryPostSchema } from '@/models/json-schema/gallery-post.js';
-import { packedEmojiDetailedSchema, packedEmojiSimpleSchema } from '@/models/json-schema/emoji.js';
+import {
+	packedEmojiDetailedAdminSchema,
+	packedEmojiDetailedSchema,
+	packedEmojiSimpleSchema,
+} from '@/models/json-schema/emoji.js';
 import { packedFlashSchema } from '@/models/json-schema/flash.js';
 import { packedAnnouncementSchema } from '@/models/json-schema/announcement.js';
 import { packedSigninSchema } from '@/models/json-schema/signin.js';
@@ -95,6 +99,7 @@ export const refs = {
 	GalleryPost: packedGalleryPostSchema,
 	EmojiSimple: packedEmojiSimpleSchema,
 	EmojiDetailed: packedEmojiDetailedSchema,
+	EmojiDetailedAdmin: packedEmojiDetailedAdminSchema,
 	Flash: packedFlashSchema,
 	Signin: packedSigninSchema,
 	RoleCondFormulaLogics: packedRoleCondFormulaLogicsSchema,

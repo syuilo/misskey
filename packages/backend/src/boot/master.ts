@@ -92,7 +92,7 @@ export async function masterMain() {
 	}
 
 	bootLogger.info(
-		`mode: [disableClustering: ${envOption.disableClustering}, onlyServer: ${envOption.onlyServer}, onlyQueue: ${envOption.onlyQueue}]`
+		`mode: [disableClustering: ${envOption.disableClustering}, onlyServer: ${envOption.onlyServer}, onlyQueue: ${envOption.onlyQueue}]`,
 	);
 
 	if (!envOption.disableClustering) {
@@ -107,7 +107,6 @@ export async function masterMain() {
 			await jobQueue();
 		} else {
 			await server();
-			await jobQueue();
 		}
 
 		await spawnWorkers(config.clusterLimit);
