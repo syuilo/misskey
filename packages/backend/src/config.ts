@@ -61,6 +61,9 @@ type Source = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	};
+	pgroonga?: {
+		target?: 'text' | 'cw_and_text';
+	};
 	sentryForBackend?: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; };
 	sentryForFrontend?: { options: Partial<Sentry.NodeOptions> };
 
@@ -278,6 +281,7 @@ export function loadConfig(): Config {
 		dbSlaves: config.dbSlaves,
 		fulltextSearch: config.fulltextSearch,
 		meilisearch: config.meilisearch,
+		pgroonga: config.pgroonga,
 		redis,
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,
