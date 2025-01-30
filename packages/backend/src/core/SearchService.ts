@@ -11,12 +11,13 @@ import { bindThis } from '@/decorators.js';
 import { MiNote } from '@/models/Note.js';
 import type { NotesRepository } from '@/models/_.js';
 import { MiUser } from '@/models/_.js';
-import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
 import { isUserRelated } from '@/misc/is-user-related.js';
 import { CacheService } from '@/core/CacheService.js';
 import { QueryService } from '@/core/QueryService.js';
 import { IdService } from '@/core/IdService.js';
 import { LoggerService } from '@/core/LoggerService.js';
+import { parseSearchString } from '@/misc/search-query.js';
+import { appendCondToQuery } from '@/misc/sql-note-where.js';
 import type { Index, MeiliSearch } from 'meilisearch';
 
 type K = string;
@@ -222,7 +223,9 @@ export class SearchService {
 		if (this.config.fulltextSearch?.provider === 'sqlPgroonga') {
 			query.andWhere('note.text &@ :q', { q });
 		} else {
-			query.andWhere('LOWER(note.text) LIKE :q', { q: `%${ sqlLikeEscape(q.toLowerCase()) }%` });
+			const searchCondition = parseSearchString(q);
+			this.loggerService.getLogger('SearchService').info('search component: ' + JSON.stringify(searchCondition));
+			appendCondToQuery(searchCondition, query);
 		}
 
 		if (opts.host) {
