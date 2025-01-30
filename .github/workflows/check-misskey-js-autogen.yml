@@ -113,7 +113,7 @@ jobs:
 
       - name: send message
         if: steps.check-changes.outputs.changes == 'true'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           comment_tag: check-misskey-js-autogen
           message: |-
@@ -127,7 +127,7 @@ jobs:
 
       - name: send message
         if: steps.check-changes.outputs.changes == 'false'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           comment_tag: check-misskey-js-autogen
           mode: delete
