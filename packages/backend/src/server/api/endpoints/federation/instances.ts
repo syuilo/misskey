@@ -101,9 +101,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (typeof ps.blocked === 'boolean') {
 				const meta = await this.metaService.fetch(true);
 				if (ps.blocked) {
-					query.andWhere(meta.blockedHosts.length === 0 ? '1=0' : 'instance.host IN (:...blocks)', { blocks: meta.blockedHosts });
+					query.andWhere(meta.blockedHosts.length === 0 ? '1=0' : 'instance.host ILIKE ANY(ARRAY[:...blocks])', { blocks: meta.blockedHosts.flatMap(x => [x, `%.${x}`]) });
 				} else {
-					query.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'instance.host NOT IN (:...blocks)', { blocks: meta.blockedHosts });
+					query.andWhere(meta.blockedHosts.length === 0 ? '1=1' : 'instance.host NOT ILIKE ALL(ARRAY[:...blocks])', { blocks: meta.blockedHosts.flatMap(x => [x, `%.${x}`]) });
 				}
 			}
 
@@ -130,12 +130,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					if (meta.silencedHosts.length === 0) {
 						return [];
 					}
-					query.andWhere('instance.host IN (:...silences)', {
-						silences: meta.silencedHosts,
+					query.andWhere('instance.host ILIKE ANY(ARRAY[:...silences])', {
+						silences: meta.silencedHosts.flatMap(x => [x, `%.${x}`]),
 					});
 				} else if (meta.silencedHosts.length > 0) {
-					query.andWhere('instance.host NOT IN (:...silences)', {
-						silences: meta.silencedHosts,
+					query.andWhere('instance.host NOT ILIKE ALL(ARRAY[:...silences])', {
+						silences: meta.silencedHosts.flatMap(x => [x, `%.${x}`]),
 					});
 				}
 			}
