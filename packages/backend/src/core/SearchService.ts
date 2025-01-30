@@ -79,6 +79,7 @@ export class SearchService {
 	private readonly meilisearchIndexScope: 'local' | 'global' | string[] = 'local';
 	private readonly meilisearchNoteIndex: Index | null = null;
 	private readonly provider: FulltextSearchProvider;
+	private readonly pgroongaTarget : 'text' | 'cw_and_text' = 'text';
 
 	constructor(
 		@Inject(DI.config)
@@ -123,6 +124,10 @@ export class SearchService {
 
 		if (config.meilisearch?.scope) {
 			this.meilisearchIndexScope = config.meilisearch.scope;
+		}
+
+		if (config.pgroonga?.target) {
+			this.pgroongaTarget = config.pgroonga.target;
 		}
 
 		this.provider = config.fulltextSearch?.provider ?? 'sqlLike';
@@ -181,11 +186,9 @@ export class SearchService {
 	): Promise<MiNote[]> {
 		switch (this.provider) {
 			case 'sqlLike':
-			case 'sqlPgroonga': {
-				// ほとんど内容に差がないのでsqlLikeとsqlPgroongaを同じ処理にしている.
-				// 今後の拡張で差が出る用であれば関数を分ける.
 				return this.searchNoteByLike(q, me, opts, pagination);
-			}
+			case 'sqlPgroonga':
+				return this.searchNoteByPgroonga(q, me, opts, pagination);
 			case 'meilisearch': {
 				return this.searchNoteByMeiliSearch(q, me, opts, pagination);
 			}
@@ -219,10 +222,49 @@ export class SearchService {
 			.leftJoinAndSelect('reply.user', 'replyUser')
 			.leftJoinAndSelect('renote.user', 'renoteUser');
 
-		if (this.config.fulltextSearch?.provider === 'sqlPgroonga') {
-			query.andWhere('note.text &@ :q', { q });
+		query.andWhere('LOWER(note.text) LIKE :q', { q: `%${ sqlLikeEscape(q.toLowerCase()) }%` });
+
+		if (opts.host) {
+			if (opts.host === '.') {
+				query.andWhere('user.host IS NULL');
+			} else {
+				query.andWhere('user.host = :host', { host: opts.host });
+			}
+		}
+
+		this.queryService.generateVisibilityQuery(query, me);
+		if (me) this.queryService.generateMutedUserQuery(query, me);
+		if (me) this.queryService.generateBlockedUserQuery(query, me);
+
+		return query.limit(pagination.limit).getMany();
+	}
+
+	@bindThis
+	private async searchNoteByPgroonga(
+		q: string,
+		me: MiUser | null,
+		opts: SearchOpts,
+		pagination: SearchPagination,
+	): Promise<MiNote[]> {
+		const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), pagination.sinceId, pagination.untilId);
+
+		if (opts.userId) {
+			query.andWhere('note.userId = :userId', { userId: opts.userId });
+		} else if (opts.channelId) {
+			query.andWhere('note.channelId = :channelId', { channelId: opts.channelId });
+		}
+
+		query
+			.innerJoinAndSelect('note.user', 'user')
+			.leftJoinAndSelect('note.reply', 'reply')
+			.leftJoinAndSelect('note.renote', 'renote')
+			.leftJoinAndSelect('reply.user', 'replyUser')
+			.leftJoinAndSelect('renote.user', 'renoteUser');
+
+		if (this.pgroongaTarget === 'cw_and_text' ) {
+			query.andWhere('(coalesce(note.cw, \'\') || note.text) &@~ :q', { q: q.replaceAll('　', ' ') });
 		} else {
-			query.andWhere('LOWER(note.text) LIKE :q', { q: `%${ sqlLikeEscape(q.toLowerCase()) }%` });
+			query.andWhere('note.text &@~ :q', { q: q.replaceAll('　', ' ') });
 		}
 
 		if (opts.host) {
