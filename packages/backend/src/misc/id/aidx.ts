@@ -9,6 +9,7 @@
 // https://misskey.m544.net/notes/71899acdcc9859ec5708ac24
 
 import { customAlphabet } from 'nanoid';
+import { parseBigInt36 } from '@/misc/bigint.js';
 
 export const aidxRegExp = /^[0-9a-z]{16}$/;
 
@@ -16,6 +17,7 @@ const TIME2000 = 946684800000;
 const TIME_LENGTH = 8;
 const NODE_LENGTH = 4;
 const NOISE_LENGTH = 4;
+const AIDX_LENGTH = TIME_LENGTH + NODE_LENGTH + NOISE_LENGTH;
 
 const nodeId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', NODE_LENGTH)();
 let counter = 0;
@@ -40,6 +42,12 @@ export function genAidx(t: number): string {
 export function parseAidx(id: string): { date: Date; } {
 	const time = parseInt(id.slice(0, TIME_LENGTH), 36) + TIME2000;
 	return { date: new Date(time) };
+}
+
+export function parseAidxFull(id: string): { date: number; additional: bigint; } {
+	const date = parseInt(id.slice(0, TIME_LENGTH), 36) + TIME2000;
+	const additional = parseBigInt36(id.slice(TIME_LENGTH, AIDX_LENGTH));
+	return { date, additional };
 }
 
 export function isSafeAidxT(t: number): boolean {

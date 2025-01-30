@@ -19,7 +19,7 @@ import { IdService } from '@/core/IdService.js';
 import { CacheService } from '@/core/CacheService.js';
 import type { Config } from '@/config.js';
 import { UserListService } from '@/core/UserListService.js';
-import type { FilterUnionByProperty } from '@/types.js';
+import { FilterUnionByProperty, groupedNotificationTypes, obsoleteNotificationTypes } from '@/types.js';
 import { trackPromise } from '@/misc/promise-tracker.js';
 
 @Injectable()
@@ -155,10 +155,11 @@ export class NotificationService implements OnApplicationShutdown {
 			...data,
 		} as any as FilterUnionByProperty<MiNotification, 'type', T>;
 
+		// TODO: 同一ミリ秒に生成されたときにランダム部分が昇順じゃなくてXADDが失敗する可能性があるのでid再生成しながらリトライするべきかも。またはidをRedisの生成したものから生成するようにする。
 		const redisIdPromise = this.redisClient.xadd(
 			`notificationTimeline:${notifieeId}`,
 			'MAXLEN', '~', this.config.perUserNotificationsMaxCount.toString(),
-			'*',
+			this.toXListId(notification.id),
 			'data', JSON.stringify(notification));
 
 		const packed = await this.notificationEntityService.pack(notification, notifieeId, {});
@@ -226,6 +227,79 @@ export class NotificationService implements OnApplicationShutdown {
 	@bindThis
 	public dispose(): void {
 		this.#shutdownController.abort();
+	}
+
+	private toXListId(id: string): string {
+		const { date, additional } = this.idService.parseFull(id);
+		return date.toString() + '-' + additional.toString();
+	}
+
+	@bindThis
+	public async getNotifications(
+		userId: MiUser['id'],
+		{
+			sinceId,
+			untilId,
+			limit = 20,
+			includeTypes,
+			excludeTypes,
+		}: {
+			sinceId?: string,
+			untilId?: string,
+			limit?: number,
+			// any extra types are allowed, those are no-op
+			includeTypes?: (MiNotification['type'] | string)[],
+			excludeTypes?: (MiNotification['type'] | string)[],
+		},
+	): Promise<MiNotification[]> {
+		let sinceTime = sinceId ? this.toXListId(sinceId) : null;
+		let untilTime = untilId ? this.toXListId(untilId) : null;
+
+		let notifications: MiNotification[];
+		for (;;) {
+			let notificationsRes: [id: string, fields: string[]][];
+
+			// sinceidのみの場合は古い順、そうでない場合は新しい順。 QueryService.makePaginationQueryも参照
+			if (sinceTime && !untilTime) {
+				notificationsRes = await this.redisClient.xrange(
+					`notificationTimeline:${userId}`,
+					'(' + sinceTime,
+					'+',
+					'COUNT', limit);
+			} else {
+				notificationsRes = await this.redisClient.xrevrange(
+					`notificationTimeline:${userId}`,
+					untilTime ? '(' + untilTime : '+',
+					sinceTime ? '(' + sinceTime : '-',
+					'COUNT', limit);
+			}
+
+			if (notificationsRes.length === 0) {
+				return [];
+			}
+
+			notifications = notificationsRes.map(x => JSON.parse(x[1][1])) as MiNotification[];
+
+			if (includeTypes && includeTypes.length > 0) {
+				notifications = notifications.filter(notification => includeTypes.includes(notification.type));
+			} else if (excludeTypes && excludeTypes.length > 0) {
+				notifications = notifications.filter(notification => !excludeTypes.includes(notification.type));
+			}
+
+			if (notifications.length !== 0) {
+				// 通知が１件以上ある場合は返す
+				break;
+			}
+
+			// フィルタしたことで通知が0件になった場合、次のページを取得する
+			if (sinceId && !untilId) {
+				sinceTime = notificationsRes[notificationsRes.length - 1][0];
+			} else {
+				untilTime = notificationsRes[notificationsRes.length - 1][0];
+			}
+		}
+
+		return notifications;
 	}
 
 	@bindThis

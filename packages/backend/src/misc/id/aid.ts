@@ -7,6 +7,7 @@
 // 長さ8の[2000年1月1日からの経過ミリ秒をbase36でエンコードしたもの] + 長さ2の[ノイズ文字列]
 
 import * as crypto from 'node:crypto';
+import { parseBigInt36 } from '@/misc/bigint.js';
 
 export const aidRegExp = /^[0-9a-z]{10}$/;
 
@@ -33,6 +34,12 @@ export function genAid(t: number): string {
 export function parseAid(id: string): { date: Date; } {
 	const time = parseInt(id.slice(0, 8), 36) + TIME2000;
 	return { date: new Date(time) };
+}
+
+export function parseAidFull(id: string): { date: number; additional: bigint; } {
+	const date = parseInt(id.slice(0, 8), 36) + TIME2000;
+	const additional = parseBigInt36(id.slice(8, 10));
+	return { date, additional };
 }
 
 export function isSafeAidT(t: number): boolean {
