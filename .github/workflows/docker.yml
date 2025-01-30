@@ -19,13 +19,19 @@ jobs:
   # see https://docs.docker.com/build/ci/github-actions/multi-platform/#distribute-build-across-multiple-runners
   build:
     name: Build
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         platform:
           - linux/amd64
           - linux/arm64
+        include:
+          # use ubuntu-latest by default
+          - os: ubuntu-latest
+          # use ubuntu-24.04-arm for arm64 build
+          - platform: linux/arm64
+            os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Prepare
         run: |
