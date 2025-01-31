@@ -49,7 +49,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		folderId: { type: 'string', format: 'misskey:id' },
-		name: { type: 'string', maxLength: 200 },
+		name: { type: 'string', minLength: 1, maxLength: 200 },
 		parentId: { type: 'string', format: 'misskey:id', nullable: true },
 	},
 	required: ['folderId'],
