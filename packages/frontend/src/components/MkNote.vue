@@ -9,7 +9,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-show="!isDeleted"
 	ref="rootEl"
 	v-hotkey="keymap"
-	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover, [$style.skipRender]: defaultStore.state.skipNoteRender }]"
+	:class="[$style.root, {
+		[$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover,
+		[$style.skipRender]: defaultStore.state.skipNoteRender === 'css',
+	}]"
 	:tabindex="isDeleted ? '-1' : '0'"
 >
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
@@ -233,6 +236,7 @@ const props = withDefaults(defineProps<{
 provide('mock', props.mock);
 
 const emit = defineEmits<{
+	(ev: 'mounted', rootEl: HTMLElement): void;
 	(ev: 'reaction', emoji: string): void;
 	(ev: 'removeReaction', emoji: string): void;
 }>();
@@ -438,6 +442,12 @@ if (!props.mock) {
 		});
 	}
 }
+
+//#region 仮想スクロール（JS）用のHook
+onMounted(() => {
+	emit('mounted', rootEl.value!);
+});
+//#endregion
 
 function renote(viaKeyboard = false) {
 	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
