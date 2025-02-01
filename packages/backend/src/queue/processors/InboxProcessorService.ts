@@ -116,7 +116,18 @@ export class InboxProcessorService implements OnApplicationShutdown {
 		}
 
 		// HTTP-Signatureの検証
-		const httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
+		let httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
+
+		// If signature validation failed, try refetching the actor
+		if (!httpSignatureValidated) {
+			authUser.key = await this.apDbResolverService.refetchPublicKeyForApId(authUser.user);
+
+			if (authUser.key == null) {
+				throw new Bull.UnrecoverableError('skip: failed to re-resolve user publicKey');
+			}
+
+			httpSignatureValidated = httpSignature.verifySignature(signature, authUser.key.keyPem);
+		}
 
 		// また、signatureのsignerは、activity.actorと一致する必要がある
 		if (!httpSignatureValidated || authUser.user.uri !== activity.actor) {

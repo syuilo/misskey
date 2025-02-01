@@ -173,6 +173,19 @@ export class ApDbResolverService implements OnApplicationShutdown {
 		};
 	}
 
+	/**
+	 * Miskey User -> Refetched Key
+	 */
+	@bindThis
+	public async refetchPublicKeyForApId(user: MiRemoteUser): Promise<MiUserPublickey | null> {
+		await this.apPersonService.updatePerson(user.uri!);
+		const key = this.userPublickeysRepository.findOneBy({ userId: user.id });
+		if (key != null) {
+			await this.publicKeyByUserIdCache.set(user.id, key);
+		}
+		return key;
+	}
+
 	@bindThis
 	public dispose(): void {
 		this.publicKeyCache.dispose();
