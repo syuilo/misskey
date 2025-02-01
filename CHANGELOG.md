@@ -594,6 +594,17 @@
   - `category`および`licence`が指定なしの時勝手にnullに上書きされる挙動を修正
 - Fix: 通知の受信設定で「相互フォロー」が正しく動作しない問題を修正
 
+## 202x.x.x (unreleased)
+
+### General
+-
+
+### Client
+- Fix: 最優先されるフォントをSegoe UIとHelveticaNeueに変更
+
+### Server
+-
+
 ## 2024.2.0
 
 ### Note

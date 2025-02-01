@@ -205,7 +205,7 @@
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
 		* {
-			font-family: BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+			font-family: Segoe UI, HelveticaNeue, BIZ UDGothic, Roboto, Arial, sans-serif;
 		}
 
 		#misskey_app,
