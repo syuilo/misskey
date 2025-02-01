@@ -88,7 +88,7 @@
 		"@nestjs/core": "10.4.7",
 		"@nestjs/testing": "10.4.7",
 		"@peertube/http-signature": "1.7.0",
-		"@sentry/node": "8.38.0",
+		"@sentry/node": "8.49.0",
 		"@sentry/profiling-node": "8.38.0",
 		"@simplewebauthn/server": "10.0.1",
 		"@sinonjs/fake-timers": "11.2.2",
