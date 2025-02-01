@@ -25,6 +25,7 @@
 	* β版として公開のため、旧画面も引き続き利用可能です
 
 ### Client
+- Feat: 投稿フォームで画像をプレビュー可能に
 - Enhance: PC画面でチャンネルが複数列で表示されるように  
   (Cherry-picked from https://github.com/Otaku-Social/maniakey/pull/13)
 - Enhance: 照会に失敗した場合、その理由を表示するように
