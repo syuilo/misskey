@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { Provider } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import {
@@ -44,6 +43,7 @@ import {
 	MiNoteReaction,
 	MiNoteThreadMuting,
 	MiNoteUnread,
+	MiNoteDraft,
 	MiPage,
 	MiPageLike,
 	MiPasswordResetRequest,
@@ -77,8 +77,9 @@ import {
 	MiUserProfile,
 	MiUserPublickey,
 	MiUserSecurityKey,
-	MiWebhook
+	MiWebhook,
 } from './_.js';
+import type { Provider } from '@nestjs/common';
 import type { DataSource } from 'typeorm';
 
 const $usersRepository: Provider = {
@@ -138,6 +139,12 @@ const $noteReactionsRepository: Provider = {
 const $noteUnreadsRepository: Provider = {
 	provide: DI.noteUnreadsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiNoteUnread).extend(miRepository as MiRepository<MiNoteUnread>),
+	inject: [DI.db],
+};
+
+const $noteDraftsRepository: Provider = {
+	provide: DI.noteDraftsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiNoteDraft).extend(miRepository as MiRepository<MiNoteDraft>),
 	inject: [DI.db],
 };
 
@@ -508,6 +515,7 @@ const $reversiGamesRepository: Provider = {
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
 		$noteUnreadsRepository,
+		$noteDraftsRepository,
 		$pollsRepository,
 		$pollVotesRepository,
 		$userProfilesRepository,
@@ -579,6 +587,7 @@ const $reversiGamesRepository: Provider = {
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
 		$noteUnreadsRepository,
+		$noteDraftsRepository,
 		$pollsRepository,
 		$pollVotesRepository,
 		$userProfilesRepository,

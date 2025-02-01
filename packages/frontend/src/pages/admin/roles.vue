@@ -256,6 +256,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<template #label>{{ i18n.ts.enable }}</template>
 							</MkSwitch>
 						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.noteDraftLimit, 'noteDraftLimit'])">
+							<template #label>{{ i18n.ts._role._options.noteDraftLimit }}</template>
+							<template #suffix>{{ policies.noteDraftLimit }}</template>
+							<MkInput v-model="policies.noteDraftLimit" type="number" :min="0">
+							</MkInput>
+						</MkFolder>
 					</div>
 				</MkFolder>
 				<MkButton primary rounded @click="create"><i class="ti ti-plus"></i> {{ i18n.ts._role.new }}</MkButton>

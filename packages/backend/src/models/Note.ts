@@ -4,7 +4,7 @@
  */
 
 import { Entity, Index, JoinColumn, Column, PrimaryColumn, ManyToOne } from 'typeorm';
-import { noteVisibilities } from '@/types.js';
+import { noteVisibilities, noteReactionAcceptances } from '@/types.js';
 import { id } from './util/id.js';
 import { MiUser } from './User.js';
 import { MiChannel } from './Channel.js';
@@ -86,7 +86,7 @@ export class MiNote {
 	@Column('varchar', {
 		length: 64, nullable: true,
 	})
-	public reactionAcceptance: 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null;
+	public reactionAcceptance: typeof noteReactionAcceptances[number];
 
 	@Column('smallint', {
 		default: 0,

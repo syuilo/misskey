@@ -167,6 +167,10 @@ export interface Locale extends ILocale {
      */
     "save": string;
     /**
+     * 保存しない
+     */
+    "dontSave": string;
+    /**
      * ユーザー
      */
     "users": string;
@@ -5254,6 +5258,10 @@ export interface Locale extends ILocale {
      * このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。
      */
     "federationDisabled": string;
+    /**
+     * 下書き
+     */
+    "draft": string;
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする
@@ -7033,6 +7041,10 @@ export interface Locale extends ILocale {
              * リストのインポートを許可
              */
             "canImportUserLists": string;
+            /**
+             * サーバーサイドのノートの下書きの作成可能数
+             */
+            "noteDraftLimit": string;
         };
         "_condition": {
             /**
@@ -10955,6 +10967,44 @@ export interface Locale extends ILocale {
                 "text": string;
             };
         };
+    };
+    "_drafts": {
+        /**
+         * 下書きを選択
+         */
+        "select": string;
+        /**
+         * サーバーに下書きを保存しますか？
+         */
+        "saveConfirm": string;
+        /**
+         * ここで「保存しない」を選択しても、下書きは端末内に保存されます。
+         */
+        "saveConfirmDescription": string;
+        /**
+         * 下書きを削除
+         */
+        "delete": string;
+        /**
+         * 下書きを削除しますか？
+         */
+        "deleteAreYouSure": string;
+        /**
+         * 下書きはありません
+         */
+        "noDrafts": string;
+        /**
+         * {user}への返信
+         */
+        "replyTo": ParameterizedString<"user">;
+        /**
+         * {user}のノートへの引用
+         */
+        "quoteOf": ParameterizedString<"user">;
+        /**
+         * {channel}への投稿
+         */
+        "postTo": ParameterizedString<"channel">;
     };
 }
 declare const locales: {

@@ -37,6 +37,7 @@ logout: "ログアウト"
 signup: "新規登録"
 uploading: "アップロード中"
 save: "保存"
+dontSave: "保存しない"
 users: "ユーザー"
 addUser: "ユーザーを追加"
 favorite: "お気に入り"
@@ -1309,6 +1310,7 @@ availableRoles: "利用可能なロール"
 acknowledgeNotesAndEnable: "注意事項を理解した上でオンにします。"
 federationSpecified: "このサーバーはホワイトリスト連合で運用されています。管理者が指定したサーバー以外とやり取りすることはできません。"
 federationDisabled: "このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。"
+draft: "下書き"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"
@@ -1817,6 +1819,7 @@ _role:
     canImportFollowing: "フォローのインポートを許可"
     canImportMuting: "ミュートのインポートを許可"
     canImportUserLists: "リストのインポートを許可"
+    noteDraftLimit: "サーバーサイドのノートの下書きの作成可能数"
   _condition:
     roleAssignedTo: "マニュアルロールにアサイン済み"
     isLocal: "ローカルユーザー"
@@ -2930,3 +2933,14 @@ _captcha:
     _unknown:
       title: "CAPTCHAエラー"
       text: "想定外のエラーが発生しました。"
+
+_drafts:
+  select: "下書きを選択"
+  saveConfirm: "サーバーに下書きを保存しますか？"
+  saveConfirmDescription: "ここで「保存しない」を選択しても、下書きは端末内に保存されます。"
+  delete: "下書きを削除"
+  deleteAreYouSure: "下書きを削除しますか？"
+  noDrafts: "下書きはありません"
+  replyTo: "{user}への返信"
+  quoteOf: "{user}のノートへの引用"
+  postTo: "{channel}への投稿"
