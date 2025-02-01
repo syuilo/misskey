@@ -63,6 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, ref, computed, shallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
+import { host as currentHost, hostname } from '@@/js/config.js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -71,7 +72,6 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
-import { host as currentHost, hostname } from '@@/js/config.js';
 
 const emit = defineEmits<{
 	(ev: 'ok', selected: Misskey.entities.UserDetailed): void;
@@ -198,7 +198,7 @@ onMounted(() => {
 	font-size: 14px;
 
 	&:hover {
-		background: var(--MI_THEME-X7);
+		background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 	}
 
 	&.selected {

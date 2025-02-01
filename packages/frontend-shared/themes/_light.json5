@@ -79,14 +79,6 @@
 		codeBoolean: '#62b70c',
 		deckBg: ':darken<3<@bg',
 		htmlThemeColor: '@bg',
-		X3: 'rgba(0, 0, 0, 0.05)',
-		X4: 'rgba(0, 0, 0, 0.1)',
-		X5: 'rgba(0, 0, 0, 0.05)',
-		X6: 'rgba(0, 0, 0, 0.25)',
-		X7: 'rgba(0, 0, 0, 0.05)',
-		X11: 'rgba(0, 0, 0, 0.1)',
-		X12: 'rgba(0, 0, 0, 0.1)',
-		X13: 'rgba(0, 0, 0, 0.15)',
 	},
 
 	codeHighlighter: {
