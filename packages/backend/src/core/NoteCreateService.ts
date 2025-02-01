@@ -410,6 +410,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			replyId: data.reply ? data.reply.id : null,
 			renoteId: data.renote ? data.renote.id : null,
 			channelId: data.channel ? data.channel.id : null,
+			channel: data.channel,
 			threadId: data.reply
 				? data.reply.threadId
 					? data.reply.threadId

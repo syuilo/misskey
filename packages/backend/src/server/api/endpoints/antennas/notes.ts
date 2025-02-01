@@ -113,6 +113,18 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('reply.user', 'replyUser')
 				.leftJoinAndSelect('renote.user', 'renoteUser');
 
+			if (antenna.hideNotesInSensitiveChannel) {
+				// TypeORMにはRIGHT JOINがないので、サブクエリで代用。
+				query
+					.andWhere('note.channelId IS NULL OR EXISTS(' +
+						query.subQuery()
+							.from('channel', 'channel')
+							.where('channel.id = note.channelId')
+							.andWhere('channel.isSensitive = false')
+							.getQuery() +
+						' )');
+			}
+
 			this.queryService.generateVisibilityQuery(query, me);
 			this.queryService.generateMutedUserQuery(query, me);
 			this.queryService.generateBlockedUserQuery(query, me);
