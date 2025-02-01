@@ -62,6 +62,8 @@
    */
   "bundledPackages": [],
 
+  "newlineKind": "lf",
+
   /**
    * Determines how the TypeScript compiler engine will be invoked by API Extractor.
    */

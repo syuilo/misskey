@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:alt="file.name"
 		:title="file.name"
 		:cover="fit !== 'contain'"
-		:forceBlurHash="forceBlurhash"
+		:forceBlurhash="forceBlurhash"
 	/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
 	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>

@@ -6,7 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 	<template v-for="file in note.files">
 		<div
-			v-if="(defaultStore.state.nsfw === 'force' || file.isSensitive) && defaultStore.state.nsfw !== 'ignore' && !showingFiles.has(file.id)"
+			v-if="(((
+					(defaultStore.state.nsfw === 'force' || file.isSensitive) &&
+					defaultStore.state.nsfw !== 'ignore'
+				) || (defaultStore.state.dataSaver.media && file.type.startsWith('image/'))) &&
+				!showingFiles.has(file.id)
+			)"
 			:class="[$style.filePreview, { [$style.square]: square }]"
 			@click="showingFiles.add(file.id)"
 		>
@@ -20,7 +25,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			/>
 			<div :class="$style.sensitive">
 				<div>
-					<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
+					<div v-if="file.isSensitive"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media && file.size ? ` (${bytes(file.size)})` : '' }}</div>
+					<div v-else><i class="ti ti-photo"></i> {{ defaultStore.state.dataSaver.media && file.size ? bytes(file.size) : i18n.ts.image }}</div>
 					<div>{{ i18n.ts.clickToShow }}</div>
 				</div>
 			</div>
@@ -43,6 +49,7 @@ import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
 import * as Misskey from 'misskey-js';
 import { defaultStore } from '@/store.js';
+import bytes from '@/filters/bytes.js';
 
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 
@@ -91,6 +98,9 @@ const showingFiles = ref<Set<string>>(new Set());
 	display: grid;
   place-items: center;
 	font-size: 0.8em;
+	text-align: center;
+	padding: 8px;
+	box-sizing: border-box;
 	color: #fff;
 	background: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(5px);
