@@ -14,7 +14,7 @@
 		"misskey-js": "workspace:*"
 	},
 	"devDependencies": {
-		"@typescript-eslint/parser": "7.17.0",
+		"@typescript-eslint/parser": "8.22.0",
 		"@typescript/lib-webworker": "npm:@types/serviceworker@0.0.67",
 		"eslint-plugin-import": "2.30.0",
 		"nodemon": "3.1.7",
