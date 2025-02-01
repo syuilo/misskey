@@ -34,6 +34,7 @@ type TimelineOptions = {
 	excludeReplies?: boolean;
 	excludePureRenotes: boolean;
 	dbFallback: (untilId: string | null, sinceId: string | null, limit: number) => Promise<MiNote[]>,
+	preventEmptyTimelineDbFallback?: boolean;
 };
 
 @Injectable()
@@ -63,12 +64,20 @@ export class FanoutTimelineEndpointService {
 
 		const redisResult = await this.fanoutTimelineService.getMulti(ps.redisTimelines, ps.untilId, ps.sinceId);
 
-		// TODO: いい感じにgetMulti内でソート済だからuniqするときにredisResultが全てソート済なのを利用して再ソートを避けたい
-		const redisResultIds = Array.from(new Set(redisResult.flat(1))).sort(idCompare);
+		// オプション無効時、取得したredisResultのうち、2つ以上ソースがあり、1つでも空であればDBにフォールバックする
+		let shouldFallbackToDb = ps.useDbFallback &&
+			(ps.preventEmptyTimelineDbFallback !== true && redisResult.length > 1 && redisResult.some(ids => ids.length === 0));
 
-		let noteIds = redisResultIds.slice(0, ps.limit);
+		// 取得したresultの中で最古のIDのうち、最も新しいものを取得
+		const fttThresholdId = redisResult.map(ids => ids[0]).sort()[0];
+
+		// TODO: いい感じにgetMulti内でソート済だからuniqするときにredisResultが全てソート済なのを利用して再ソートを避けたい
+		const redisResultIds = shouldFallbackToDb ? [] : Array.from(new Set(redisResult.flat(1))).sort(idCompare);
+
+		let noteIds = redisResultIds.filter(id => id >= fttThresholdId).slice(0, ps.limit);
+
 		const oldestNoteId = ascending ? redisResultIds[0] : redisResultIds[redisResultIds.length - 1];
-		const shouldFallbackToDb = noteIds.length === 0 || ps.sinceId != null && ps.sinceId < oldestNoteId;
+		shouldFallbackToDb ||= ps.useDbFallback && (noteIds.length === 0 || ps.sinceId != null && ps.sinceId < oldestNoteId);
 
 		if (!shouldFallbackToDb) {
 			let filter = ps.noteFilter ?? (_note => true);
