@@ -140,6 +140,7 @@ function onPasskeyDone(credential: AuthenticationPublicKeyCredential): void {
 				return;
 			}
 			emit('login', res.signinResponse);
+			onLoginSucceeded(res.signinResponse);
 		}).catch(onSigninApiError);
 	} else if (userInfo.value != null) {
 		tryLogin({
