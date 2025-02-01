@@ -43,17 +43,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, onUnmounted, nextTick, ref, shallowRef, watch, computed, toRefs, InputHTMLAttributes } from 'vue';
+<script lang="ts" setup generic="T extends InputTypeHTMLAttribute">
+import { onMounted, onUnmounted, nextTick, ref, shallowRef, watch, computed, toRefs, InputTypeHTMLAttribute, InputHTMLAttributes } from 'vue';
 import { debounce } from 'throttle-debounce';
-import MkButton from '@/components/MkButton.vue';
 import { useInterval } from '@@/js/use-interval.js';
+import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 import { Autocomplete, SuggestionType } from '@/scripts/autocomplete.js';
 
-const props = defineProps<{
+interface MkInputProps {
 	modelValue: string | number | null;
-	type?: InputHTMLAttributes['type'];
+	type?: T;
 	required?: boolean;
 	readonly?: boolean;
 	disabled?: boolean;
@@ -74,17 +74,40 @@ const props = defineProps<{
 	manualSave?: boolean;
 	small?: boolean;
 	large?: boolean;
-}>();
+}
+
+type MkInputValue = T extends 'number' ? number : string;
+
+const props = defineProps<MkInputProps>();
 
 const emit = defineEmits<{
 	(ev: 'change', _ev: KeyboardEvent): void;
 	(ev: 'keydown', _ev: KeyboardEvent): void;
 	(ev: 'enter', _ev: KeyboardEvent): void;
-	(ev: 'update:modelValue', value: string | number): void;
+	(ev: 'update:modelValue', value: MkInputValue): void;
 }>();
 
-const { modelValue, type, autofocus } = toRefs(props);
-const v = ref(modelValue.value);
+const {
+	modelValue,
+	type,
+	required,
+	readonly,
+	disabled,
+	pattern,
+	placeholder,
+	autofocus,
+	autocomplete,
+	autocapitalize,
+	spellcheck,
+	inputmode,
+	step,
+	datalist,
+	min,
+	max,
+	inline,
+	manualSave,
+} = toRefs<MkInputProps>(props);
+const v = ref<string | number | null>(modelValue.value);
 const id = Math.random().toString(); // TODO: uuid?
 const focused = ref(false);
 const changed = ref(false);
@@ -117,10 +140,10 @@ const onKeydown = (ev: KeyboardEvent) => {
 
 const updated = () => {
 	changed.value = false;
-	if (type.value === 'number') {
-		emit('update:modelValue', typeof v.value === 'number' ? v.value : parseFloat(v.value ?? '0'));
+	if (type?.value === 'number') {
+		emit('update:modelValue', (typeof v.value === 'number' ? v.value : parseFloat((v.value as string | null) ?? '0')) as MkInputValue);
 	} else {
-		emit('update:modelValue', v.value ?? '');
+		emit('update:modelValue', (v.value ?? '') as MkInputValue);
 	}
 };
 
@@ -164,7 +187,7 @@ useInterval(() => {
 
 onMounted(() => {
 	nextTick(() => {
-		if (autofocus.value) {
+		if (autofocus?.value) {
 			focus();
 		}
 	});

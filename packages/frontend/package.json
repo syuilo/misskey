@@ -111,6 +111,7 @@
 		"@typescript-eslint/parser": "7.17.0",
 		"@vitest/coverage-v8": "1.6.0",
 		"@vue/runtime-core": "3.5.12",
+		"@vue/test-utils": "^2.4.6",
 		"acorn": "8.14.0",
 		"cross-env": "7.0.3",
 		"cypress": "13.15.2",

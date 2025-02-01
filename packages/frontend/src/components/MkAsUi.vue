@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 	</MkTextarea>
-	<MkInput v-else-if="c.type === 'textInput'" :small="size === 'small'" :modelValue="c.default ?? null" @update:modelValue="c.onInput">
+	<MkInput v-else-if="c.type === 'textInput'" :small="size === 'small'" :modelValue="c.default ?? null" type="text" @update:modelValue="c.onInput">
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 	</MkInput>

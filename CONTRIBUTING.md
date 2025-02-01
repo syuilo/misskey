@@ -209,7 +209,12 @@ pnpm --filter frontend test
 pnpm --filter misskey-js test
 ```
 
-Backend tests require manual preparation of servers. See the next section for more on this.
+Backend tests require manual preparation of servers. See the [Backend](#backend) section for more on this.
+
+### Frontend
+There are two types of tests for UI components:
+- Tests dealing with the DOM using Testing Library: [`/packages/frontend/test/dom`](/packages/frontend/test/dom)
+- Unit tests for Vue components using Vue Test Utils: [`/packages/frontend/test/vue`](/packages/frontend/test/vue)
 
 ### Backend
 There are three types of test codes for the backend:

@@ -59,13 +59,13 @@ export type AsUiMfm = AsUiComponentBase & {
 	bold?: boolean;
 	color?: string;
 	font?: Font;
-	onClickEv?: (evId: string) => Promise<void>;
+	onClickEv?: (evId: string) => void | Promise<void>;
 };
 
 export type AsUiButton = AsUiComponentBase & {
 	type: 'button';
 	text?: string;
-	onClick?: () => Promise<void>;
+	onClick?: () => void | Promise<void>;
 	primary?: boolean;
 	rounded?: boolean;
 	disabled?: boolean;
@@ -73,12 +73,12 @@ export type AsUiButton = AsUiComponentBase & {
 
 export type AsUiButtons = AsUiComponentBase & {
 	type: 'buttons';
-	buttons?: AsUiButton[];
+	buttons?: Options<AsUiButton>[];
 };
 
 export type AsUiSwitch = AsUiComponentBase & {
 	type: 'switch';
-	onChange?: (v: boolean) => Promise<void>;
+	onChange?: (v: boolean) => void | Promise<void>;
 	default?: boolean;
 	label?: string;
 	caption?: string;
@@ -86,7 +86,7 @@ export type AsUiSwitch = AsUiComponentBase & {
 
 export type AsUiTextarea = AsUiComponentBase & {
 	type: 'textarea';
-	onInput?: (v: string) => Promise<void>;
+	onInput?: (v: string) => void | Promise<void>;
 	default?: string;
 	label?: string;
 	caption?: string;
@@ -94,7 +94,7 @@ export type AsUiTextarea = AsUiComponentBase & {
 
 export type AsUiTextInput = AsUiComponentBase & {
 	type: 'textInput';
-	onInput?: (v: string) => Promise<void>;
+	onInput?: (v: string) => void | Promise<void>;
 	default?: string;
 	label?: string;
 	caption?: string;
@@ -102,7 +102,7 @@ export type AsUiTextInput = AsUiComponentBase & {
 
 export type AsUiNumberInput = AsUiComponentBase & {
 	type: 'numberInput';
-	onInput?: (v: number) => Promise<void>;
+	onInput?: (v: number) => void | Promise<void>;
 	default?: number;
 	label?: string;
 	caption?: string;
@@ -114,7 +114,7 @@ export type AsUiSelect = AsUiComponentBase & {
 		text: string;
 		value: string;
 	}[];
-	onChange?: (v: string) => Promise<void>;
+	onChange?: (v: string) => void | Promise<void>;
 	default?: string;
 	label?: string;
 	caption?: string;
@@ -149,9 +149,7 @@ export type AsUiPostForm = AsUiComponentBase & {
 
 export type AsUiComponent = AsUiRoot | AsUiContainer | AsUiText | AsUiMfm | AsUiButton | AsUiButtons | AsUiSwitch | AsUiTextarea | AsUiTextInput | AsUiNumberInput | AsUiSelect | AsUiFolder | AsUiPostFormButton | AsUiPostForm;
 
-type Options<T extends AsUiComponent> = T extends AsUiButtons
-	? Omit<T, 'id' | 'type' | 'buttons'> & { 'buttons'?: Options<AsUiButton>[] }
-	: Omit<T, 'id' | 'type'>;
+type Options<T extends AsUiComponent> = Omit<T, 'id' | 'type'>;
 
 export function patch(id: string, def: values.Value, call: (fn: values.VFn, args: values.Value[]) => Promise<values.Value>) {
 	// TODO
