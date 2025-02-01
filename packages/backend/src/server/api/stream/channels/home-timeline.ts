@@ -79,16 +79,11 @@ class HomeTimelineChannel extends Channel {
 
 		if (this.isNoteMutedOrBlocked(note)) return;
 
-		if (this.user && isRenotePacked(note) && !isQuotePacked(note)) {
-			if (note.renote && Object.keys(note.renote.reactions).length > 0) {
-				const myRenoteReaction = await this.noteEntityService.populateMyReaction(note.renote, this.user.id);
-				note.renote.myReaction = myRenoteReaction;
-			}
-		}
+		const clonedNote = await this.assignMyReaction(note, this.noteEntityService);
 
-		this.connection.cacheNote(note);
+		this.connection.cacheNote(clonedNote);
 
-		this.send('note', note);
+		this.send('note', clonedNote);
 	}
 
 	@bindThis

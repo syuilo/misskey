@@ -10,6 +10,7 @@ import { isRenotePacked, isQuotePacked } from '@/misc/is-renote.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { JsonObject, JsonValue } from '@/misc/json-value.js';
 import type Connection from './Connection.js';
+import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 
 /**
  * Stream channel
@@ -101,6 +102,44 @@ export default abstract class Channel {
 	public dispose?(): void;
 
 	public onMessage?(type: string, body: JsonValue): void;
+
+	public async assignMyReaction(note: Packed<'Note'>, noteEntityService: NoteEntityService): Promise<Packed<'Note'>> {
+		let changed = false;
+		// StreamingApiServerService creates a single EventEmitter per server process,
+		// so a new note arriving from redis gets de-serialised once per server process,
+		// and then that single object is passed to all active channels on each connection.
+		// If we didn't clone the notes here, different connections would asynchronously write
+		// different values to the same object, resulting in a random value being sent to each frontend. -- Dakkar
+		const clonedNote = { ...note };
+		if (this.user && isRenotePacked(note) && !isQuotePacked(note)) {
+			if (note.renote && Object.keys(note.renote.reactions).length > 0) {
+				const myReaction = await noteEntityService.populateMyReaction(note.renote, this.user.id);
+				if (myReaction) {
+					changed = true;
+					clonedNote.renote = { ...note.renote };
+					clonedNote.renote.myReaction = myReaction;
+				}
+			}
+			if (note.renote?.reply && Object.keys(note.renote.reply.reactions).length > 0) {
+				const myReaction = await noteEntityService.populateMyReaction(note.renote.reply, this.user.id);
+				if (myReaction) {
+					changed = true;
+					clonedNote.renote = { ...note.renote };
+					clonedNote.renote.reply = { ...note.renote.reply };
+					clonedNote.renote.reply.myReaction = myReaction;
+				}
+			}
+		}
+		if (this.user && note.reply && Object.keys(note.reply.reactions).length > 0) {
+			const myReaction = await noteEntityService.populateMyReaction(note.reply, this.user.id);
+			if (myReaction) {
+				changed = true;
+				clonedNote.reply = { ...note.reply };
+				clonedNote.reply.myReaction = myReaction;
+			}
+		}
+		return changed ? clonedNote : note;
+	}
 }
 
 export type MiChannelService<T extends boolean> = {

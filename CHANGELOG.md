@@ -9,6 +9,8 @@
 
 ### Server
 - Fix: 個別お知らせページのmetaタグ出力の条件が間違っていたのを修正
+- Fix: 自分がしたリアクションが正常に表示されないことがある問題を修正
+  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/839, https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/840)
 
 
 ## 2025.1.0
