@@ -47,8 +47,8 @@ importers:
         version: 5.6.3
     optionalDependencies:
       '@tensorflow/tfjs-core':
-        specifier: 4.4.0
-        version: 4.4.0(encoding@0.1.13)
+        specifier: 4.22.0
+        version: 4.22.0(encoding@0.1.13)
     devDependencies:
       '@misskey-dev/eslint-plugin':
         specifier: 2.0.3
@@ -142,7 +142,7 @@ importers:
         version: 10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/testing':
         specifier: 10.4.7
-        version: 10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7)(@nestjs/platform-express@10.4.7)
+        version: 10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7))
       '@peertube/http-signature':
         specifier: 1.7.0
         version: 1.7.0
@@ -322,7 +322,7 @@ importers:
         version: 6.9.16
       nsfwjs:
         specifier: 4.2.0
-        version: 4.2.0(@tensorflow/tfjs@4.4.0(encoding@0.1.13)(seedrandom@3.0.5))(buffer@6.0.3)
+        version: 4.2.0(@tensorflow/tfjs@4.22.0(encoding@0.1.13)(seedrandom@3.0.5))(buffer@6.0.3)
       oauth:
         specifier: 0.10.0
         version: 0.10.0
@@ -475,11 +475,11 @@ importers:
         specifier: 1.3.56
         version: 1.3.56
       '@tensorflow/tfjs':
-        specifier: 4.4.0
-        version: 4.4.0(encoding@0.1.13)(seedrandom@3.0.5)
+        specifier: 4.22.0
+        version: 4.22.0(encoding@0.1.13)(seedrandom@3.0.5)
       '@tensorflow/tfjs-node':
-        specifier: 4.4.0
-        version: 4.4.0(encoding@0.1.13)(seedrandom@3.0.5)
+        specifier: 4.22.0
+        version: 4.22.0(encoding@0.1.13)(seedrandom@3.0.5)
       bufferutil:
         specifier: 4.0.7
         version: 4.0.7
@@ -723,7 +723,7 @@ importers:
         version: 3.5.12
       aiscript-vscode:
         specifier: github:aiscript-dev/aiscript-vscode#v0.1.15
-        version: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7
+        version: git+https://git@github.com:aiscript-dev/aiscript-vscode.git#c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7
       astring:
         specifier: 1.9.0
         version: 1.9.0
@@ -1021,7 +1021,7 @@ importers:
         version: 8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)
       storybook-addon-misskey-theme:
         specifier: github:misskey-dev/storybook-addon-misskey-theme
-        version: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       vite-plugin-turbosnap:
         specifier: 1.0.3
         version: 1.0.3
@@ -1157,7 +1157,7 @@ importers:
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.36.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))
       '@vue/runtime-core':
         specifier: 3.5.12
         version: 3.5.12
@@ -4183,44 +4183,44 @@ packages:
   '@tabler/icons@3.29.0':
     resolution: {integrity: sha512-VWNINymdmhay3MDvWVREmRwuWLSrX3YiInKvs5L4AHRF4bAfJabLlEReE0BW/XFsBt22ff8/C8Eam/LXlF97mA==}
 
-  '@tensorflow/tfjs-backend-cpu@4.4.0':
-    resolution: {integrity: sha512-d4eln500/qNym78z9IrUUzF0ITBoJGLrxV8xd92kLVoXhg35Mm+zqUXShjFcrH8joOHOFuST0qZ0TbDDqcPzPA==}
+  '@tensorflow/tfjs-backend-cpu@4.22.0':
+    resolution: {integrity: sha512-1u0FmuLGuRAi8D2c3cocHTASGXOmHc/4OvoVDENJayjYkS119fcTcQf4iHrtLthWyDIPy3JiPhRrZQC9EwnhLw==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.4.0
+      '@tensorflow/tfjs-core': 4.22.0
 
-  '@tensorflow/tfjs-backend-webgl@4.4.0':
-    resolution: {integrity: sha512-TzQKvfAPgGt9cMG+5bVoTckoG1xr/PVJM/uODkPvzcMqi3j97kuWDXwkYJIgXldStmfiKkU7f5CmyD3Cq3E6BA==}
+  '@tensorflow/tfjs-backend-webgl@4.22.0':
+    resolution: {integrity: sha512-H535XtZWnWgNwSzv538czjVlbJebDl5QTMOth4RXr2p/kJ1qSIXE0vZvEtO+5EC9b00SvhplECny2yDewQb/Yg==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.4.0
+      '@tensorflow/tfjs-core': 4.22.0
 
-  '@tensorflow/tfjs-converter@4.4.0':
-    resolution: {integrity: sha512-JUjpRStrAuw37tgPd5UENu0UjQVuJT09yF7KpOur4BriJ0uQqrbEZHMPHmvUtr5nYzkqlXJTuXIyxvEY/olNpg==}
+  '@tensorflow/tfjs-converter@4.22.0':
+    resolution: {integrity: sha512-PT43MGlnzIo+YfbsjM79Lxk9lOq6uUwZuCc8rrp0hfpLjF6Jv8jS84u2jFb+WpUeuF4K33ZDNx8CjiYrGQ2trQ==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.4.0
+      '@tensorflow/tfjs-core': 4.22.0
 
-  '@tensorflow/tfjs-core@4.4.0':
-    resolution: {integrity: sha512-Anxpc7cAOA0Q7EUXdTbQKMg3reFvrdkgDlaYzH9ZfkMq2CgLV4Au6E/s6HmbYn/VrAtWy9mLY5c/lLJqh4764g==}
+  '@tensorflow/tfjs-core@4.22.0':
+    resolution: {integrity: sha512-LEkOyzbknKFoWUwfkr59vSB68DMJ4cjwwHgicXN0DUi3a0Vh1Er3JQqCI1Hl86GGZQvY8ezVrtDIvqR1ZFW55A==}
     engines: {yarn: '>= 1.3.2'}
 
-  '@tensorflow/tfjs-data@4.4.0':
-    resolution: {integrity: sha512-aY4eq4cgrsrXeBU6ABZAAN3tV0fG4YcHd0z+cYuNXnCo+VEQLJnPmhn+xymZ4VQZQH4GXbVS4dV9pXMclFNRFw==}
+  '@tensorflow/tfjs-data@4.22.0':
+    resolution: {integrity: sha512-dYmF3LihQIGvtgJrt382hSRH4S0QuAp2w1hXJI2+kOaEqo5HnUPG0k5KA6va+S1yUhx7UBToUKCBHeLHFQRV4w==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.4.0
+      '@tensorflow/tfjs-core': 4.22.0
       seedrandom: ^3.0.5
 
-  '@tensorflow/tfjs-layers@4.4.0':
-    resolution: {integrity: sha512-OGC7shfiD9Gc698hINHK4y9slOJvu5m54tVNm4xf+WSNrw/avvgpar6yyoL5bakYIZNQvFNK75Yr8VRPR7oPeQ==}
+  '@tensorflow/tfjs-layers@4.22.0':
+    resolution: {integrity: sha512-lybPj4ZNj9iIAPUj7a8ZW1hg8KQGfqWLlCZDi9eM/oNKCCAgchiyzx8OrYoWmRrB+AM6VNEeIT+2gZKg5ReihA==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 4.4.0
+      '@tensorflow/tfjs-core': 4.22.0
 
-  '@tensorflow/tfjs-node@4.4.0':
-    resolution: {integrity: sha512-+JSAddsupjSQUDZeb7QGOFkL3Tty3kjPHx8ethiYFzwTZJHCMvM7wZJd0Fqnjxym6A0KpsmB7SPZgwRRXVIlPA==}
+  '@tensorflow/tfjs-node@4.22.0':
+    resolution: {integrity: sha512-uHrXeUlfgkMxTZqHkESSV7zSdKdV0LlsBeblqkuKU9nnfxB1pC6DtoyYVaLxznzZy7WQSegjcohxxCjAf6Dc7w==}
     engines: {node: '>=8.11.0'}
 
-  '@tensorflow/tfjs@4.4.0':
-    resolution: {integrity: sha512-EmCsnzdvawyk4b+4JKaLLuicHcJQRZtL1zSy9AWJLiiHTbDDseYgLxfaCEfLk8v2bUe7SBXwl3n3B7OjgvH11Q==}
+  '@tensorflow/tfjs@4.22.0':
+    resolution: {integrity: sha512-0TrIrXs6/b7FLhLVNmfh8Sah6JgjBPH4mZ8JGb7NU6WW+cx00qK5BcAZxw7NCzxj6N8MRAIfHq+oNbPUNG5VAg==}
     hasBin: true
 
   '@testing-library/dom@10.4.0':
@@ -4439,8 +4439,8 @@ packages:
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
 
-  '@types/node-fetch@2.6.11':
-    resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
+  '@types/node-fetch@2.6.12':
+    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
   '@types/node@22.9.0':
     resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
@@ -4463,8 +4463,8 @@ packages:
   '@types/offscreencanvas@2019.3.0':
     resolution: {integrity: sha512-esIJx9bQg+QYF0ra8GnvfianIY8qWB0GBx54PK5Eps6m+xTj86KLavHv6qDhzKcu5UUOgNfJ2pWaIIV7TRUd9Q==}
 
-  '@types/offscreencanvas@2019.7.0':
-    resolution: {integrity: sha512-PGcyveRIpL1XIqK8eBsmRBt76eFgtzuPiSTyKHZxnGemp2yzGzWpjYKAfK3wIMiU7eH+851yEpiuP8JZerTmWg==}
+  '@types/offscreencanvas@2019.7.3':
+    resolution: {integrity: sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==}
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
@@ -4475,8 +4475,8 @@ packages:
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
 
-  '@types/prop-types@15.7.5':
-    resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+  '@types/prop-types@15.7.14':
+    resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
 
   '@types/pug@2.0.10':
     resolution: {integrity: sha512-Sk/uYFOBAB7mb74XcpizmH0KOR2Pv3D2Hmrh1Dmy5BmK3MpdSa5kqZcg6EKBdklU0bFXX9gCfzvpnyUehrPIuA==}
@@ -4517,8 +4517,8 @@ packages:
   '@types/sanitize-html@2.13.0':
     resolution: {integrity: sha512-X31WxbvW9TjIhZZNyNBZ/p5ax4ti7qsNDBDEnH4zAgmEh35YnFD1UiS6z9Cd34kKm0LslFW0KPmTQzu/oGtsqQ==}
 
-  '@types/scheduler@0.16.2':
-    resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
+  '@types/scheduler@0.23.0':
+    resolution: {integrity: sha512-YIoDCTH3Af6XM5VuwGG/QL/CJqga1Zm3NkU3HZ4ZHK2fRMPYP1VczsTUqtsf43PH/iJNVlPHAo2oWX7BSdB2Hw==}
 
   '@types/seedrandom@2.4.34':
     resolution: {integrity: sha512-ytDiArvrn/3Xk6/vtylys5tlY6eo7Ane0hvcx++TKo6RxQXuVfW0AF/oeWqAj9dN29SyhtawuXstgmPlwNcv/A==}
@@ -4594,9 +4594,6 @@ packages:
 
   '@types/web-push@3.6.4':
     resolution: {integrity: sha512-GnJmSr40H3RAnj0s34FNTcJi1hmWFV5KXugE0mYWnYhgTAHLJ/dJKAwDmvPJYMke0RplY2XE9LnM4hqSqKIjhQ==}
-
-  '@types/webgl-ext@0.0.30':
-    resolution: {integrity: sha512-LKVgNmBxN0BbljJrVUwkxwRYqzsAEPcZOe6S2T6ZaBDIrFp0qu4FNlpc5sM1tGbXUYFgdVQIoeLk1Y1UoblyEg==}
 
   '@types/ws@8.5.13':
     resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
@@ -4858,8 +4855,8 @@ packages:
       '@vue/server-renderer':
         optional: true
 
-  '@webgpu/types@0.1.30':
-    resolution: {integrity: sha512-9AXJSmL3MzY8ZL//JjudA//q+2kBRGhLBFpkdGksWIuxrMy81nFrCzj2Am+mbh8WoU6rXmv7cY5E3rdlyru2Qg==}
+  '@webgpu/types@0.1.38':
+    resolution: {integrity: sha512-7LrhVKz2PRh+DD7+S+PVaFd5HxaWQvoMqBbsV9fNJO1pjUs1P8bM2vQVNfk+3URTqbuTI7gkXi0rfsN0IadoBA==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -4903,9 +4900,9 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  adm-zip@0.5.10:
-    resolution: {integrity: sha512-x0HvcHqVJNTPk/Bw8JbLWlWoo6Wwnsug0fnYYro1HBrjxZ3G7/AZk7Ahv8JwDe1uIcz8eBqvu86FuF1POiG7vQ==}
-    engines: {node: '>=6.0'}
+  adm-zip@0.5.16:
+    resolution: {integrity: sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}
+    engines: {node: '>=12.0'}
 
   agent-base@4.3.0:
     resolution: {integrity: sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==}
@@ -4919,6 +4916,10 @@ packages:
     resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
     engines: {node: '>= 14'}
 
+  agent-base@7.1.3:
+    resolution: {integrity: sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw==}
+    engines: {node: '>= 14'}
+
   aggregate-error@3.1.0:
     resolution: {integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==}
     engines: {node: '>=8'}
@@ -4927,8 +4928,8 @@ packages:
     resolution: {integrity: sha512-gOsf2YwSlleG6IjRYG2A7k0HmBMEo6qVNk9Bp/EaLgAJT5ngH6PXbqa4ItvnEwCm/velL5jAnQgsHsWnjhGmvw==}
     engines: {node: '>=18'}
 
-  aiscript-vscode@https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7:
-    resolution: {tarball: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7}
+  aiscript-vscode@git+https://git@github.com:aiscript-dev/aiscript-vscode.git#c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7:
+    resolution: {commit: c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7, repo: git@github.com:aiscript-dev/aiscript-vscode.git, type: git}
     version: 0.1.15
     engines: {vscode: ^1.83.0}
 
@@ -5514,9 +5515,6 @@ packages:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
 
-  chownr@1.1.4:
-    resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
-
   chownr@2.0.0:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
@@ -5920,6 +5918,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.4.0:
+    resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   decamelize-keys@1.1.1:
     resolution: {integrity: sha512-WiPxgEirIV0/eIOMcnFBA3/IJZAZqKnwAwWyvvdi4lsr1WCN22nhdf/3db3DoZcUjTV2SqfzIwNyp6y2xs3nmg==}
     engines: {node: '>=0.10.0'}
@@ -6256,6 +6263,10 @@ packages:
 
   escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
+    engines: {node: '>=6'}
+
+  escalade@3.2.0:
+    resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
 
   escape-goat@3.0.0:
@@ -6729,9 +6740,6 @@ packages:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
     engines: {node: '>=10'}
 
-  fs-minipass@1.2.7:
-    resolution: {integrity: sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==}
-
   fs-minipass@2.1.0:
     resolution: {integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==}
     engines: {node: '>= 8'}
@@ -6887,8 +6895,8 @@ packages:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
 
-  google-protobuf@3.21.2:
-    resolution: {integrity: sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==}
+  google-protobuf@3.21.4:
+    resolution: {integrity: sha512-MnG7N936zcKTco4Jd2PX2U96Kf9PxygAPKBug+74LHzmHXmceN16MmRcdgZv+DGef/S9YvQAfRsNCn4cjf9yyQ==}
 
   gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
@@ -7090,6 +7098,10 @@ packages:
 
   https-proxy-agent@7.0.5:
     resolution: {integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==}
+    engines: {node: '>= 14'}
+
+  https-proxy-agent@7.0.6:
+    resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
 
   human-signals@1.1.1:
@@ -7854,6 +7866,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.isarguments@3.1.0:
     resolution: {integrity: sha512-chi4NHZlZqZD18a0imDHnZPrDeBbTtVN7GXMwuGdRH9qotxAjYs3aVLKc7zNOG9eddR5Ksd8rvFEBc9SsggPpg==}
@@ -8222,6 +8235,10 @@ packages:
     resolution: {integrity: sha512-bNH9mmM9qsJ2X4r2Nat1B//1dJVcn3+iBLa3IgqJ7EbGaDNepL9QSHOxN4ng33s52VMMhhIfgCYDk3C4ZmlDAg==}
     engines: {node: '>=10'}
 
+  minimatch@5.1.6:
+    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
+    engines: {node: '>=10'}
+
   minimatch@9.0.1:
     resolution: {integrity: sha512-0jWhJpD/MdhPXwPuiRkCbfYfSKp2qnn2eOc279qI7f+osl/l+prKSrvhg157zSYvx/1nmgn2NqdT6k2Z7zSH9w==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -8261,9 +8278,6 @@ packages:
     resolution: {integrity: sha512-MbkQQ2CTiBMlA2Dm/5cY+9SWFEN8pzzOXi6rlM5Xxq0Yqbda5ZQy9sU75a673FE9ZK0Zsbr6Y5iP6u9nktfg2g==}
     engines: {node: '>=8'}
 
-  minipass@2.9.0:
-    resolution: {integrity: sha512-wxfUjg9WebH+CUDX/CdbRlh5SmfZiy/hpkxaRI16Y9W56Pa75sWgd/rvFilSgrauD9NyFymP/+JFV3KwzIsJeg==}
-
   minipass@3.3.6:
     resolution: {integrity: sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw==}
     engines: {node: '>=8'}
@@ -8279,9 +8293,6 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
-
-  minizlib@1.3.3:
-    resolution: {integrity: sha512-6ZYMOEnmVsdCeTJVE0W9ZD+pVnE8h9Hma/iOwwRDsdQoePpoX56/8B6z3P9VNwppJuBKNRuFDRNRqRWexT9G9Q==}
 
   minizlib@2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
@@ -8452,6 +8463,10 @@ packages:
 
   node-gyp-build@4.6.0:
     resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
+    hasBin: true
+
+  node-gyp-build@4.8.4:
+    resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
     hasBin: true
 
   node-gyp@10.2.0:
@@ -9416,6 +9431,10 @@ packages:
     resolution: {integrity: sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==}
     engines: {node: '>= 6'}
 
+  readable-stream@3.6.2:
+    resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
+    engines: {node: '>= 6'}
+
   readable-stream@4.3.0:
     resolution: {integrity: sha512-MuEnA0lbSi7JS8XM+WNJlWZkHAAdm7gETHdFK//Q/mChGyj2akEFtdLZh32jSdkWGbRwCW9pn6g3LWDdDeZnBQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -9467,8 +9486,8 @@ packages:
   regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
 
-  regenerator-runtime@0.14.0:
-    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
+  regenerator-runtime@0.14.1:
+    resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
 
   regex@4.3.3:
     resolution: {integrity: sha512-r/AadFO7owAq1QJVeZ/nq9jNS1vyZt+6t1p/E59B56Rn2GCya+gr1KSyOzNL/er+r+B7phv5jG2xU2Nz1YkmJg==}
@@ -9667,8 +9686,8 @@ packages:
     resolution: {integrity: sha512-Rh266MLDYNeML5h90ttdMwfXe1+Nc4LAWd9X1KdJe8pPHP4kFmvLZALtsMNHNdvTyQygbEC0D59sIz47DIaq8w==}
     engines: {node: '>=8'}
 
-  semver@5.7.1:
-    resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
+  semver@5.7.2:
+    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
 
   semver@6.3.1:
@@ -9993,8 +10012,8 @@ packages:
     resolution: {integrity: sha512-iCGQj+0l0HOdZ2AEeBADlsRC+vsnDsZsbdSiH1yNSjcfKM7fdpCMfqAL/dwF5BLiw/XhRft/Wax6zQbhq2BcjQ==}
     engines: {node: '>= 0.4'}
 
-  storybook-addon-misskey-theme@https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640}
+  storybook-addon-misskey-theme@git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640:
+    resolution: {commit: cf583db098365b2ccc81a82f63ca9c93bc32b640, repo: git@github.com:misskey-dev/storybook-addon-misskey-theme.git, type: git}
     version: 0.0.0
     peerDependencies:
       '@storybook/blocks': ^7.0.0-rc.4
@@ -10196,10 +10215,6 @@ packages:
 
   tar-stream@3.1.6:
     resolution: {integrity: sha512-B/UyjYwPpMBv+PaFSWAmtYjwdrlEaZQEhMIBFNC5oEG8lpiW8XjcSdmEaClj28ArfKScKHs2nshz3k2le6crsg==}
-
-  tar@4.4.19:
-    resolution: {integrity: sha512-a20gEsvHnWe0ygBY8JbxoM4w3SJdhc7ZAuxkLqh+nvNQN2IOt0B5lLgM490X5Hl8FF0dl0tOf2ewFYAlIFgzVA==}
-    engines: {node: '>=4.5'}
 
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
@@ -10804,8 +10819,8 @@ packages:
   vscode-languageserver-protocol@3.17.5:
     resolution: {integrity: sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==}
 
-  vscode-languageserver-textdocument@1.0.11:
-    resolution: {integrity: sha512-X+8T3GoiwTVlJbicx/sIAF+yuJAqz8VvwJyoMVhwEMoEKE/fkDmrqUgDMyBECcM2A2frVZIUj5HI/ErRXCfOeA==}
+  vscode-languageserver-textdocument@1.0.12:
+    resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
 
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
@@ -11132,7 +11147,7 @@ snapshots:
       stringz: 2.1.0
       uuid: 9.0.1
       vscode-languageserver: 9.0.1
-      vscode-languageserver-textdocument: 1.0.11
+      vscode-languageserver-textdocument: 1.0.12
 
   '@ampproject/remapping@2.2.1':
     dependencies:
@@ -11675,7 +11690,7 @@ snapshots:
       '@babel/traverse': 7.23.5
       '@babel/types': 7.24.7
       convert-source-map: 2.0.0
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -11695,7 +11710,7 @@ snapshots:
       '@babel/traverse': 7.24.7
       '@babel/types': 7.24.7
       convert-source-map: 2.0.0
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -11924,7 +11939,7 @@ snapshots:
 
   '@babel/runtime@7.23.4':
     dependencies:
-      regenerator-runtime: 0.14.0
+      regenerator-runtime: 0.14.1
 
   '@babel/template@7.22.15':
     dependencies:
@@ -11954,7 +11969,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.25.6
       '@babel/types': 7.24.7
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11969,7 +11984,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.25.6
       '@babel/types': 7.25.6
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -13075,7 +13090,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/testing@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7)(@nestjs/platform-express@10.4.7)':
+  '@nestjs/testing@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.7))':
     dependencies:
       '@nestjs/common': 10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.7(@nestjs/common@10.4.7(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.7)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -13099,9 +13114,9 @@ snapshots:
 
   '@npmcli/agent@2.2.0':
     dependencies:
-      agent-base: 7.1.0
+      agent-base: 7.1.3
       http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.5
+      https-proxy-agent: 7.0.6
       lru-cache: 10.2.2
       socks-proxy-agent: 8.0.2
     transitivePeerDependencies:
@@ -14574,76 +14589,74 @@ snapshots:
 
   '@tabler/icons@3.29.0': {}
 
-  '@tensorflow/tfjs-backend-cpu@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))':
+  '@tensorflow/tfjs-backend-cpu@4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))':
     dependencies:
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
       '@types/seedrandom': 2.4.34
       seedrandom: 3.0.5
 
-  '@tensorflow/tfjs-backend-webgl@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))':
+  '@tensorflow/tfjs-backend-webgl@4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))':
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
+      '@tensorflow/tfjs-backend-cpu': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
       '@types/offscreencanvas': 2019.3.0
       '@types/seedrandom': 2.4.34
-      '@types/webgl-ext': 0.0.30
       seedrandom: 3.0.5
 
-  '@tensorflow/tfjs-converter@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))':
+  '@tensorflow/tfjs-converter@4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))':
     dependencies:
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
 
-  '@tensorflow/tfjs-core@4.4.0(encoding@0.1.13)':
+  '@tensorflow/tfjs-core@4.22.0(encoding@0.1.13)':
     dependencies:
       '@types/long': 4.0.2
-      '@types/offscreencanvas': 2019.7.0
+      '@types/offscreencanvas': 2019.7.3
       '@types/seedrandom': 2.4.34
-      '@types/webgl-ext': 0.0.30
-      '@webgpu/types': 0.1.30
+      '@webgpu/types': 0.1.38
       long: 4.0.0
       node-fetch: 2.6.13(encoding@0.1.13)
       seedrandom: 3.0.5
     transitivePeerDependencies:
       - encoding
 
-  '@tensorflow/tfjs-data@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))(encoding@0.1.13)(seedrandom@3.0.5)':
+  '@tensorflow/tfjs-data@4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))(encoding@0.1.13)(seedrandom@3.0.5)':
     dependencies:
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
-      '@types/node-fetch': 2.6.11
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
+      '@types/node-fetch': 2.6.12
       node-fetch: 2.6.13(encoding@0.1.13)
       seedrandom: 3.0.5
       string_decoder: 1.3.0
     transitivePeerDependencies:
       - encoding
 
-  '@tensorflow/tfjs-layers@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))':
+  '@tensorflow/tfjs-layers@4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))':
     dependencies:
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
 
-  '@tensorflow/tfjs-node@4.4.0(encoding@0.1.13)(seedrandom@3.0.5)':
+  '@tensorflow/tfjs-node@4.22.0(encoding@0.1.13)(seedrandom@3.0.5)':
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.9(encoding@0.1.13)
-      '@tensorflow/tfjs': 4.4.0(encoding@0.1.13)(seedrandom@3.0.5)
-      adm-zip: 0.5.10
-      google-protobuf: 3.21.2
+      '@tensorflow/tfjs': 4.22.0(encoding@0.1.13)(seedrandom@3.0.5)
+      adm-zip: 0.5.16
+      google-protobuf: 3.21.4
       https-proxy-agent: 2.2.4
       progress: 2.0.3
       rimraf: 2.7.1
-      tar: 4.4.19
+      tar: 6.2.1
     transitivePeerDependencies:
       - encoding
       - seedrandom
       - supports-color
     optional: true
 
-  '@tensorflow/tfjs@4.4.0(encoding@0.1.13)(seedrandom@3.0.5)':
+  '@tensorflow/tfjs@4.22.0(encoding@0.1.13)(seedrandom@3.0.5)':
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))
-      '@tensorflow/tfjs-backend-webgl': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))
-      '@tensorflow/tfjs-converter': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))
-      '@tensorflow/tfjs-core': 4.4.0(encoding@0.1.13)
-      '@tensorflow/tfjs-data': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))(encoding@0.1.13)(seedrandom@3.0.5)
-      '@tensorflow/tfjs-layers': 4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))
+      '@tensorflow/tfjs-backend-cpu': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))
+      '@tensorflow/tfjs-backend-webgl': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))
+      '@tensorflow/tfjs-converter': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))
+      '@tensorflow/tfjs-core': 4.22.0(encoding@0.1.13)
+      '@tensorflow/tfjs-data': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))(encoding@0.1.13)(seedrandom@3.0.5)
+      '@tensorflow/tfjs-layers': 4.22.0(@tensorflow/tfjs-core@4.22.0(encoding@0.1.13))
       argparse: 1.0.10
       chalk: 4.1.2
       core-js: 3.29.1
@@ -14899,7 +14912,7 @@ snapshots:
     dependencies:
       '@types/node': 22.9.0
 
-  '@types/node-fetch@2.6.11':
+  '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.9.0
       form-data: 4.0.1
@@ -14929,7 +14942,7 @@ snapshots:
 
   '@types/offscreencanvas@2019.3.0': {}
 
-  '@types/offscreencanvas@2019.7.0': {}
+  '@types/offscreencanvas@2019.7.3': {}
 
   '@types/pg-pool@2.0.6':
     dependencies:
@@ -14947,7 +14960,7 @@ snapshots:
       pg-protocol: 1.7.0
       pg-types: 2.2.0
 
-  '@types/prop-types@15.7.5': {}
+  '@types/prop-types@15.7.14': {}
 
   '@types/pug@2.0.10': {}
 
@@ -14967,8 +14980,8 @@ snapshots:
 
   '@types/react@18.0.28':
     dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
+      '@types/prop-types': 15.7.14
+      '@types/scheduler': 0.23.0
       csstype: 3.1.3
 
   '@types/readdir-glob@1.1.1':
@@ -14987,7 +15000,7 @@ snapshots:
     dependencies:
       htmlparser2: 8.0.1
 
-  '@types/scheduler@0.16.2': {}
+  '@types/scheduler@0.23.0': {}
 
   '@types/seedrandom@2.4.34': {}
 
@@ -15049,8 +15062,6 @@ snapshots:
   '@types/web-push@3.6.4':
     dependencies:
       '@types/node': 22.9.0
-
-  '@types/webgl-ext@0.0.30': {}
 
   '@types/ws@8.5.13':
     dependencies:
@@ -15265,7 +15276,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.36.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -15280,7 +15291,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -15477,7 +15488,7 @@ snapshots:
     optionalDependencies:
       '@vue/server-renderer': 3.5.12(vue@3.5.12(typescript@5.6.3))
 
-  '@webgpu/types@0.1.30': {}
+  '@webgpu/types@0.1.38': {}
 
   abbrev@1.1.1: {}
 
@@ -15508,7 +15519,7 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  adm-zip@0.5.10:
+  adm-zip@0.5.16:
     optional: true
 
   agent-base@4.3.0:
@@ -15518,7 +15529,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -15528,6 +15539,8 @@ snapshots:
       debug: 4.3.7(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
+
+  agent-base@7.1.3: {}
 
   aggregate-error@3.1.0:
     dependencies:
@@ -15539,7 +15552,7 @@ snapshots:
       clean-stack: 5.2.0
       indent-string: 5.0.0
 
-  aiscript-vscode@https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7:
+  aiscript-vscode@git+https://git@github.com:aiscript-dev/aiscript-vscode.git#c3cde89e79a41d93540cf8a48cd619c3f2dcb1b7:
     dependencies:
       '@aiscript-dev/aiscript-languageserver': https://github.com/aiscript-dev/aiscript-languageserver/releases/download/0.1.6/aiscript-dev-aiscript-languageserver-0.1.6.tgz
       vscode-languageclient: 9.0.1
@@ -15651,7 +15664,7 @@ snapshots:
   are-we-there-yet@2.0.0:
     dependencies:
       delegates: 1.0.0
-      readable-stream: 3.6.0
+      readable-stream: 3.6.2
     optional: true
 
   arg@5.0.2: {}
@@ -15904,7 +15917,7 @@ snapshots:
   bin-version-check@5.0.0:
     dependencies:
       bin-version: 6.0.0
-      semver: 7.6.3
+      semver: 7.6.0
       semver-truncate: 2.0.0
 
   bin-version@6.0.0:
@@ -16017,7 +16030,7 @@ snapshots:
 
   bufferutil@4.0.8:
     dependencies:
-      node-gyp-build: 4.6.0
+      node-gyp-build: 4.8.4
     optional: true
 
   bullmq@5.26.1:
@@ -16269,9 +16282,6 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
-
-  chownr@1.1.4:
-    optional: true
 
   chownr@2.0.0: {}
 
@@ -16715,6 +16725,10 @@ snapshots:
     optionalDependencies:
       supports-color: 8.1.1
 
+  debug@4.4.0:
+    dependencies:
+      ms: 2.1.3
+
   decamelize-keys@1.1.1:
     dependencies:
       decamelize: 1.2.0
@@ -17123,7 +17137,7 @@ snapshots:
 
   esbuild-register@3.5.0(esbuild@0.24.0):
     dependencies:
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       esbuild: 0.24.0
     transitivePeerDependencies:
       - supports-color
@@ -17207,6 +17221,8 @@ snapshots:
       '@esbuild/win32-x64': 0.24.0
 
   escalade@3.1.1: {}
+
+  escalade@3.2.0: {}
 
   escape-goat@3.0.0: {}
 
@@ -17733,7 +17749,7 @@ snapshots:
 
   filelist@1.0.4:
     dependencies:
-      minimatch: 5.1.2
+      minimatch: 5.1.6
 
   filename-reserved-regex@3.0.0: {}
 
@@ -17861,11 +17877,6 @@ snapshots:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.0
-
-  fs-minipass@1.2.7:
-    dependencies:
-      minipass: 2.9.0
-    optional: true
 
   fs-minipass@2.1.0:
     dependencies:
@@ -18016,7 +18027,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 5.1.2
+      minimatch: 5.1.6
       once: 1.4.0
 
   global-dirs@3.0.1:
@@ -18046,7 +18057,7 @@ snapshots:
       merge2: 1.4.1
       slash: 3.0.0
 
-  google-protobuf@3.21.2:
+  google-protobuf@3.21.4:
     optional: true
 
   gopd@1.0.1:
@@ -18282,7 +18293,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -18298,6 +18309,13 @@ snapshots:
     dependencies:
       agent-base: 7.1.0
       debug: 4.3.7(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  https-proxy-agent@7.0.6:
+    dependencies:
+      agent-base: 7.1.3
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -18639,7 +18657,7 @@ snapshots:
 
   istanbul-lib-source-maps@4.0.1:
     dependencies:
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       istanbul-lib-coverage: 3.2.2
       source-map: 0.6.1
     transitivePeerDependencies:
@@ -19046,6 +19064,35 @@ snapshots:
   jschardet@3.0.0: {}
 
   jsdoc-type-pratt-parser@4.1.0: {}
+
+  jsdom@24.1.1:
+    dependencies:
+      cssstyle: 4.0.1
+      data-urls: 5.0.0
+      decimal.js: 10.4.3
+      form-data: 4.0.1
+      html-encoding-sniffer: 4.0.0
+      http-proxy-agent: 7.0.2
+      https-proxy-agent: 7.0.5
+      is-potential-custom-element-name: 1.0.1
+      nwsapi: 2.2.12
+      parse5: 7.2.1
+      rrweb-cssom: 0.7.1
+      saxes: 6.0.0
+      symbol-tree: 3.2.4
+      tough-cookie: 4.1.4
+      w3c-xmlserializer: 5.0.0
+      webidl-conversions: 7.0.0
+      whatwg-encoding: 3.1.1
+      whatwg-mimetype: 4.0.0
+      whatwg-url: 14.0.0
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      xml-name-validator: 5.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    optional: true
 
   jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3):
     dependencies:
@@ -19739,7 +19786,7 @@ snapshots:
   micromark@4.0.0:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       decode-named-character-reference: 1.0.2
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.0
@@ -19805,6 +19852,10 @@ snapshots:
     dependencies:
       brace-expansion: 2.0.1
 
+  minimatch@5.1.6:
+    dependencies:
+      brace-expansion: 2.0.1
+
   minimatch@9.0.1:
     dependencies:
       brace-expansion: 2.0.1
@@ -19849,12 +19900,6 @@ snapshots:
     dependencies:
       minipass: 3.3.6
 
-  minipass@2.9.0:
-    dependencies:
-      safe-buffer: 5.2.1
-      yallist: 3.1.1
-    optional: true
-
   minipass@3.3.6:
     dependencies:
       yallist: 4.0.0
@@ -19864,11 +19909,6 @@ snapshots:
   minipass@7.0.4: {}
 
   minipass@7.1.2: {}
-
-  minizlib@1.3.3:
-    dependencies:
-      minipass: 2.9.0
-    optional: true
 
   minizlib@2.1.2:
     dependencies:
@@ -20047,6 +20087,9 @@ snapshots:
   node-gyp-build@4.6.0:
     optional: true
 
+  node-gyp-build@4.8.4:
+    optional: true
+
   node-gyp@10.2.0:
     dependencies:
       env-paths: 2.2.1
@@ -20104,7 +20147,7 @@ snapshots:
     dependencies:
       hosted-git-info: 2.8.9
       resolve: 1.22.8
-      semver: 5.7.1
+      semver: 5.7.2
       validate-npm-package-license: 3.0.4
 
   normalize-package-data@3.0.3:
@@ -20140,9 +20183,9 @@ snapshots:
       set-blocking: 2.0.0
     optional: true
 
-  nsfwjs@4.2.0(@tensorflow/tfjs@4.4.0(encoding@0.1.13)(seedrandom@3.0.5))(buffer@6.0.3):
+  nsfwjs@4.2.0(@tensorflow/tfjs@4.22.0(encoding@0.1.13)(seedrandom@3.0.5))(buffer@6.0.3):
     dependencies:
-      '@tensorflow/tfjs': 4.4.0(encoding@0.1.13)(seedrandom@3.0.5)
+      '@tensorflow/tfjs': 4.22.0(encoding@0.1.13)(seedrandom@3.0.5)
       buffer: 6.0.3
 
   nth-check@2.1.1:
@@ -21025,6 +21068,13 @@ snapshots:
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
 
+  readable-stream@3.6.2:
+    dependencies:
+      inherits: 2.0.4
+      string_decoder: 1.3.0
+      util-deprecate: 1.0.2
+    optional: true
+
   readable-stream@4.3.0:
     dependencies:
       abort-controller: 3.0.0
@@ -21077,7 +21127,7 @@ snapshots:
 
   regenerator-runtime@0.13.11: {}
 
-  regenerator-runtime@0.14.0: {}
+  regenerator-runtime@0.14.1: {}
 
   regex@4.3.3: {}
 
@@ -21136,7 +21186,7 @@ snapshots:
 
   require-in-the-middle@7.3.0:
     dependencies:
-      debug: 4.3.7(supports-color@8.1.1)
+      debug: 4.4.0
       module-details-from-path: 1.0.3
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -21319,7 +21369,7 @@ snapshots:
     dependencies:
       semver: 6.3.1
 
-  semver@5.7.1: {}
+  semver@5.7.2: {}
 
   semver@6.3.1: {}
 
@@ -21560,8 +21610,8 @@ snapshots:
 
   socks-proxy-agent@8.0.2:
     dependencies:
-      agent-base: 7.1.0
-      debug: 4.3.7(supports-color@8.1.1)
+      agent-base: 7.1.3
+      debug: 4.4.0
       socks: 2.7.1
     transitivePeerDependencies:
       - supports-color
@@ -21686,7 +21736,7 @@ snapshots:
     dependencies:
       internal-slot: 1.0.5
 
-  storybook-addon-misskey-theme@https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  storybook-addon-misskey-theme@git+https://git@github.com:misskey-dev/storybook-addon-misskey-theme.git#cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/components@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/core-events@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/theming@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(@storybook/types@8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@storybook/blocks': 8.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4))
       '@storybook/components': 8.4.4(storybook@8.4.4(bufferutil@4.0.8)(prettier@3.3.3)(utf-8-validate@6.0.4))
@@ -21900,17 +21950,6 @@ snapshots:
       b4a: 1.6.4
       fast-fifo: 1.3.0
       streamx: 2.15.0
-
-  tar@4.4.19:
-    dependencies:
-      chownr: 1.1.4
-      fs-minipass: 1.2.7
-      minipass: 2.9.0
-      minizlib: 1.3.3
-      mkdirp: 0.5.6
-      safe-buffer: 5.2.1
-      yallist: 3.1.1
-    optional: true
 
   tar@6.2.1:
     dependencies:
@@ -22315,13 +22354,13 @@ snapshots:
   update-browserslist-db@1.0.13(browserslist@4.22.2):
     dependencies:
       browserslist: 4.22.2
-      escalade: 3.1.1
+      escalade: 3.2.0
       picocolors: 1.0.1
 
   update-browserslist-db@1.0.13(browserslist@4.23.0):
     dependencies:
       browserslist: 4.23.0
-      escalade: 3.1.1
+      escalade: 3.2.0
       picocolors: 1.0.1
 
   uri-js@4.4.1:
@@ -22340,7 +22379,7 @@ snapshots:
 
   utf-8-validate@6.0.4:
     dependencies:
-      node-gyp-build: 4.6.0
+      node-gyp-build: 4.8.4
     optional: true
 
   util-deprecate@1.0.2: {}
@@ -22504,7 +22543,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.36.0):
+  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.4)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -22529,7 +22568,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.9.0
       happy-dom: 10.0.3
-      jsdom: 24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      jsdom: 24.1.1
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -22555,7 +22594,7 @@ snapshots:
       vscode-jsonrpc: 8.2.0
       vscode-languageserver-types: 3.17.5
 
-  vscode-languageserver-textdocument@1.0.11: {}
+  vscode-languageserver-textdocument@1.0.12: {}
 
   vscode-languageserver-types@3.17.5: {}
 
@@ -22872,7 +22911,7 @@ snapshots:
   yargs@16.2.0:
     dependencies:
       cliui: 7.0.4
-      escalade: 3.1.1
+      escalade: 3.2.0
       get-caller-file: 2.0.5
       require-directory: 2.1.1
       string-width: 4.2.3
